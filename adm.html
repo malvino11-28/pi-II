@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar clientes</title>
+    <link rel="shortcut icon" href="imgs/logo.png" type="image/x-icon">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+    <style>
+        @import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+        @import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-thin-rounded/css/uicons-thin-rounded.css');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            padding: 5px;
+            gap: 2%;
+            width: 100%;
+        }
+
+        section {
+            background: #f5f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-width: 45%;
+        }
+
+        h2 {
+            padding: 5px;
+        }
+
+        form div {
+          padding: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border-radius: 18px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-login {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: ease 0.3s all;
+        }
+
+        .lista table {
+            width: auto;
+            border-collapse: collapse;
+        }
+
+        .lista th,
+        .lista td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .btn-excluir,
+        .btn-editar {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: ease 0.3s all;
+            font-size: 16px;
+            text-align: center;
+        }
+        .btn-editar:hover{
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+        .btn-excluir:hover{
+            background-color: #a71d2a;
+            transform: translateY(-5px);
+        }
+        .btn-editar {
+            background-color: #007bff;
+        }
+        .btn-login:hover {
+            background-color: #218838;
+            transform: translateY(-5px);
+        }
+        footer {
+            width: 100%;
+            padding: 60px 50px;
+            background-color: #3b0000;
+        }
+
+        .footer-todo {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        .footer-column {
+            width: 300px;
+            line-height: 1.6;
+        }
+
+        .footer-column h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            font-size: 16px;
+            color: #e6e6e6;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .pagamentos,
+        .shipping {
+            margin-top: 50px;
+        }
+
+        .pagamentos h3,
+        .shipping h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .icons-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .icons-row img {
+            height: 35px;
+            object-fit: contain;
+        }
+
+        footer {
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .cabecalho {
+            display: flex;
+            align-items: center;
+            background-color: black;
+            width: 100%;
+            height: 120px;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .bloco-cab {
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .bloco-cab img {
+            width: 100px;
+            height: auto;
+            margin-right: 50px;
+            flex-shrink: 0;
+        }
+
+        .barra-busca {
+            display: flex;
+            align-items: center;
+            position: relative;
+            max-width: 350px;
+            flex-grow: 1;
+        }
+
+        .campo-busca {
+            width: 100%;
+            height: 45px;
+            padding: 0 1rem;
+            padding-left: 2.5rem;
+            border: 2px solid transparent;
+            border-radius: 40px;
+            outline: none;
+            background-color: #f3f3f4;
+            color: #0d0c22;
+            transition: .3s ease;
+        }
+
+        .campo-busca::placeholder {
+            color: #9e9ea7;
+        }
+
+        .campo-busca:focus,
+        .campo-busca:hover {
+            outline: none;
+            border-color: rgba(255, 10, 10, 0.4);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+        }
+
+        .icone-busca {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            fill: #000000;
+            width: 1.5rem;
+            height: 1.5rem;
+            pointer-events: none;
+        }
+
+        .conta-carrinho {
+            position: absolute;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            height: 120px;
+        }
+
+        .conta-carrinho a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            white-space: nowrap;
+        }
+
+        .menu-nav {
+            height: 48px;
+            background: #440000;
+            padding: 12px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-nav ul li {
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .menu-nav ul li:hover {
+            color: #ffbfbf;
+        }
+
+        .conteudo {
+            margin: 0;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .img-banner {
+            width: 100%;
+            max-width: 1500px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cabecalho">
+        <div class="bloco-cab">
+            <a href="index.html">
+                <img src="imgs/logo.png" alt="Logo Corte Imperial">
+            </a>
+            <div class="barra-busca">
+                <svg class="icone-busca" aria-hidden="true" viewBox="0 0 24 24">
+                    <g>
+                        <path
+                            d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                        </path>
+                    </g>
+                </svg>
+                <input placeholder="Pesquisar..." type="search" class="campo-busca">
+            </div>
+        </div>
+        <div class="conta-carrinho">
+            <a href="entrar.html">Entrar</a>
+            <a href="carrinho.html">Meu Carrinho</a>
+        </div>
+    </div>
+    <main>
+        <section>
+            <form>
+                <h2>Cadastrar Clientes</h2>
+                <div>
+                    <label for="text">Nome</label>
+                    <input type="text" placeholder="Nome de usuário">
+                </div>
+                <div>
+                    <label for="text">Data de nascimento</label>
+                    <input type="text" placeholder="Data de nascimento">
+                </div>
+                <div>
+                    <label for="text">E-mail</label>
+                    <input type="text" placeholder="E-mail">
+                </div>
+                <div>
+                    <label for="text">Telefone</label>
+                    <input type="text" placeholder="Telefone">
+                </div>
+                <div>
+                    <label for="text">Endereço</label>
+                    <input type="text" placeholder="Endereço">
+                </div>
+                <button class="btn-login">cadastrar</button>
+            </form>
+        </section>
+        <section>
+            <div class="lista">
+                <h2>Listar Clientes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data de nascimento</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Endereço</th>
+                            <th>Excluir</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>João Silva</td>
+                            <td>01/01/1990</td>
+                            <td>joao.silva@example.com</td>
+                            <td>(11) 98765-4321</td>
+                            <td>Rua Exemplo, 123</td>
+                            <td><button class="btn-excluir"><i class="fi fi-sr-delete"></i></i></button></td>
+                            <td><button class="btn-editar"><i class="fi fi-sr-pencil"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer style="margin-top: 30px;">
+        <div class="footer-todo">
+
+
+            <div class="footer-column">
+                <h3>Sobre nós</h3>
+                <p>Na Corte Imperial, acreditamos que cada corte de carne deve ser uma verdadeira experiência de sabor.
+                </p>
+                <p>Somos apaixonados pela arte do bom churrasco e pela qualidade que transforma uma refeição em um
+                    momento especial.</p>
+            </div>
+
+
+            <div class="footer-column">
+                <h3>Loja</h3>
+                <a href="index.html">Início</a>
+                <a href="#">Quem somos</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Política de Cookies</a>
+            </div>
+
+
+            <div class="footer-column">
+                <h3>Entre em contato</h3>
+                <a href="#">Fale conosco</a>
+            </div>
+
+
+        </div>
+
+
+        <div class="pagamentos">
+            <h3>Meios de pagamento</h3>
+            <div class="icons-row">
+                <img src="imgs/Visa.png" alt="Visa">
+                <img src="imgs/Mastercard.png" alt="Mastercard">
+                <img src="imgs/Hipercard.png" alt="Hipercard">
+                <img src="imgs/Elo.png" alt="Elo">
+                <img src="imgs/Amex.png" alt="Amex">
+                <img src="imgs/Itaú.png" alt="Itaú">
+                <img src="imgs/pix.png" alt="Pix">
+                <img src="imgs/Banco_do_Brasil_.png" alt="Banco do Brasil">
+                <img src="imgs/boleto.png" alt="Boleto">
+            </div>
+        </div>
+
+
+        <div class="envio">
+            <h3>Meios de envio</h3>
+            <div class="icons-row">
+                <img src="imgs/correios.png " alt="Correios">
+            </div>
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

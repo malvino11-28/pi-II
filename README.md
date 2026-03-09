@@ -91,7 +91,7 @@ Isso evita trabalhar em uma versão passada do projeto.
 
 ---
 
-# 📌 Observação
+# Observação
 
 Este repositório é utilizado exclusivamente para fins acadêmicos na
 disciplina **Projeto Integrado II**.

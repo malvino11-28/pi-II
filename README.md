@@ -22,7 +22,21 @@ branch principal (`main`)**.
 Cada integrante deve criar sua própria branch para desenvolver
 funcionalidades.
 
-### Exemplo de criação de branch
+# Clonando o repositório
+
+Para vincular o repositório na sua máquina, clone o repositório:
+
+```bash
+git clone <url-do-repositorio>
+```
+
+Acesse a pasta do projeto:
+
+```bash
+cd pasta-do-projeto
+```
+
+# Exemplo de criação de branch
 
 ```bash
 git checkout -b login
@@ -49,7 +63,7 @@ git commit -m "Descrição da alteração feita"
 Exemplo:
 
 ```bash
-git commit -m "Adiciona tela de login"
+git commit -m "feat: adiciona tela de login"
 ```
 
 ---
@@ -91,7 +105,7 @@ Isso evita trabalhar em uma versão passada do projeto.
 
 ---
 
-# Observação
+### Observação
 
 Este repositório é utilizado exclusivamente para fins acadêmicos na
 disciplina **Projeto Integrado II**.

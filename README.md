@@ -1,4 +1,4 @@
-### Projeto Integrado II
+# Projeto Integrado II
 
 Este repositório contém o desenvolvimento do projeto da disciplina
 **Projeto Integrado II**.\
@@ -14,7 +14,7 @@ código.
 
 ---
 
-### Uso de Branches
+# Uso de Branches
 
 Para evitar conflitos no código, **ninguém deve trabalhar diretamente na
 branch principal (`main`)**.

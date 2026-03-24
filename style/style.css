@@ -775,7 +775,7 @@ input[type="number"] {
     }
 
 }
-/* PAGAMENTO - ESTILO IGUAL AO CARRINHO */
+/*PAGAMENTO*/
 .pagina-pagamento {
     background-color: #f8f9fa;
     padding: 60px 0;
@@ -792,6 +792,7 @@ input[type="number"] {
 .pagina-pagamento .cart {
     background: #ffffff;
     padding: 40px;
+    text-align: left;
 }
 
 .pagina-pagamento h4 {
@@ -805,22 +806,27 @@ input[type="number"] {
 .pagina-pagamento .summary {
     background: #3F0909;
     padding: 40px;
-    border-left: none;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: white;
+}
+
+.pagina-pagamento .summary-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
 }
 
 .pagina-pagamento .summary h5 {
     font-weight: 600;
-    color: white;
 }
 
 .pagina-pagamento .summary hr {
     margin: 20px 0;
-    color: rgba(255,255,255,0.3);
-    border: none;
-    border-top: 1px solid;
+    border-color: rgba(255,255,255,0.3);
+    border-top: 2px solid;
 }
 
 .pagina-pagamento .summary .total {
@@ -861,8 +867,7 @@ input[type="number"] {
     }
 
     .pagina-pagamento .summary {
-        border-left: none;
-        border-top: 1px solid #e5e5e5;
         padding: 25px;
+        margin-top: 20px;
     }
 }

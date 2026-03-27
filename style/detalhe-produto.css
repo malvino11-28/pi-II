@@ -1,0 +1,651 @@
+ :root {
+     --vermelho: #9b1c1c;
+     --vermelho-claro: #c0392b;
+     --dourado: #b8860b;
+     --dourado-claro: #d4a017;
+     --creme: #fdf6ec;
+     --escuro: #1a1a1a;
+     --cinza: #4a4a4a;
+     --cinza-claro: #f5f0ea;
+     --borda: #e8ddd0;
+ }
+
+ * {
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: 'Raleway', sans-serif;
+     background-color: var(--creme);
+     color: var(--escuro);
+ }
+
+ /* ─────────────────────────
+   BREADCRUMB
+───────────────────────── */
+ .breadcrumb-wrap {
+     background: var(--cinza-claro);
+     padding: 22px 48px 18px;
+     margin-top: 18px;
+     border-bottom: 1px solid #e0d8cc;
+ }
+
+ .breadcrumb {
+     flex-wrap: nowrap;
+     white-space: nowrap;
+     overflow: hidden;
+ }
+
+ .breadcrumb-item a {
+     color: var(--vermelho);
+     text-decoration: none;
+     font-size: 18px;
+ }
+
+ .breadcrumb-item.active {
+     font-size: 18px;
+     color: var(--cinza);
+ }
+
+ .breadcrumb-item+.breadcrumb-item::before {
+     font-size: 18px;
+ }
+
+ /* ─────────────────────────
+   ÁREA DO PRODUTO
+───────────────────────── */
+ .produto-wrap {
+     padding: 52px 48px 36px;
+ }
+
+ .galeria-main {
+     position: relative;
+     background: #fff;
+     border-radius: 6px;
+     overflow: hidden;
+     border: 1px solid var(--borda);
+     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
+ }
+
+ .galeria-main img {
+     width: 100%;
+     height: 480px;
+     object-fit: cover;
+     display: block;
+     transition: transform .4s ease;
+ }
+
+ .galeria-main:hover img {
+     transform: scale(1.03);
+ }
+
+ .badge-estoque {
+     position: absolute;
+     top: 16px;
+     left: 16px;
+     background: #fff;
+     border: 1px solid #d7ccc0;
+     color: var(--cinza);
+     font-size: 12px;
+     padding: 6px 12px;
+     border-radius: 3px;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+     font-weight: 700;
+ }
+
+ .thumbs {
+     display: flex;
+     gap: 12px;
+     margin-top: 14px;
+ }
+
+ .thumbs img {
+     width: 70px;
+     height: 58px;
+     object-fit: cover;
+     border-radius: 4px;
+     border: 2px solid transparent;
+     cursor: pointer;
+     transition: all .2s ease;
+ }
+
+ .thumbs img:hover,
+ .thumbs img.active {
+     border-color: var(--vermelho);
+     transform: translateY(-1px);
+ }
+
+ .produto-info {
+     padding-left: 26px;
+ }
+
+ .nav-produto a {
+     color: var(--vermelho);
+     text-decoration: none;
+ }
+
+ .produto-titulo {
+     font-family: 'Playfair Display', serif;
+     font-size: 40px;
+     font-weight: 900;
+     line-height: 1.08;
+     color: var(--escuro);
+     margin-bottom: 16px;
+ }
+
+ .estrelas {
+     color: var(--dourado-claro);
+     font-size: 22px;
+ }
+
+ .estrelas span {
+     color: var(--cinza);
+     font-size: 15px;
+     margin-left: 6px;
+ }
+
+ .preco-wrap {
+     border-top: 1px solid #e2d7ca;
+     border-bottom: 1px solid #e2d7ca;
+     padding: 18px 0 18px;
+     margin: 18px 0 20px;
+ }
+
+ .preco-antigo {
+     text-decoration: line-through;
+     color: #9b9b9b;
+     font-size: 18px;
+     margin-bottom: 6px;
+ }
+
+ .preco-atual {
+     font-family: 'Raleway', sans-serif;
+     font-size: 48px;
+     font-weight: 800;
+     color: var(--vermelho);
+     line-height: 1.08;
+     display: block;
+     margin-bottom: 6px;
+     white-space: nowrap;
+     font-variant-numeric: lining-nums;
+     font-feature-settings: "lnum";
+ }
+
+ .preco-parcelado {
+     font-size: 16px;
+     color: var(--cinza);
+     display: block;
+ }
+
+ .desc-curta {
+     font-size: 17px;
+     color: var(--cinza);
+     line-height: 1.85;
+     margin-bottom: 22px;
+     border-left: 3px solid var(--dourado-claro);
+     padding-left: 14px;
+ }
+
+ .disponivel {
+     font-size: 16px;
+     color: #2e7d32;
+     margin-bottom: 22px;
+     font-weight: 600;
+ }
+
+ /* =========================
+   ÁREA QUANTIDADE + CARRINHO + FRETE
+========================= */
+ .qty-wrap {
+     display: flex;
+     align-items: center;
+     gap: 14px;
+     flex-wrap: wrap;
+     margin-bottom: 18px;
+ }
+
+ .qty-input {
+     display: flex;
+     align-items: stretch;
+     border: 1px solid #d8cfc3;
+     border-radius: 4px;
+     overflow: hidden;
+     background: #f7f3ee;
+     height: 48px;
+ }
+
+ .qty-input button {
+     width: 40px;
+     height: 48px;
+     border: none;
+     background: #f7f3ee;
+     color: var(--escuro);
+     font-family: 'Raleway', sans-serif;
+     font-size: 20px;
+     font-weight: 600;
+     line-height: 1;
+     padding: 0;
+     margin: 0;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: background .2s ease;
+ }
+
+ .qty-input button:hover {
+     background: #efe8df;
+ }
+
+ .qty-input input {
+     width: 48px;
+     height: 48px;
+     border: none;
+     border-left: 1px solid #d8cfc3;
+     border-right: 1px solid #d8cfc3;
+     background: #fff;
+     color: var(--escuro);
+     font-family: Arial, Helvetica, sans-serif;
+     font-size: 16px;
+     font-weight: 700;
+     text-align: center;
+     line-height: 48px;
+     padding: 0;
+     margin: 0;
+     outline: none;
+     appearance: textfield;
+     -moz-appearance: textfield;
+     font-variant-numeric: lining-nums tabular-nums;
+     font-feature-settings: "lnum" 1, "tnum" 1;
+ }
+
+ .qty-input input::-webkit-outer-spin-button,
+ .qty-input input::-webkit-inner-spin-button {
+     -webkit-appearance: none;
+     margin: 0;
+ }
+
+ .btn-carrinho {
+     background: linear-gradient(90deg, #a51414 0%, #c01a1a 100%);
+     color: #fff;
+     border: none;
+     height: 48px;
+     padding: 0 25px;
+     font-family: 'Raleway', sans-serif;
+     font-weight: 800;
+     letter-spacing: .8px;
+     text-transform: uppercase;
+     font-size: 15px;
+     border-radius: 4px;
+     cursor: pointer;
+     transition: all .25s ease;
+     min-width: 260px;
+     max-width: 360px;
+     width: auto;
+     flex: 0 0 auto;
+     box-shadow: 0 8px 20px rgba(176, 25, 25, 0.14);
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 8px;
+     white-space: nowrap;
+     line-height: 1;
+ }
+
+ .btn-carrinho:hover {
+     filter: brightness(1.05);
+     transform: translateY(-1px);
+ }
+
+ .btn-carrinho i {
+     font-size: 15px;
+     line-height: 1;
+     display: inline-flex;
+     align-items: center;
+ }
+
+
+
+ /* ─────────────────────────
+   META PRODUTO
+───────────────────────── */
+ .meta-produto {
+     font-size: 15px;
+     color: #6f6f6f;
+     line-height: 2;
+     margin-top: 8px;
+ }
+
+ .meta-produto span,
+ .meta-produto strong {
+     color: var(--escuro);
+     font-weight: 700;
+ }
+
+ /* ─────────────────────────
+   ABAS
+───────────────────────── */
+ .abas-wrap {
+     padding: 8px 48px 56px;
+ }
+
+ .nav-abas {
+     border-bottom: 2px solid #e0d8cc;
+     margin-bottom: 0;
+ }
+
+ .nav-abas .nav-link {
+     font-family: 'Raleway', sans-serif;
+     font-weight: 700;
+     font-size: 15px;
+     letter-spacing: 1.2px;
+     text-transform: uppercase;
+     color: var(--cinza);
+     border: none;
+     border-bottom: 3px solid transparent;
+     margin-bottom: -2px;
+     padding: 14px 20px;
+     border-radius: 0;
+ }
+
+ .nav-abas .nav-link.active {
+     color: var(--vermelho);
+     border-bottom-color: var(--vermelho);
+     background: transparent;
+ }
+
+ .tab-content {
+     max-width: 1120px;
+     padding-top: 30px;
+ }
+
+ /* ─────────────────────────
+   DESCRIÇÃO
+───────────────────────── */
+ .aba-descricao p {
+     font-size: 18px;
+     line-height: 2;
+     color: var(--escuro);
+     margin-bottom: 22px;
+ }
+
+ .aba-descricao h6 {
+     font-family: 'Raleway', sans-serif;
+     font-weight: 800;
+     font-size: 18px;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     color: var(--escuro);
+     margin-top: 34px;
+     margin-bottom: 12px;
+ }
+
+ /* ─────────────────────────
+   AVALIAÇÕES
+───────────────────────── */
+ .review-card {
+     border: 1px solid var(--borda);
+     border-radius: 8px;
+     padding: 26px 28px;
+     margin-bottom: 22px;
+     margin-right: 680px;
+     margin-left: 3px;
+     background: #fff;
+     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+ }
+
+ .review-autor {
+     font-weight: 700;
+     font-size: 18px;
+     color: var(--escuro);
+ }
+
+ .review-data {
+     font-size: 14px;
+     color: #8d8d8d;
+     margin-top: 4px;
+ }
+
+ .review-texto {
+     font-size: 17px;
+     line-height: 1.9;
+     color: var(--cinza);
+     margin-top: 14px;
+ }
+
+ /* ─────────────────────────
+   TABELA NUTRICIONAL
+───────────────────────── */
+ #nutricional p {
+     font-size: 16px;
+     color: var(--cinza);
+     margin-bottom: 16px;
+ }
+
+ .tabela-nut {
+     width: 100%;
+     max-width: 760px;
+     border-collapse: collapse;
+     margin-top: 14px;
+     background: #fff;
+     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+ }
+
+ .tabela-nut th {
+     background: var(--escuro);
+     color: #fff;
+     font-size: 14px;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     padding: 14px 16px;
+ }
+
+ .tabela-nut td {
+     font-size: 16px;
+     color: var(--escuro);
+     padding: 14px 16px;
+     border: 1px solid var(--borda);
+ }
+
+ #nutricional small {
+     display: block;
+     margin-top: 12px;
+     font-size: 13px;
+     color: #8a8a8a;
+ }
+
+ /* ─────────────────────────
+   RESPONSIVO
+───────────────────────── */
+ @media (max-width: 520px) {
+
+     .breadcrumb-item a,
+     .breadcrumb-item.active,
+     .breadcrumb-item+.breadcrumb-item::before {
+         font-size: 14px;
+     }
+
+     .breadcrumb-item a,
+     .breadcrumb-item.active,
+     .breadcrumb-item+.breadcrumb-item::before {
+         font-size: 14px;
+     }
+
+     .produto-wrap {
+         padding: 28px 20px 24px;
+     }
+
+     .produto-info {
+         padding-left: 0;
+         margin-top: 24px;
+     }
+
+     .produto-titulo {
+         font-size: 30px;
+     }
+
+     .preco-atual {
+         font-size: 38px;
+     }
+
+     .desc-curta {
+         font-size: 15px;
+         line-height: 1.75;
+     }
+
+     .qty-wrap {
+         flex-direction: column;
+         align-items: stretch;
+     }
+
+     .btn-carrinho {
+         width: 85%;
+         max-width: 100%;
+         min-width: unset;
+     }
+ }
+
+ /* FRETE */
+ .frete-calc {
+     margin-top: 2px;
+     width: 100%;
+     max-width: 424.1px;
+ }
+
+ .frete-calc label {
+     display: block;
+     font-family: 'Raleway', sans-serif;
+     font-size: 11px;
+     font-weight: 800;
+     letter-spacing: .8px;
+     text-transform: uppercase;
+     color: var(--escuro);
+     margin-bottom: 8px;
+ }
+
+ .frete-calc .frete-row {
+     display: flex;
+     align-items: stretch;
+     width: 100%;
+     height: 48px;
+     border: 1px solid var(--borda);
+     border-radius: 4px;
+     overflow: hidden;
+     background: #fff;
+     padding: 0;
+     gap: 0;
+     box-sizing: border-box;
+ }
+
+ .frete-calc .frete-row input[type="text"] {
+     flex: 1 1 auto;
+     min-width: 0;
+     height: 48px;
+     padding: 0 14px;
+     margin: 0;
+     border: none;
+     border-radius: 0;
+     outline: none;
+     box-shadow: none;
+     background: #fff;
+     font-family: 'Raleway', sans-serif;
+     font-size: 14px;
+     font-weight: 500;
+     color: var(--escuro);
+     box-sizing: border-box;
+ }
+
+ .frete-calc .frete-row input[type="text"] {
+     flex: 1 1 auto;
+     min-width: 0;
+     height: 48px;
+     padding: 0 14px;
+     margin: 0;
+     border: none;
+     border-radius: 0;
+     outline: none;
+     box-shadow: none;
+     appearance: none;
+     -webkit-appearance: none;
+     background: #fff;
+     font-family: 'Raleway', sans-serif;
+     font-size: 14px;
+     font-weight: 500;
+     color: var(--escuro);
+     box-sizing: border-box;
+     line-height: 48px;
+     display: block;
+ }
+
+ .frete-calc .frete-row button[type="button"] {
+     flex: 0 0 64px;
+     width: 64px;
+     height: 48px;
+     padding: 0;
+     margin: 0;
+     border: none;
+     border-left: 1px solid var(--borda);
+     border-radius: 0;
+     background: linear-gradient(90deg, #1a1a1a 0%, #2e2e2e 100%);
+     color: #fff;
+     font-family: 'Raleway', sans-serif;
+     font-size: 11px;
+     font-weight: 800;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: filter .2s ease;
+     box-shadow: none;
+     line-height: 1;
+ }
+
+ .frete-calc .frete-row button[type="button"]:hover {
+     filter: brightness(1.25);
+ }
+
+ .abas-wrap {
+     padding: 0 20px 40px;
+ }
+
+ .nav-abas .nav-link {
+     font-size: 13px;
+     padding: 12px 10px;
+ }
+
+ .tab-content {
+     max-width: 100%;
+     padding-top: 22px;
+ }
+
+ .aba-descricao p {
+     font-size: 15px;
+     line-height: 1.85;
+ }
+
+ .aba-descricao h6 {
+     font-size: 15px;
+ }
+
+ .review-autor {
+     font-size: 16px;
+ }
+
+ .review-texto {
+     font-size: 15px;
+     line-height: 1.8;
+ }
+
+ .tabela-nut th {
+     font-size: 12px;
+     padding: 10px 12px;
+ }
+
+ .tabela-nut td {
+     font-size: 14px;
+     padding: 10px 12px;
+ }

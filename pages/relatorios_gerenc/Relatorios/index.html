@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatórios - Sistema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Style/style.css">
+</head>
+<body>
+
+    <nav id="sidebar">
+        <div class="sidebar-header"><h4>MENU</h4></div>
+        <a href="../Gerenciamento clientes/index.html" class="nav-link">
+            <i class="fa-solid fa-users"></i> Clientes
+        </a>
+        <a href="../Gerenciamento produtos/index.html" class="nav-link">
+            <i class="fa-solid fa-box"></i> Produtos
+        </a>
+        <a href="#" class="nav-link active">
+            <i class="fa-solid fa-chart-line"></i> Relatórios
+        </a>
+    </nav>
+
+    <div id="content">
+        <header>
+            <div class="logo-area">
+                <i class="fa-solid fa-bars" style="cursor:pointer"></i>
+                <h2 style="margin:0; font-weight:500;">Relatórios</h2>
+            </div>
+            <div class="user-area">
+                <span><i class="fa-regular fa-circle-user"></i> Administrador 1 | Sair</span>
+            </div>
+        </header>
+
+        <div class="main-wrapper">
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar produtos...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <details class="accordion">
+                <summary class="accordion-header">
+                    <span>Clientes</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="accordion-content">
+                    <p style="padding:20px; color:#666;">Dados de clientes aparecem aqui.</p>
+                </div>
+            </details>
+
+            <details class="accordion" open>
+                <summary class="accordion-header">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <span>Produtos em estoque</span>
+                        <button class="btn-filter"><i class="fa-solid fa-filter"></i> Filtros</button>
+                    </div>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                
+                <div class="accordion-content">
+                    <div class="stock-list">
+                        <div class="stock-item">
+                            <div class="item-info">
+                                <img src="../Imgs produtos/3.png" alt="Produto" class="product-img">
+                                <span>Carne de boi................</span>
+                            </div>
+                            <span class="price">R$: 30,00</span>
+                            <span class="qty">22x</span>
+                            <span class="storage">Armazem 02</span>
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                        
+                        <!-- So repetir p por mais intes-->
+                         <div class="stock-item">
+                            <div class="item-info">
+                                <img src="../Imgs produtos/2.png" alt="Produto" class="product-img">
+                                <span>Kit de faca mmb.........</span>
+                            </div>
+                            <span class="price">R$: 99,00</span>
+                            <span class="qty">23x</span>
+                            <span class="storage">Armazem 01</span>
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                    </div>
+                </div>
+            
+            </details>
+            <details class="accordion">
+                    <summary class="accordion-header">
+                        <span>Vendas</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="accordion-content">
+                        <p style="padding:20px; color:#666;">Relatórios de vendas e faturamento aparecem aqui.</p>
+                    </div>
+            </details>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

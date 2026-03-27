@@ -1,217 +1,169 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Meu Carrinho</title>
-    <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link rel="stylesheet" href="/style/style.css" />
-  </head>
-  <body>
-    <div id="header"></div>
-    <script src="/pages/main/header.js"></script>
-    <div class="conteudo">
-      <div class="container py-5">
-        <div class="row">
-          <div class="col-lg-7">
-            <h3 class="mb-1">Meu carrinho</h3>
-            <p class="text-muted mb-4">Você tem 3 itens no carrinho</p>
-            <div class="card cart-card p-3 mb-4">
-              <div class="row align-items-center">
-                <div class="col-md-2">
-                  <img
-                    src="https://images.rappi.com.br/products/2098026503-1588197742196.png"
-                    class="img-fluid product-img"
-                  />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meu Carrinho</title>
+  <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"/>
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/style/style.css" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <div id="header"></div>
+  <script src="/pages/main/header.js"></script>
+    <div class="conteudo pagina-carrinho flex-grow-1">
+      <div class="container mt-5">
+        <div class="card shadow-lg rounded-4 cart-card">
+          <div class="row g-0">
+            <div class="col-md-8 p-4 cart">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4>Carrinho de Compras</h4>
+                <span class="text-muted">3 itens</span>
+              </div>
+              <div class="row align-items-center border-bottom py-3 cart-item">
+                <div class="col-2">
+                  <img class="img-fluid rounded cart-img" src="/imgs/picanha.png">
                 </div>
-                <div class="col-md-4">
-                  <h5 class="mb-1">Picanha 300g</h5>
-                  <small class="text-muted">300g</small>
+                <div class="col">
+                  <div class="text-muted small">Bovinos</div>
+                  <div class="fw-semibold">Picanha 300g</div>
                 </div>
-                <div class="col-md-2 text-center">
-                  <input type="number" class="form-control" value="1" min="1" />
+                <div class="col-md-3 text-center">
+                  <input type="number" class="form-control text-center mx-auto" value="1" min="1" style="width: 80px;">
                 </div>
-                <div class="col-md-2 text-center">R$65,99</div>
-                <div class="col-md-2 text-center">
-                  <button class="btn btn-outline-danger btn-sm">🗑</button>
+                <div class="col-md-3 d-flex justify-content-end align-items-center gap-3">
+                  <span class="fw-semibold">R$ 65,99</span>
+                  <button class="btn text-danger p-0">
+                    <i class="bi bi-trash fs-5"></i>
+                  </button>
                 </div>
+              </div>
+              <div class="row align-items-center border-bottom py-3 cart-item">
+                <div class="col-2">
+                  <img class="img-fluid rounded cart-img" src="/imgs/frango.png">
+                </div>
+                <div class="col">
+                  <div class="text-muted small">Aves</div>
+                  <div class="fw-semibold">Peito de Frango 1Kg</div>
+                </div>
+                <div class="col-md-3 text-center">
+                  <input type="number"
+                        class="form-control text-center mx-auto"
+                        value="1"
+                        min="1"
+                        style="width: 80px;">
+                </div>
+                <div class="col-md-3 d-flex justify-content-end align-items-center gap-3">
+                  <span class="fw-semibold">R$ 24.99</span>
+                  <button class="btn text-danger p-0">
+                    <i class="bi bi-trash fs-5"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row align-items-center border-bottom py-3 cart-item">
+                <div class="col-2">
+                  <img class="img-fluid rounded cart-img" src="/imgs/maminha.png">
+                </div>
+                <div class="col">
+                  <div class="text-muted small">Bovinos</div>
+                  <div class="fw-semibold">Maminha 400g</div>
+                </div>
+                <div class="col-md-3 text-center">
+                  <input type="number"
+                        class="form-control text-center mx-auto"
+                        value="1"
+                        min="1"
+                        style="width: 80px;">
+                </div>
+                <div class="col-md-3 d-flex justify-content-end align-items-center gap-3">
+                  <span class="fw-semibold">R$ 49,99</span>
+                  <button class="btn text-danger p-0">
+                    <i class="bi bi-trash fs-5"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mt-4">
+                <a href="/pages/main/produtos.html" class="btn btn-finalizar">Continuar Comprando</a>
               </div>
             </div>
-            <div class="card cart-card p-3 mb-4">
-              <div class="row align-items-center">
-                <div class="col-md-2">
-                  <img
-                    src="https://www.bernardaoemcasa.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/1/5/15105_file_de_peito_500x500.png"
-                    class="img-fluid product-img"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <h5 class="mb-1">Peito de Frango 1kg</h5>
-                  <small class="text-muted">1kg</small>
-                </div>
-                <div class="col-md-2 text-center">
-                  <input type="number" class="form-control" value="1" min="1" />
-                </div>
-                <div class="col-md-2 text-center">R$24,99</div>
-                <div class="col-md-2 text-center">
-                  <button class="btn btn-outline-danger btn-sm">🗑</button>
-                </div>
+            <div class="col-md-4 p-4 rounded-end-4 summary">
+              <h5>Resumo do Pedido</h5>
+              <hr>
+              <div class="d-flex justify-content-between total">
+                <span>3 Itens</span>
+                <span>R$ 147,97</span>
               </div>
-            </div>
-            <div class="card cart-card p-3 mb-4">
-              <div class="row align-items-center">
-                <div class="col-md-2">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEYcINENEaWeuzITL0E2_2hvKq6S-IkddIKQ&s"
-                    class="img-fluid product-img"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <h5 class="mb-1">Maminha 400g</h5>
-                  <small class="text-muted">400g</small>
-                </div>
-                <div class="col-md-2 text-center">
-                  <input type="number" class="form-control" value="1" min="1" />
-                </div>
-                <div class="col-md-2 text-center">R$49,99</div>
-                <div class="col-md-2 text-center">
-                  <button class="btn btn-outline-danger btn-sm">🗑</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-5">
-            <div class="payment-card">
-              <h5 class="mb-3">Método de pagamento</h5>
-              <div class="d-flex card-type gap-2 mb-4">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
-                />
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/179/179431.png"
-                />
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/5/51/Elo_logo.png"
-                />
-                <img
-                  src="https://logodownload.org/wp-content/uploads/2017/09/alelo-logo.png"
-                />
-                <img
-                  src="https://1000logos.net/wp-content/uploads/2021/11/VISA-logo.png"
-                />
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Hipercard_logo.svg/960px-Hipercard_logo.svg.png"
-                />
-              </div>
-              <form>
-                <div class="mb-3">
-                  <label class="form-label">Nome no cartão:</label>
-                  <input type="text" class="form-control" placeholder="Nome" />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Número do cartão:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    maxlength="16"
-                    placeholder="1111 2222 3333 4444"
-                  />
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">Data Vencimento:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="00/0000"
-                    />
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">CVV:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      maxlength="3"
-                      placeholder="123"
-                    />
-                  </div>
-                </div>
-                <hr class="border-light" />
-                <div class="d-flex justify-content-between">
-                  <span>Total da Compra</span>
-                  <span>R$140,97</span>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <span>Frete</span>
-                  <span>R$20,00</span>
-                </div>
-                <div class="d-flex justify-content-between fw-bold mb-4">
-                  <span>Total (Frete Incluído)</span>
-                  <span>R$160,97</span>
-                </div>
-                <button class="btn btn-buy w-100 text-white">
-                  Comprar — R$160,97
-                </button>
+              <form class="mt-4">
+                <p class="mb-1 total">TIPO DE ENTREGA</p>
+                <select class="form-select mb-3">
+                  <option>Entrega Padrão - R$ 10,00</option>
+                </select>
+                <p class="mb-1 total">CEP</p>
+                <input class="form-control" placeholder="Digite seu CEP" type="text" maxlength="9">
               </form>
+              <div class="d-flex justify-content-between border-top pt-3 mt-3 total">
+                <strong>PREÇO TOTAL</strong>
+                <strong>R$ 147,97</strong>
+              </div>
+              <a href="/pages/forms/pagamento.html" class="btn btn-summary w-100 mt-4">
+                Ir para Pagamento
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </div>
-    <footer>
-      <div class="footer-todo">
-        <div class="footer-column">
-          <h3>Sobre nós</h3>
-          <p>
-            Na Corte Imperial, acreditamos que cada corte de carne deve ser uma
-            verdadeira experiência de sabor.
-          </p>
-          <p>
-            Somos apaixonados pela arte do bom churrasco e pela qualidade que
-            transforma uma refeição em um momento especial.
-          </p>
-        </div>
-        <div class="footer-column">
-          <h3>Loja</h3>
-          <a href="/pages/main/index.html">Início</a>
-          <a href="#">Quem somos</a>
-          <a href="#">Política de Privacidade</a>
-          <a href="#">Trocas e Devoluções</a>
-          <a href="#">Trocas e Devoluções</a>
-          <a href="#">Política de Cookies</a>
-        </div>
-        <div class="footer-column">
-          <h3>Entre em contato</h3>
-          <a href="#">Fale conosco</a>
-        </div>
+  <footer>
+    <div class="footer-todo">
+      <div class="footer-column">
+        <h3>Sobre nós</h3>
+        <p>
+          Na Corte Imperial, acreditamos que cada corte de carne deve ser uma
+          verdadeira experiência de sabor.
+        </p>
+        <p>
+          Somos apaixonados pela arte do bom churrasco e pela qualidade que
+          transforma uma refeição em um momento especial.
+        </p>
       </div>
-      <div class="pagamentos">
-        <h3>Meios de pagamento</h3>
-        <div class="icons-row">
-          <img src="/imgs/Visa.png" alt="Visa" />
-          <img src="/imgs/Mastercard.png" alt="Mastercard" />
-          <img src="/imgs/Hipercard.png" alt="Hipercard" />
-          <img src="/imgs/Elo.png" alt="Elo" />
-          <img src="/imgs/Amex.png" alt="Amex" />
-          <img src="/imgs/Itaú.png" alt="Itaú" />
-          <img src="/imgs/pix.png" alt="Pix" />
-          <img src="/imgs/Banco_do_Brasil_.png" alt="Banco do Brasil" />
-          <img src="/imgs/boleto.png" alt="Boleto" />
-        </div>
+      <div class="footer-column">
+        <h3>Loja</h3>
+        <a href="/pages/main/index.html">Início</a>
+        <a href="#">Quem somos</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Trocas e Devoluções</a>
+        <a href="#">Política de Cookies</a>
       </div>
-      <div class="envio">
-        <h3>Meios de envio</h3>
-        <div class="icons-row">
-          <img src="/imgs/correios.png " alt="Correios" />
-        </div>
+      <div class="footer-column">
+        <h3>Entre em contato</h3>
+        <a href="#">Fale conosco</a>
       </div>
-    </footer>
-  </body>
+    </div>
+    <div class="pagamentos">
+      <h3>Meios de pagamento</h3>
+      <div class="icons-row">
+        <img src="/imgs/Visa.png" alt="Visa" />
+        <img src="/imgs/Mastercard.png" alt="Mastercard" />
+        <img src="/imgs/Hipercard.png" alt="Hipercard" />
+        <img src="/imgs/Elo.png" alt="Elo" />
+        <img src="/imgs/Amex.png" alt="Amex" />
+        <img src="/imgs/Itaú.png" alt="Itaú" />
+        <img src="/imgs/pix.png" alt="Pix" />
+        <img src="/imgs/Banco_do_Brasil_.png" alt="Banco do Brasil" />
+        <img src="/imgs/boleto.png" alt="Boleto" />
+      </div>
+    </div>
+    <div class="envio">
+      <h3>Meios de envio</h3>
+      <div class="icons-row">
+        <img src="/imgs/correios.png" alt="Correios" />
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

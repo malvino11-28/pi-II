@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Corte Imperial - Picanha Angus Premium</title>
+    <title>Corte Imperial - Filé peito de Frango</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/style/style.css" />
     <link rel="stylesheet" href="/style/detalhe-produto.css" />
@@ -20,7 +20,7 @@
     <script src="/pages/main/header.js"></script>
 
     <!-- BREADCRUMB -->
-    <div class="breadcrumb-wrap">
+    <!-- <div class="breadcrumb-wrap">
         <nav>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -28,7 +28,7 @@
                 <li class="breadcrumb-item active">Picanha Angus Premium</li>
             </ol>
         </nav>
-    </div>
+    </div> -->
 
     <!-- PRODUTO -->
     <div class="produto-wrap">
@@ -36,18 +36,19 @@
 
             <!-- Galeria -->
             <div class="col-md-5">
-                <div class="galeria-main">
+                <div class="galeria-main" id="zoom-container">
                     <span class="badge-estoque">Em Estoque</span>
-                    <img id="imgPrincipal" src="https://placehold.co/600x480/2a1a0e/d4a017?text=Picanha+Angus"
-                        alt="Picanha Angus Premium" />
+                    <img id="imgPrincipal" src="/imgs/peitodefrango.jpg" alt="Filé de peito de Frango" />
+                    <div id="zoom-lens"></div>
+                    <div id="zoom-result"></div>
                 </div>
                 <div class="thumbs">
-                    <img src="https://placehold.co/80x70/2a1a0e/d4a017?text=1" alt="thumb1" class="active"
-                        onclick="trocarImg(this,'https://placehold.co/600x480/2a1a0e/d4a017?text=Picanha+Angus')">
-                    <img src="https://placehold.co/80x70/3d1a0e/fff?text=2" alt="thumb2"
-                        onclick="trocarImg(this,'https://placehold.co/600x480/3d1a0e/fff?text=Vista+2')">
-                    <img src="https://placehold.co/80x70/1a2a0e/d4a017?text=3" alt="thumb3"
-                        onclick="trocarImg(this,'https://placehold.co/600x480/1a2a0e/d4a017?text=Vista+3')">
+                    <img src="/imgs/peitodefrango.jpg" alt="thumb1" class="active"
+                        onclick="trocarImg(this,'/imgs/peitodefrango.jpg')">
+                    <img src="/imgs/peitodefrango3.webp" alt="thumb2"
+                        onclick="trocarImg(this,'/imgs/peitodefrango3.webp')">
+                    <img src="/imgs/peitodefrango2.webp" alt="thumb3"
+                        onclick="trocarImg(this,'/imgs/peitodefrango2.webp')">
                 </div>
             </div>
 
@@ -55,21 +56,21 @@
             <div class="col-md-7">
                 <div class="produto-info">
 
-                    <h1 class="produto-titulo">Picanha Angus<br>Premium</h1>
+                    <h1 class="produto-titulo">Filé de <br> Peito de frango</h1>
 
                     <div class="estrelas mb-2">
                         ★★★★★ <span>(3 Avaliações de Clientes)</span>
                     </div>
 
                     <div class="preco-wrap">
-                        <div class="preco-antigo">R$129,99</div>
-                        <div class="preco-atual">R$89,99</div>
-                        <div class="preco-parcelado">em até 5x de R$17,99 sem juros</div>
+                        <div class="preco-antigo">R35,99</div>
+                        <div class="preco-atual">R$24,99</div>
+                        <div class="preco-parcelado">em até 2x de R$12,50 sem juros</div>
                     </div>
 
                     <div class="desc-curta">
-                        Picanha selecionada de gado Angus, com marmoreio intenso e sabor inigualável.
-                        Perfeita para churrasco ou preparo na frigideira com manteiga e alecrim.
+                        Uma carne leve, macia, saborosa e nutritiva, o Filé de Peito de Frango é ideal para uma
+                        alimentação balanceada.
                     </div>
 
                     <div class="disponivel">O produto está disponível.</div>
@@ -86,17 +87,9 @@
                         </button>
                     </div>
 
-                    <div class="frete-calc">
-                        <label for="cep">Calcular frete</label>
-                        <div class="frete-row">
-                            <input type="text" id="cep" placeholder="Digite seu CEP">
-                            <button type="button">OK</button>
-                        </div>
-                    </div>
-
                     <div class="meta-produto">
                         Categoria: <span>Cortes Nobres</span><br>
-                        Tags: <span>picanha, angus, churrasco, premium</span><br>
+                        Tags: <span>peito de frango, carne branca</span><br>
                         Marca: <span>Corte Imperial</span>
                     </div>
                 </div>
@@ -125,10 +118,8 @@
             <!-- Descrição -->
             <div class="tab-pane fade show active aba-descricao" id="descricao">
                 <p>
-                    Nossa Picanha Angus Premium é selecionada a dedo de bovinos Angus criados a pasto,
-                    garantindo uma carne com marmoreio excepcional, maciez superior e sabor marcante.
-                    O corte generoso preserva a capa de gordura característica, responsável por dar
-                    aquele suculento sabor defumado no churrasco.
+                    Congelado individualmente em embalagem abre fácil, é muito prático para
+                    preparar.
                 </p>
 
                 <h6>Peso Líquido</h6>
@@ -136,9 +127,10 @@
 
                 <h6>Modo de Preparo Recomendado</h6>
                 <p>
-                    Tempere apenas com sal grosso e leve à brasa em fogo alto por 6 a 8 minutos
-                    de cada lado para ponto mal passado. Para frigideira, sele em manteiga com alho e
-                    alecrim. Deixe descansar 5 minutos antes de cortar.
+                    Deixe o file marinar em uma mistura de cerveja clara, azeite, sal e Lemon pepper. Depois de cerca de
+                    1 hora, seque os filés e com uma faca faça uma abertura para rechear. Dicas de recheio: espinafre
+                    com ricota, queijo e cebola, tomate picado e queijo fresco. Depois de selado pode ser terminado no
+                    forno ou mesmo na frigideira abaixando a temperatura.
                 </p>
 
                 <h6>Armazenamento</h6>
@@ -148,7 +140,7 @@
                 </p>
 
                 <h6>Alérgicos</h6>
-                <p>CONTÉM: PROTEÍNA BOVINA. Produto processado em ambiente que manipula outros proteínas animais.
+                <p>CONTÉM: PROTEÍNA AVÍCOLA. Produto processado em ambiente que manipula outros proteínas animais.
                 </p>
             </div>
 
@@ -157,37 +149,35 @@
                 <div class="review-card">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="review-autor">Carlos M.</div>
+                            <div class="review-autor">Betina M.</div>
                             <div class="review-data">15 de março de 2026</div>
                         </div>
                         <div class="estrelas">★★★★★</div>
                     </div>
-                    <p class="review-texto">Simplesmente a melhor picanha que já comprei. Marmoreio perfeito e
-                        chegou
-                        bem embalada. O churrasco ficou sensacional!</p>
+                    <p class="review-texto">Muito bom! Veio bem fresquinho, limpo e com um corte ótimo. Fiz grelhado e
+                        ficou super macio.</p>
                 </div>
                 <div class="review-card">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="review-autor">Ana P.</div>
+                            <div class="review-autor">Daniel A.</div>
                             <div class="review-data">10 de março de 2026</div>
                         </div>
                         <div class="estrelas">★★★★☆</div>
                     </div>
-                    <p class="review-texto">Carne de altíssima qualidade. Entrega rápida e bem conservada. Recomendo
-                        muito!</p>
+                    <p class="review-texto">Gostei bastante da qualidade. O peito de frango veio sem excesso de gordura
+                        e perfeito pro dia a dia.</p>
                 </div>
                 <div class="review-card">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="review-autor">Roberto S.</div>
+                            <div class="review-autor">Carolina W.</div>
                             <div class="review-data">2 de março de 2026</div>
                         </div>
                         <div class="estrelas">★★★★★</div>
                     </div>
-                    <p class="review-texto">Já é a terceira vez que compro. Consistência incrível. A capa de gordura
-                        é
-                        generosa e deixa a carne muito suculenta.</p>
+                    <p class="review-texto">Excelente produto! Carne clara, fresca e muito versátil. Usei em várias
+                        receitas e o sabor ficou ótimo</p>
                 </div>
             </div>
 
@@ -319,6 +309,41 @@
             document.querySelectorAll('.thumbs img').forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
         }
+
+        // ZOOM
+        const container = document.getElementById('zoom-container');
+        const img = document.getElementById('imgPrincipal');
+        const lens = document.getElementById('zoom-lens');
+        const result = document.getElementById('zoom-result');
+
+        container.addEventListener('mouseenter', () => {
+            lens.style.display = 'block';
+            result.style.display = 'block';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            lens.style.display = 'none';
+            result.style.display = 'none';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = img.getBoundingClientRect();
+            const ratio = result.offsetWidth / lens.offsetWidth;
+
+            let x = e.clientX - rect.left - lens.offsetWidth / 2;
+            let y = e.clientY - rect.top - lens.offsetHeight / 2;
+
+            x = Math.max(0, Math.min(x, img.offsetWidth - lens.offsetWidth));
+            y = Math.max(0, Math.min(y, img.offsetHeight - lens.offsetHeight));
+
+            lens.style.left = x + 'px';
+            lens.style.top = y + 'px';
+
+            result.style.backgroundImage = `url('${img.src}')`;
+            result.style.backgroundSize = `${img.offsetWidth * ratio}px ${img.offsetHeight * ratio}px`;
+            result.style.backgroundPosition = `-${x * ratio}px -${y * ratio}px`;
+        });
+
     </script>
 </body>
 

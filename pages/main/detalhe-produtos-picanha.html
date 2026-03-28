@@ -25,62 +25,81 @@
     <script src="/pages/main/header.js"></script>
 
     <!-- BREADCRUMB -->
-    <div class="breadcrumb-wrap">
-      <nav>
-        <ol class="breadcrumb mb-0">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item"><a href="#">Cortes Nobres</a></li>
-          <li class="breadcrumb-item active">Picanha Angus Premium</li>
-        </ol>
-      </nav>
-    </div>
+    <!-- <div class="breadcrumb-wrap">
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Cortes Nobres</a></li>
+                <li class="breadcrumb-item active">Picanha Angus Premium</li>
+            </ol>
+        </nav>
+    </div> -->
 
     <!-- PRODUTO -->
     <div class="produto-wrap">
-      <div class="row">
-        <!-- Galeria -->
-        <div class="col-md-5">
-          <div class="galeria-main">
-            <span class="badge-estoque">Em Estoque</span>
-            <img
-              id="imgPrincipal"
-              src="https://placehold.co/600x480/2a1a0e/d4a017?text=Picanha+Angus"
-              alt="Picanha Angus Premium"
-            />
-          </div>
-          <div class="thumbs">
-            <img
-              src="https://placehold.co/80x70/2a1a0e/d4a017?text=1"
-              alt="thumb1"
-              class="active"
-              onclick="
-                trocarImg(
-                  this,
-                  'https://placehold.co/600x480/2a1a0e/d4a017?text=Picanha+Angus',
-                )
-              "
-            />
-            <img
-              src="https://placehold.co/80x70/3d1a0e/fff?text=2"
-              alt="thumb2"
-              onclick="
-                trocarImg(
-                  this,
-                  'https://placehold.co/600x480/3d1a0e/fff?text=Vista+2',
-                )
-              "
-            />
-            <img
-              src="https://placehold.co/80x70/1a2a0e/d4a017?text=3"
-              alt="thumb3"
-              onclick="
-                trocarImg(
-                  this,
-                  'https://placehold.co/600x480/1a2a0e/d4a017?text=Vista+3',
-                )
-              "
-            />
-          </div>
+        <div class="row">
+
+            <!-- Galeria -->
+            <div class="col-md-5">
+                <div class="galeria-main" id="zoom-container">
+                    <span class="badge-estoque">Em Estoque</span>
+                    <img id="imgPrincipal" src="/imgs/picanha.png" alt="Picanha Angus Premium" />
+                    <div id="zoom-lens"></div>
+                    <div id="zoom-result"></div>
+                </div>
+                <div class="thumbs">
+                    <img src="/imgs/picanha.png" alt="thumb1" class="active"
+                        onclick="trocarImg(this,'/imgs/picanha.png')">
+                    <img src="/imgs/picanha2.webp" alt="thumb2" 
+                        onclick="trocarImg(this,'/imgs/picanha2.webp')">
+                    <img src="/imgs/picanha3.webp" alt="thumb3" 
+                        onclick="trocarImg(this,'/imgs/picanha3.webp')">
+                </div>
+            </div>
+
+            <!-- Informações -->
+            <div class="col-md-7">
+                <div class="produto-info">
+
+                    <h1 class="produto-titulo">Picanha Angus<br>Premium</h1>
+
+                    <div class="estrelas mb-2">
+                        ★★★★★ <span>(3 Avaliações de Clientes)</span>
+                    </div>
+
+                    <div class="preco-wrap">
+                        <div class="preco-antigo">R$129,99</div>
+                        <div class="preco-atual">R$89,99</div>
+                        <div class="preco-parcelado">em até 5x de R$17,99 sem juros</div>
+                    </div>
+
+                    <div class="desc-curta">
+                        Picanha selecionada de gado Angus, com marmoreio intenso e sabor inigualável.
+                        Perfeita para churrasco ou preparo na frigideira com manteiga e alecrim.
+                    </div>
+
+                    <div class="disponivel">O produto está disponível.</div>
+
+                    <div class="qty-wrap">
+                        <div class="qty-input">
+                            <button onclick="altQty(-1)">−</button>
+                            <input type="number" id="qty" value="1" min="1" />
+                            <button onclick="altQty(1)">+</button>
+                        </div>
+                        <button class="btn-carrinho">
+                            <i class="bi bi-cart3"></i>
+                            ADICIONAR AO CARRINHO
+                        </button>
+                    </div>
+
+                    <div class="meta-produto">
+                        Categoria: <span>Cortes Nobres</span><br>
+                        Tags: <span>picanha, angus, churrasco, premium</span><br>
+                        Marca: <span>Corte Imperial</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Informações -->
@@ -328,13 +347,46 @@
         if (val >= 1) input.value = val;
       }
 
-      function trocarImg(thumb, src) {
-        document.getElementById("imgPrincipal").src = src;
-        document
-          .querySelectorAll(".thumbs img")
-          .forEach((t) => t.classList.remove("active"));
-        thumb.classList.add("active");
-      }
+        function trocarImg(thumb, src) {
+            document.getElementById('imgPrincipal').src = src;
+            document.querySelectorAll('.thumbs img').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+
+        // ZOOM
+        const container = document.getElementById('zoom-container');
+        const img = document.getElementById('imgPrincipal');
+        const lens = document.getElementById('zoom-lens');
+        const result = document.getElementById('zoom-result');
+
+        container.addEventListener('mouseenter', () => {
+            lens.style.display = 'block';
+            result.style.display = 'block';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            lens.style.display = 'none';
+            result.style.display = 'none';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = img.getBoundingClientRect();
+            const ratio = result.offsetWidth / lens.offsetWidth;
+
+            let x = e.clientX - rect.left - lens.offsetWidth / 2;
+            let y = e.clientY - rect.top - lens.offsetHeight / 2;
+
+            x = Math.max(0, Math.min(x, img.offsetWidth - lens.offsetWidth));
+            y = Math.max(0, Math.min(y, img.offsetHeight - lens.offsetHeight));
+
+            lens.style.left = x + 'px';
+            lens.style.top = y + 'px';
+
+            result.style.backgroundImage = `url('${img.src}')`;
+            result.style.backgroundSize = `${img.offsetWidth * ratio}px ${img.offsetHeight * ratio}px`;
+            result.style.backgroundPosition = `-${x * ratio}px -${y * ratio}px`;
+        });
+
     </script>
   </body>
 </html>

@@ -66,3 +66,31 @@ export function validarCNPJ(cnpj) {
 
     return true; // cnpj matematicamente validado
 }
+
+export async function validarCEP(cep) {
+    let cepl = cep.replace(/\D/g, ''); 
+    regex = /^[0-9]{8}$/;
+
+    if (!regex.test(cepl))
+        return false;
+
+    try { 
+        const res = await fetch(`viacep.com.br{cepl}/json/`); // chamada assincrona para api
+        const dados = await res.json(); // transforma em json
+
+        if (dados.erro === true)  // retorna erro true se não existir
+            return false;
+        
+        return { // se o cep for real, 
+            logradouro: dados.logradouro,
+            cidade: dados.localidade,
+            bairro: dados.bairro,
+            estado: dados.uf
+        }
+        
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+    return cep.test(regex);
+}

@@ -101,6 +101,13 @@
      cursor: not-allowed;
  }
 
+ .step-vertical {
+    display: none;
+}
+
+.step-vertical.active {
+    display: flex;
+}
     </style>
 </head>
 <body>
@@ -320,8 +327,15 @@
 </div>
 
 <div class="controls">
-    <button class="btn" onclick="previousStep()">Previous</button>
-    <button class="btn" onclick="nextStep()">Next</button>
+    <button class="btn" onclick="previousStep()">Voltar</button>
+    <button class="btn" onclick="nextStep()" id="btnNext">Próximo</button>
+</div>
+<div id="mensagemSucesso"
+     class="alert alert-success mt-4 text-center"
+     style="display: none;">
+
+    Pedido realizado com sucesso!
+
 </div>
 <script>
     let currentStep = 1;
@@ -337,13 +351,37 @@ function updateSteps(stepElements, step) {
             element.className = element.className.replace(/ active| complete|\b$/, '');
         }
     });
+    let btnNext =
+    document.getElementById("btnNext");
+
+if (step === maxSteps) {
+    btnNext.innerText =
+        "Finalizar Pedido";
+
+} else {
+    btnNext.innerText =
+        "Próximo";
+}
 }
 
 function nextStep() {
+
     if (currentStep < maxSteps) {
         currentStep++;
-        updateSteps(document.querySelectorAll('.step-vertical'), currentStep);
+        updateSteps(
+            document.querySelectorAll('.step-vertical'),
+            currentStep
+        );
+    } else {
+        mostrarSucesso();
     }
+}
+
+function mostrarSucesso() {
+
+    document.getElementById("mensagemSucesso")
+    .style.display = "block";
+
 }
 
 function previousStep() {

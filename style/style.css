@@ -148,7 +148,7 @@
 }
 
 body {
-  background-color: #f2f2f2;
+  background-color: #F5F1EA;
   margin: 0;
 }
 
@@ -383,7 +383,7 @@ body {
 footer {
   width: 100%;
   padding: 60px 50px;
-  background: #3b0000;
+  background: #0f0f0f;
   color: white;
   margin-top: 60px;
 }

@@ -1,30 +1,153 @@
 <header class="topo mb-5">
+  <style>
+
+/* HEADER */
+
+.navbar-custom {
+    background: #000;
+    padding: 2px 0;
+    min-height: 20px;
+    border-bottom: 1px solid #222;
+}
+
+.navbar-brand img {
+    width: 180px;
+}
+
+/* BUSCA */
+
+.search-box {
+    width: 100%;
+    max-width: 350px;
+    margin-left: 25px;
+
+}
+
+.search-box input {
+
+    width: 100%;
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+
+}
+
+/* MENU */
+
+.nav-links {
+
+    gap: 10px;
+    margin-left: 35px;
+
+}
+
+.nav-link {
+
+    color: white !important;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+    padding: 4px 8px !important;
+
+}
+
+.nav-link:hover {
+
+    color: #d4a017 !important;
+
+}
+
+/* ÍCONES */
+
+.header-icons {
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: 20px;
+
+}
+
+.header-icons a {
+
+    color: white;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.header-icons a:hover {
+    color: #d4a017;
+}
+
+/* MOBILE */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+</style>
+  </style>
   <div class="topo-linha">
     <a href="/index.html">
-      <img src="/imgs/logo.png" class="logo" />
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<nav class="navbar navbar-expand-lg navbar-custom">
+
+<div class="container-fluid px-5">
+
+    <!-- LOGO -->
+    <a class="navbar-brand" href="#">
+        <img src="/imgs/logocompleta.png" alt="Corte Imperial">
     </a>
-    <div class="localizacao">📍 Onde encontrar</div>
 
-    <div class="barra-busca">
-      <input type="text" placeholder="O que você procura?" />
-      🔍
+    <!-- BOTÃO MOBILE -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menu">
+
+        <!-- BUSCA -->
+        <form class="search-box mx-auto">
+            <input type="search" placeholder="Buscar produtos...">
+        </form>
+
+        <!-- MENU -->
+        <ul class="navbar-nav nav-links">
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">Início</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Carnes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Kits Churrasco</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Promoções</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contato</a>
+            </li>
+        </ul>
+
+        <!-- ÍCONES -->
+        <div class="header-icons">
+            <a href="#">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
+            <a href="#">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div>
     </div>
-
-    <div class="acoes">
-      <span>Fale com nossos especialistas</span>
-      <a href="/pages/forms/login.html">👤</a>
-      <a href="/pages/forms/carrinho.html">🛒</a>
-    </div>
-  </div>
-
-  <div class="categorias">
-    <div class="menu-icon">☰</div>
-
-    <div class="top-cat">🔥 Mais Vendidos</div>
-    <div class="top-cat">🥩 Churrasco</div>
-    <div class="top-cat">🍗 Dia a Dia</div>
-    <div class="top-cat">🍔 Especiais & Prontos</div>
-    <div class="top-cat">🎁 Defumados & Frios</div>
-    <div class="top-cat">📰 Blog</div>
-  </div>
+</div>
+</nav>
 </header>

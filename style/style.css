@@ -10,33 +10,6 @@
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .categorias {
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-
-  .beneficios {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
-/* TOPO */
-.topo {
-  display: flex;
-  flex-direction: column;
-  background: #000;
-  color: #fff;
-  position: relative;
-}
-
-.topo-linha {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--esp-m) var(--esp-xl);
-  gap: var(--esp-g);
 }
 
 .logo {
@@ -84,20 +57,6 @@
 
 .acoes a:hover {
   color: #d4a373;
-}
-
-/* CATEGORIAS */
-.categorias {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: var(--esp-xl);
-  padding: var(--esp-m);
-  border-top: 1px solid #222;
-  background: #000;
 }
 
 .menu-icon {
@@ -193,34 +152,10 @@ body {
   margin: 0;
 }
 
-.cabecalho {
-  display: flex;
-  align-items: center;
-  background: black;
-  width: 100%;
-  padding: 0 40px;
-  position: relative;
-}
-
-.bloco-cab {
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
-  max-width: 700px;
-  width: 100%;
-}
 
 .bloco-cab img {
   width: 100px;
   margin-right: 50px;
-}
-
-.conta-carrinho {
-  position: absolute;
-  right: 40px;
-  display: flex;
-  align-items: center;
-  font-size: 20px;
 }
 
 .conta-carrinho a {
@@ -250,13 +185,6 @@ body {
   position: absolute;
   left: 10px;
   width: 20px;
-}
-
-.menu-nav ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 35px;
 }
 
 .menu-nav li {

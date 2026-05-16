@@ -310,7 +310,7 @@ body {
     font-size: 15px;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: var(--cinza);
+    color: var(--escuro) !important;
     border: none;
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;

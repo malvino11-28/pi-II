@@ -66,9 +66,10 @@ export async function validarCEP(cep) {
   if (!regex.test(cepl)) return false;
 
   try {
-    const res = await fetch(`viacep.com.br{cepl}/json/`); // chamada assincrona para api
+    const res = await fetch(`https://viacep.com.br/ws/${cepl}/json/`); // chamada assincrona para api
     const dados = await res.json(); // transforma em json
 
+    if (!res.ok) return false; // verifica se a req falhou
     if (dados.erro === true)
       // retorna erro true se não existir
       return false;

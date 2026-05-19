@@ -91,7 +91,7 @@ export function validarData(data) {
   regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 
   const format = data.match(regex);
-  if (!match) return false;
+  if (!format) return false;
 
   const dia = parseInt(format[1], 10); // os parenteses do regex guardam os dados em array, posicao 0 é o texto inteiro
   const mes = parseInt(format[2], 10) - 1; // o 10 e garantia que a data n vai ser lida como octal

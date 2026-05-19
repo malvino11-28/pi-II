@@ -66,9 +66,10 @@ export async function validarCEP(cep) {
   if (!regex.test(cepl)) return false;
 
   try {
-    const res = await fetch(`viacep.com.br{cepl}/json/`); // chamada assincrona para api
+    const res = await fetch(`https://viacep.com.br/ws/${cepl}/json/`); // chamada assincrona para api
     const dados = await res.json(); // transforma em json
 
+    if (!res.ok) return false; // verifica se a req falhou
     if (dados.erro === true)
       // retorna erro true se não existir
       return false;
@@ -91,7 +92,7 @@ export function validarData(data) {
   regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 
   const format = data.match(regex);
-  if (!match) return false;
+  if (!format) return false;
 
   const dia = parseInt(format[1], 10); // os parenteses do regex guardam os dados em array, posicao 0 é o texto inteiro
   const mes = parseInt(format[2], 10) - 1; // o 10 e garantia que a data n vai ser lida como octal

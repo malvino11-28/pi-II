@@ -1,0 +1,230 @@
+/* Page Title */
+.page-title-section {
+    background-color: #fdf6ec;
+    padding: 30px 0;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #440a0a;
+    margin: 0;
+}
+
+.breadcrumb-custom {
+    background-color: transparent;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.breadcrumb-custom a {
+    color: #666;
+    text-decoration: none;
+}
+
+.breadcrumb-custom a:hover {
+    color: rgb(238, 123, 48);
+}
+
+/* Carrinho Card */
+.cart-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.cart-header {
+    border-bottom: 2px solid #f8f9fa;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.cart-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #440a0a;
+    margin: 0;
+}
+
+.cart-item {
+    border-bottom: 1px solid #f8f9fa;
+    padding: 20px 0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.product-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-info h5 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.product-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.product-price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #440a0a;
+}
+
+/* Quantity Controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #440a0a;
+}
+
+.qty-btn:hover {
+    background-color: rgb(238, 123, 48);
+    color: white;
+    border-color: rgb(238, 123, 48);
+}
+
+.qty-input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.btn-remove {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-remove:hover {
+    background-color: #c0392b;
+}
+
+/* Summary Card */
+.summary-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+    position: sticky;
+    top: 20px;
+}
+
+.summary-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #440a0a;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.summary-row.total {
+    font-size: 22px;
+    font-weight: bold;
+    color: #440a0a;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+}
+
+.btn-checkout {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-checkout:hover {
+    background-color: #229954;
+}
+
+.btn-continue {
+    background-color: #440a0a;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.btn-continue:hover {
+    background-color: rgb(238, 123, 48);
+    color: white;
+}
+
+/* Coupon Section */
+.coupon-section {
+    background-color: white;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.coupon-input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 70%;
+}
+
+.btn-apply {
+    background-color: rgb(238, 123, 48);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 28%;
+}
+
+.btn-apply:hover {
+    background-color: #440a0a;
+}

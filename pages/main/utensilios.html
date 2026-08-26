@@ -1,25 +1,20 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Entrar</title>
-    <link rel="shortcut icon" href="../../imgs/logo.png" type="image/x-icon" />
-    <link rel="stylesheet" href="../../style/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-    <link rel="stylesheet" href="../../style/header.css" />
-    <link rel="stylesheet" href="../../style/footer.css" />
-  </head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utensílios - Corte Imperial</title>
 
-  <body>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="../../style/header.css">
+    <link rel="stylesheet" href="../../style/footer.css">
+    <link rel="stylesheet" href="../../style/index.css">
+
+</head>
+<body>
+
     <header class="main-header">
         <div class="container">
             <div class="row align-items-center">
@@ -58,67 +53,139 @@
         </div>
     </header>
 
-    <main class="container d-flex my-5 mx-auto justify-content-center">
-      <div class="w-100" style="max-width: 430px">
-        <h2 class="text-center fw-bold mb-5 text-dark mt-5 fs-3">
-          BEM-VINDO DE VOLTA!
-        </h2>
-
-        <div
-          class="input-group mb-4 rounded-pill border border-dark overflow-hidden"
-        >
-          <span class="input-group-text bg-transparent border-0 ps-3 pe-2 py-2">
-            <i class="bi bi-person-fill fs-5"></i>
-          </span>
-          <input
-            type="text"
-            class="form-control border-0 shadow-none fs-6 py-2"
-            placeholder="E-mail ou nome de usuário"
-          />
-        </div>
-
-        <div
-          class="input-group mb-5 rounded-pill border border-dark overflow-hidden"
-        >
-          <span class="input-group-text bg-transparent border-0 ps-3 pe-2 py-2">
-            <i class="bi bi-lock-fill fs-5"></i>
-          </span>
-          <input
-            type="password"
-            class="form-control border-0 shadow-none fs-6 py-2"
-            placeholder="Senha"
-          />
-        </div>
-
-        <div class="text-center lh-sm mb-5">
-          <p class="fs-6 fw-bold mb-1 text-dark">
-            Caso não tenha conta,
-            <a class="text-danger" href="../../pages/forms/form_colorlib.html">
-              cadastre-se aqui.
-            </a>
-          </p>
-        </div>
-
-        <div class="text-center lh-sm mb-5">
-          <p class="fs-6 fw-bold mb-1 text-danger">Esqueceu sua senha?</p>
-          <p class="fs-6 text-dark fw-medium mb-0">
-            Clique
-            <a href="#" class="text-dark fw-bold text-decoration-none">aqui.</a>
-          </p>
-        </div>
-
-        <div class="d-flex justify-content-center">
-          <a href="" class="text-decoration-none">
-            <button
-              class="btn fw-bold text-white rounded-pill px-4 py-2 fs-6 mb-5"
-              style="background-color: #900505"
-            >
-              ENTRAR
+    <nav class="navbar navbar-expand-lg main-nav">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
-          </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../../index.html">
+                            <i class="bi bi-house-door-fill"></i> Início
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-grid-fill"></i> Carnes
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Carnes Bovinas</a></li>
+                            <li><a class="dropdown-item" href="#">Carnes Suínas</a></li>
+                            <li><a class="dropdown-item" href="#">Aves</a></li>
+                            <li><a class="dropdown-item" href="#">Peixes</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../../pages/main/produtos.html">Todos os Produtos</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../pages/main/churrasqueira.html">
+                            <i class="bi bi-fire"></i> Churrasqueira
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../pages/main/utensilios.html">
+                            <i class="bi bi-tools"></i> Utensílios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../pages/main/ofertas.html">
+                            <i class="bi bi-star-fill"></i> Ofertas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../pages/main/entrega.html">
+                            <i class="bi bi-truck"></i> Entrega
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../pages/main/contato.html">
+                            <i class="bi bi-telephone-fill"></i> Contato
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-    </main>
+    </nav>
+
+    <section class="products-page">
+        <div class="container">
+
+            <h1 class="section-title" style="margin-top: 30px;">
+                UTENSÍLIOS PARA CHURRASCO
+            </h1>
+
+            <p class="section-subtitle">
+                Acessórios e utensílios premium para deixar seu churrasco completo
+            </p>
+
+            <div class="row gy-4">
+
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="product-card">
+
+                        <span class="product-badge">DESTAQUE</span>
+
+                        <div class="image-container">
+                            <img src="https://d9a2b0af1mfg9.cloudfront.net/Custom/Content/Products/19/92/19920_57985-jogo-6-tacas-para-vinho-tinto-ardea-em-cristal-ecologico-540ml-23-5-cm-transparente-pr-12196-999771_m1_638072122584043240.webp"
+                            alt="Taças"
+                            class="product-image">
+                        </div>
+
+                        <div class="product-name">
+                            Jogo de Taças Vinho 6 Peças
+                        </div>
+
+                        <div class="product-price">
+                            R$ 89,90
+                        </div>
+
+                        <div class="product-installment">
+                            ou 3x de R$ 29,97
+                        </div>
+
+                        <button class="product-btn">
+                            <i class="bi bi-cart-plus"></i> Ver Mais
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="product-card">
+
+                        <span class="product-badge" style="background-color: #440a0a;">
+                            NOVO
+                        </span>
+
+                        <div class="image-container">
+                            <img src="https://http2.mlstatic.com/D_NQ_NP_904272-MLB95967654327_102025-O-acendedor-eletrico-de-churrasqueira-carvo-promoco-110v.webp"
+                            alt="Acendedor"
+                            class="product-image">
+                        </div>
+
+                        <div class="product-name">
+                            Acendedor Elétrico Pro
+                        </div>
+
+                        <div class="product-price">
+                            R$ 119,90
+                        </div>
+
+                        <div class="product-installment">
+                            ou 4x de R$ 29,98
+                        </div>
+
+                        <button class="product-btn">
+                            <i class="bi bi-cart-plus"></i> Ver Mais
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <footer class="main-footer">
         <div class="container">
@@ -216,5 +283,8 @@
             </div>
         </div>
     </footer>
-  </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

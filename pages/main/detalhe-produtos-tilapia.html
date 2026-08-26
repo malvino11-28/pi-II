@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Corte Imperial - Picanha Angus Premium</title>
+    <title>Corte Imperial - Filé de Tilápia</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="../../style/header.css">
     <link rel="stylesheet" href="../../style/footer.css">
@@ -108,68 +108,85 @@
     </nav>
 
     <div class="produto-wrap">
-        <div class="row">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="galeria-main" id="zoom-container">
+            <span class="badge-estoque">Em Estoque</span>
+            <img
+              id="imgPrincipal"
+              src="../../imgs/tilapia.png"
+              alt="Filé de Tilápia"
+            />
+            <div id="zoom-lens"></div>
+            <div id="zoom-result"></div>
+          </div>
+          <div class="thumbs">
+            <img
+              src="../../imgs/tilapia.png"
+              alt="thumb1"
+              class="active"
+              onclick="trocarImg(this, '../../imgs/tilapia.png')"
+            />
+            <img
+              src="../../imgs/tilapia2.webp"
+              alt="thumb2"
+              onclick="trocarImg(this, '../../imgs/tilapia2.webp')"
+            />
+            <img
+              src="../../imgs/tilapia3.webp"
+              alt="thumb3"
+              onclick="trocarImg(this, '../../imgs/tilapia3.webp')"
+            />
+          </div>
+        </div>
 
-            <div class="col-md-5">
-                <div class="galeria-main" id="zoom-container">
-                    <span class="badge-estoque">Em Estoque</span>
-                    <img id="imgPrincipal" src="../../imgs/picanha.png" alt="Picanha Angus Premium" />
-                    <div id="zoom-lens"></div>
-                    <div id="zoom-result"></div>
-                </div>
-                <div class="thumbs">
-                    <img src="../../imgs/picanha.png" alt="thumb1" class="active"
-                        onclick="trocarImg(this,'../../imgs/picanha.png')">
-                    <img src="../../imgs/picanha2.webp" alt="thumb2" 
-                        onclick="trocarImg(this,'../../imgs/picanha2.webp')">
-                    <img src="../../imgs/picanha3.webp" alt="thumb3" 
-                        onclick="trocarImg(this,'../../imgs/picanha3.webp')">
-                </div>
+        <div class="col-md-7">
+          <div class="produto-info">
+            <h1 class="produto-titulo">
+              Filé de <br />
+              Tilápia
+            </h1>
+
+            <div class="estrelas mb-2">
+              ★★★★★ <span>(3 Avaliações de Clientes)</span>
             </div>
 
-            <div class="col-md-7">
-                <div class="produto-info">
-
-                    <h1 class="produto-titulo">Picanha Angus<br>Premium</h1>
-
-                    <div class="estrelas mb-2">
-                        ★★★★★ <span>(3 Avaliações de Clientes)</span>
-                    </div>
-
-                    <div class="preco-wrap">
-                        <div class="preco-antigo">R$129,99</div>
-                        <div class="preco-atual">R$89,99</div>
-                        <div class="preco-parcelado">em até 5x de R$17,99 sem juros</div>
-                    </div>
-
-                    <div class="desc-curta">
-                        Picanha selecionada de gado Angus, com marmoreio intenso e sabor inigualável.
-                        Perfeita para churrasco ou preparo na frigideira com manteiga e alecrim.
-                    </div>
-
-                    <div class="disponivel">O produto está disponível.</div>
-
-                    <div class="qty-wrap">
-                        <div class="qty-input">
-                            <button onclick="altQty(-1)">−</button>
-                            <input type="number" id="qty" value="1" min="1" />
-                            <button onclick="altQty(1)">+</button>
-                        </div>
-                        <a href="../../pages/forms/carrinhoFinal.html">
-                            <button class="btn-carrinho">
-                                <i class="bi bi-cart3"></i>
-                                ADICIONAR AO CARRINHO
-                            </button>
-                        </a>
-                    </div>
-
-                    <div class="meta-produto">
-                        Categoria: <span>Cortes Nobres</span><br>
-                        Tags: <span>picanha, angus, churrasco, premium</span><br>
-                        Marca: <span>Corte Imperial</span>
-                    </div>
-                </div>
+            <div class="preco-wrap">
+              <div class="preco-antigo">R35,99</div>
+              <div class="preco-atual">R$24,99</div>
+              <div class="preco-parcelado">em até 2x de R$12,50 sem juros</div>
             </div>
+
+            <div class="desc-curta">
+              Certificada com o selo ASC de cultura sustentável, o Filé de
+              Tilápia possui um sabor leve que agrada a todos os paladares e
+              acompanha bem qualquer preparação. Sua carne branca e magra fica
+              ótima grelhada, frita ou no forno. Sua refeição ficará saborosa e
+              muito saudável
+            </div>
+
+            <div class="disponivel">O produto está disponível.</div>
+
+            <div class="qty-wrap">
+              <div class="qty-input">
+                <button onclick="altQty(-1)">−</button>
+                <input type="number" id="qty" value="1" min="1" />
+                <button onclick="altQty(1)">+</button>
+              </div>
+              <a href="../../pages/forms/carrinhoFinal.html">
+                <button class="btn-carrinho">
+                <i class="bi bi-cart3"></i>
+                ADICIONAR AO CARRINHO
+              </button>
+              </a>
+            </div>
+
+            <div class="meta-produto">
+              Categoria: <span>Seleção especial</span><br />
+              Tags: <span>Filé de tilápia, carne branca</span><br />
+              Marca: <span>Corte Imperial</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -208,11 +225,8 @@
       <div class="tab-content">
         <div class="tab-pane fade show active aba-descricao" id="descricao">
           <p>
-            Nossa Picanha Angus Premium é selecionada a dedo de bovinos Angus
-            criados a pasto, garantindo uma carne com marmoreio excepcional,
-            maciez superior e sabor marcante. O corte generoso preserva a capa
-            de gordura característica, responsável por dar aquele suculento
-            sabor defumado no churrasco.
+            Congelado individualmente em embalagem abre fácil, é muito prático
+            para preparar.
           </p>
 
           <h6>Peso Líquido</h6>
@@ -220,10 +234,10 @@
 
           <h6>Modo de Preparo Recomendado</h6>
           <p>
-            Tempere apenas com sal grosso e leve à brasa em fogo alto por 6 a 8
-            minutos de cada lado para ponto mal passado. Para frigideira, sele
-            em manteiga com alho e alecrim. Deixe descansar 5 minutos antes de
-            cortar.
+            Só necessita de descongelamento nas receitas que forem utilizar
+            fritura. Uma vez descongelado, não voltar a congelar. Para virar o
+            filé, primeiro espere que ele fique bem dourado de um lado e utilize
+            uma espátula para dar mais firmeza.
           </p>
 
           <h6>Armazenamento</h6>
@@ -234,8 +248,8 @@
 
           <h6>Alérgicos</h6>
           <p>
-            CONTÉM: PROTEÍNA BOVINA. Produto processado em ambiente que manipula
-            outros proteínas animais.
+            CONTÉM: PROTEÍNA DE PESCADO. Produto processado em ambiente que
+            manipula outros proteínas animais.
           </p>
         </div>
 
@@ -243,41 +257,37 @@
           <div class="review-card">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <div class="review-autor">Carlos M.</div>
+                <div class="review-autor">Aelin G.</div>
                 <div class="review-data">15 de março de 2026</div>
               </div>
               <div class="estrelas">★★★★★</div>
             </div>
             <p class="review-texto">
-              Simplesmente a melhor picanha que já comprei. Marmoreio perfeito e
-              chegou bem embalada. O churrasco ficou sensacional!
+              Os filés vieram bem frescos, com ótimo aspecto e sem cheiro forte.
             </p>
           </div>
           <div class="review-card">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <div class="review-autor">Ana P.</div>
+                <div class="review-autor">Thiago I.</div>
                 <div class="review-data">10 de março de 2026</div>
               </div>
               <div class="estrelas">★★★★☆</div>
             </div>
             <p class="review-texto">
-              Carne de altíssima qualidade. Entrega rápida e bem conservada.
-              Recomendo muito!
+              Excelente qualidade. O filé de tilápia veio bem cortado e super
+              prático para o preparo do dia a dia.
             </p>
           </div>
           <div class="review-card">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <div class="review-autor">Roberto S.</div>
+                <div class="review-autor">Manon W.</div>
                 <div class="review-data">2 de março de 2026</div>
               </div>
               <div class="estrelas">★★★★★</div>
             </div>
-            <p class="review-texto">
-              Já é a terceira vez que compro. Consistência incrível. A capa de
-              gordura é generosa e deixa a carne muito suculenta.
-            </p>
+            <p class="review-texto">Produto leve fresco. Ficou perfeito!</p>
           </div>
         </div>
 
@@ -456,46 +466,47 @@
         if (val >= 1) input.value = val;
       }
 
-        function trocarImg(thumb, src) {
-            document.getElementById('imgPrincipal').src = src;
-            document.querySelectorAll('.thumbs img').forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-        }
+      function trocarImg(thumb, src) {
+        document.getElementById("imgPrincipal").src = src;
+        document
+          .querySelectorAll(".thumbs img")
+          .forEach((t) => t.classList.remove("active"));
+        thumb.classList.add("active");
+      }
 
-        // ZOOM
-        const container = document.getElementById('zoom-container');
-        const img = document.getElementById('imgPrincipal');
-        const lens = document.getElementById('zoom-lens');
-        const result = document.getElementById('zoom-result');
+      // ZOOM
+      const container = document.getElementById("zoom-container");
+      const img = document.getElementById("imgPrincipal");
+      const lens = document.getElementById("zoom-lens");
+      const result = document.getElementById("zoom-result");
 
-        container.addEventListener('mouseenter', () => {
-            lens.style.display = 'block';
-            result.style.display = 'block';
-        });
+      container.addEventListener("mouseenter", () => {
+        lens.style.display = "block";
+        result.style.display = "block";
+      });
 
-        container.addEventListener('mouseleave', () => {
-            lens.style.display = 'none';
-            result.style.display = 'none';
-        });
+      container.addEventListener("mouseleave", () => {
+        lens.style.display = "none";
+        result.style.display = "none";
+      });
 
-        container.addEventListener('mousemove', (e) => {
-            const rect = img.getBoundingClientRect();
-            const ratio = result.offsetWidth / lens.offsetWidth;
+      container.addEventListener("mousemove", (e) => {
+        const rect = img.getBoundingClientRect();
+        const ratio = result.offsetWidth / lens.offsetWidth;
 
-            let x = e.clientX - rect.left - lens.offsetWidth / 2;
-            let y = e.clientY - rect.top - lens.offsetHeight / 2;
+        let x = e.clientX - rect.left - lens.offsetWidth / 2;
+        let y = e.clientY - rect.top - lens.offsetHeight / 2;
 
-            x = Math.max(0, Math.min(x, img.offsetWidth - lens.offsetWidth));
-            y = Math.max(0, Math.min(y, img.offsetHeight - lens.offsetHeight));
+        x = Math.max(0, Math.min(x, img.offsetWidth - lens.offsetWidth));
+        y = Math.max(0, Math.min(y, img.offsetHeight - lens.offsetHeight));
 
-            lens.style.left = x + 'px';
-            lens.style.top = y + 'px';
+        lens.style.left = x + "px";
+        lens.style.top = y + "px";
 
-            result.style.backgroundImage = `url('${img.src}')`;
-            result.style.backgroundSize = `${img.offsetWidth * ratio}px ${img.offsetHeight * ratio}px`;
-            result.style.backgroundPosition = `-${x * ratio}px -${y * ratio}px`;
-        });
-
+        result.style.backgroundImage = `url('${img.src}')`;
+        result.style.backgroundSize = `${img.offsetWidth * ratio}px ${img.offsetHeight * ratio}px`;
+        result.style.backgroundPosition = `-${x * ratio}px -${y * ratio}px`;
+      });
     </script>
   </body>
 </html>

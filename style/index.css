@@ -1,0 +1,253 @@
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body{
+    background-color: #fdf6ec;
+}
+/* Banner Carousel */
+.carousel-item {
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background-color: rgba(68, 10, 10, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    bottom: 50px;
+}
+
+.carousel-caption h3 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fdf6ec;
+    margin-bottom: 15px;
+}
+
+.carousel-caption p {
+    font-size: 18px;
+    color: rgb(238, 123, 48);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #440a0a;
+    border-radius: 50%;
+    padding: 20px;
+}
+
+.carousel-indicators button {
+    background-color: #440a0a;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.carousel-indicators button.active {
+    background-color: rgb(238, 123, 48);
+}
+
+/* Benefits Section */
+.benefits-section {
+    background-color: #2c2c2c;
+    padding: 15px;
+    border-top: 3px solid rgb(238, 123, 48);
+    border-bottom: 3px solid rgb(238, 123, 48);
+}
+
+.benefit-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.benefit-icon {
+    font-size: 48px;
+    color: rgb(238, 123, 48);
+    margin-bottom: 15px;
+}
+
+.benefit-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fdf6ec;
+    margin-bottom: 5px;
+}
+
+.benefit-text {
+    font-size: 13px;
+    color: #fdf6ec;
+}
+
+/* Categories Section */
+.categories-section {
+    padding: 50px 0;
+    background-color: #fdf6ec;
+    border-bottom: 3px solid rgb(238, 123, 48);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #440a0a;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.category-card {
+    position: relative;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(68,10,10,0.9));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+}
+
+.category-card:hover .category-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(238,123,48,0.95));
+}
+
+.category-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fdf6ec;
+    margin-bottom: 15px;
+}
+
+.category-btn {
+    background-color: #fdf6ec;
+    color: #440a0a;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.category-btn:hover {
+    background-color: #440a0a;
+    color: #fdf6ec;
+}
+
+/* Products Section */
+.products-section {
+    padding: 50px 0;
+    background-color: #fdf6ec;
+    border-bottom: 3px solid rgb(238, 123, 48);
+}
+
+.product-card {
+    background-color: #fdf6ec;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    height: 100%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.product-card:hover {
+    box-shadow: 0 5px 20px rgba(68,10,10,0.3);
+}
+
+.product-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-badge {
+    background-color: rgb(238, 123, 48);
+    color: #fdf6ec;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #440a0a;
+    margin-bottom: 10px;
+    min-height: 40px;
+}
+
+.product-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #440a0a;
+    margin-bottom: 5px;
+}
+
+.product-installment {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.product-btn {
+    background-color: #440a0a;
+    color: #fdf6ec;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.product-btn:hover {
+    background-color: rgb(238, 123, 48);
+    text-decoration: none;
+    color: #fdf6ec;
+}

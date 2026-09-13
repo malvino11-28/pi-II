@@ -1,7 +1,7 @@
 const express = require("express");
 
 const server = express();
-const port = 5138;
+const PORT = 5138;
 
 const routes = require("./routes/routes");
 
@@ -11,6 +11,6 @@ server.use(express.urlencoded());
 
 server.use("/", routes);
 
-server.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
+server.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${ PORT }`);
 });

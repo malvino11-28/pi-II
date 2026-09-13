@@ -1,11 +1,11 @@
 const express = require("express");
 
-const indexController = require("../controllers/controller.js");
-
 const router = express.Router();
 
-let controller = indexController;
+const indexRoute = require("./indexRoute");
+const productRoute = require("./productRoute");
 
-router.get("/", controller.index);
+router.use("/", indexRoute);
+router.use("/", productRoute);
 
 module.exports = router;

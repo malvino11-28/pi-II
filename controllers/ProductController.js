@@ -1,7 +1,12 @@
-class ProductController {
+class productController {
+
+  rotaProdutos(req, res) {
+    res.render("products/produtos");
+  }
+
   rotaChurrasqueira(req, res) {
-    res.render(churrasqueira);
+    res.render("products/churrasqueira");
   }
 }
 
-module.exports = new ProductController();
+module.exports = productController;

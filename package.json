@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "body-parser": "^2.3.0",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
+    "multer": "^2.3.0",
+    "mysql2": "^3.24.2"
+  },
+  "script": {
+    "start": "node --watch server.js"
+  }
+}

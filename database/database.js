@@ -12,10 +12,10 @@ class Database {
 
   constructor() {
     this.#conexao = mysql.createPool({
-      host: "", // a definir
-      database: "", // a definir
-      user: "", // a definir
-      password: "",
+      host: "132.226.245.178", // a definir
+      database: "PFS1_10442614130", // a definir
+      user: "10442614130", // a definir
+      password: "10442614130",
       idleTimeout: 30000,
       connectionLimit: 50,
     });

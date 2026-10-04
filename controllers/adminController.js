@@ -159,10 +159,6 @@ class adminController {
         });
     }
 
-    rotaCadastrarMarcaView(req, res) {
-        res.render("admin/cadastrar-marca");
-    }
-
     async rotaCadastrarMarca(req, res) {
         if (req.body.nome != "") {
             let marca = new MarcaModel(0, req.body.nome);

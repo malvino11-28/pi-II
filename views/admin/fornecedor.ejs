@@ -275,61 +275,67 @@
 
                     <tbody>
 
-                        <tr>
-                            <% if(fornecedores.length > 0) { %>
+                        <% if(fornecedores.length > 0) { %>
+                        
+                            
                                 <% for(let i = 0; i < fornecedores.length; i++) { %>
 
-                                <td>#<%= fornecedores[i].COD_FOR %></td>
-                                <td><%= fornecedores[i].CNPJ_FOR %></td>
-                                <td><%= fornecedores[i].RAZAO_FOR %></td>
-                                <td><%= fornecedores[i].NOME_FAN_FOR %></td>
-                                <td><%= fornecedores[i].EMAIL_FOR %></td>
-                                <td><%= fornecedores[i].TELEFONE_FOR %></td>
-                                <td>
-                                    <div class="acoes-cliente">
+                                    <tr>
+                                        <td>#<%= fornecedores[i].COD_FOR %></td>
+                                        <td><%= fornecedores[i].CNPJ_FOR %></td>
+                                        <td><%= fornecedores[i].RAZAO_FOR %></td>
+                                        <td><%= fornecedores[i].NOME_FAN_FOR %></td>
+                                        <td><%= fornecedores[i].EMAIL_FOR %></td>
+                                        <td><%= fornecedores[i].TELEFONE_FOR %></td>
+                                        <td>
+                                            <div class="acoes-cliente">
 
-                                        <button
-                                            type="button"
-                                            class="btn-acao btn-editar"
-                                            data-id="<%= fornecedores[i].COD_FOR %>"
-                                            title="Editar"
-                                        >
+                                                <button
+                                                    type="button"
+                                                    class="btn-acao btn-editar"
+                                                    data-id="<%= fornecedores[i].COD_FOR %>"
+                                                    title="Editar"
+                                                >
 
-                                            <i class="bi bi-pencil"></i>
+                                                    <i class="bi bi-pencil"></i>
 
-                                        </button>
+                                                </button>
 
 
-                                        <button
-                                            type="button"
-                                            class="btn-acao btn-excluir"
-                                            data-id="<%= fornecedores[i].COD_FOR %>"
-                                            title="Excluir"
-                                        >
+                                                <button
+                                                    type="button"
+                                                    class="btn-acao btn-excluir"
+                                                    data-id="<%= fornecedores[i].COD_FOR %>"
+                                                    title="Excluir"
+                                                >
 
-                                            <i class="bi bi-trash"></i>
+                                                    <i class="bi bi-trash"></i>
 
-                                        </button>
+                                                </button>
 
-                                    </div>
+                                            </div>
 
-                                </td>
+                                        </td>
+                                    
+                                    </tr>
 
                                 <% } %>
 
                             <% } else { %>
-                                <td colspan="7" class="sem-clientes">
+                                <tr>
 
-                                    <i class="bi bi-truck"></i>
+                                    <td colspan="7" class="sem-clientes">
 
-                                <p>
-                                    Nenhum fornecedor cadastrado.
-                                </p>
-                            
-                                </td>
+                                        <i class="bi bi-truck"></i>
+
+                                        <p>
+                                            Nenhum fornecedor cadastrado.
+                                        </p>
                                 
+                                    </td>
+
+                                </tr>
                             <% } %>
-                        </tr>
 
                     </tbody>
 

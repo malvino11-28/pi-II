@@ -46,3 +46,44 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 })
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    let btn = document.querySelectorAll(".btn-excluir");
+    
+    for(let i = 0; i < btn.length; i++) {
+        btn[i].addEventListener("click", excluirFornecedor);
+    }
+
+    function excluirFornecedor() {
+
+        let idExclusao = this.dataset.id;
+
+        if(confirm("Deseja realmente excluir esse fornecedor?")) {
+
+            let obj = {
+
+                id: idExclusao
+            };
+
+            fetch("/admin/excluir-fornecedor", {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: { 
+                    "Content-Type" : "application/json" 
+                }
+            }).then(function(resposta){
+                return resposta.json();
+
+            }).then(function(corpo) {
+                if(corpo.ok) {
+                    alert("Fornecedor excluído com sucesso!!!");
+                    window.location.reload();
+
+                } else {
+                    alert("Erro ao excluir fornecedor");
+                }
+            })
+        } 
+    }
+})

@@ -58,28 +58,7 @@ class FuncionarioModel {
         this.#CARGO_FUN = cargo;
     }
 
-    async cadastrarCliente() {
-
-        let sql = "INSERT INTO CLIENTE (NOME_CLI, CPF_CLI, RG_CLI, DATA_NASC_CLI, EMAIL_CLI, TELEFONE_CLI, SENHA_CLI) VALUES (?,?,?,?,?,?,?)";
-        let cli = new ClienteModel();
-        let values = [cli.NOME_CLI, cli.CPF_CLI, cli.RG_CLI, cli.DATA_NASC_CLI, cli.EMAIL_CLI, cli.TELEFONE_CLI, cli.SENHA_CLI];
-
-        let banco = new Database();
-        let result = await banco.ExecutaComandoNonQuery(sql, values);
-
-        return result;
-    }
-
-    async buscarCliente() {
-
-    }
-
-    async listarClientes() {
-
-        let sql = "SELECT * FROM CLIENTE ";
-    }
-
-    async excluirCliente(id) {
-
-    }
+    
 }
+
+module.exports = FuncionarioModel;

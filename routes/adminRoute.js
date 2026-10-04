@@ -5,7 +5,8 @@ const router = express.Router()
 
 let controller = new adminController;
 
-router.get("/admin", controller.rotaDashboard);
-router.get("/admin/clients", controller.rotaClients);
+router.get("/admin", controller.rotaDashboardView);
+router.get("/admin/cadastrar-clientes", controller.rotaCadastrarClientesView);
+router.post("/admin/cadastrar-clientes", controller.rotaCadastrarClientes);
 
 module.exports = router;

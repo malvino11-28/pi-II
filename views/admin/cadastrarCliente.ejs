@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gerenciamento de Clientes - Corte Imperial Admin</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    >
+
+    <link rel="stylesheet" href="../../style/admin.css">
+
+    <script src="/js/cadastrarCliente.js"></script>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="admin-header">
+
+        <div class="container">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-6">
+
+                    <div class="d-flex align-items-center">
+
+                        <a href="/admin">
+                            <img
+                                src="../../imgs/logo.png"
+                                alt="Corte Imperial"
+                                class="admin-logo me-3"
+                            >
+                        </a>
+
+                        <div>
+                            <h1 class="admin-brand">Corte Imperial</h1>
+                            <p class="admin-subtitle">Painel Administrativo</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6 text-end">
+
+                    <span class="user-info">
+
+                        <i class="bi bi-person-circle"></i>
+                        Administrador
+
+                    </span>
+
+                    <button class="btn-logout">
+
+                        <i class="bi bi-box-arrow-right"></i>
+                        Sair
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- TÍTULO -->
+    <div class="page-title-section">
+
+        <div class="container">
+
+            <h2 class="page-title">
+                Gerenciamento de Clientes
+            </h2>
+
+            <p class="page-breadcrumb">
+
+                <a href="/admin">
+                    <i class="bi bi-house-door"></i>
+                    Início
+                </a>
+
+                <i class="bi bi-chevron-right"></i>
+
+                Clientes
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- CARDS DE ESTATÍSTICAS -->
+        <div class="stats-container">
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-3">
+
+                <!-- TOTAL -->
+                <div class="col">
+
+                    <div class="stat-card">
+
+                        <i class="bi bi-people-fill stat-icon"></i>
+
+                        <p class="stat-number">
+                            <%= clientes.length %>
+                        </p>
+
+                        <p class="stat-label">
+                            Total de Clientes
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ATIVOS -->
+                <div class="col">
+
+                    <div
+                        class="stat-card"
+                        style="border-left-color: #27ae60;"
+                    >
+
+                        <i
+                            class="bi bi-person-check-fill stat-icon"
+                            style="color: #27ae60;"
+                        ></i>
+
+                        <p class="stat-number">
+
+                            <%=
+                                clientes.filter(
+                                    cliente => cliente.STATUS_PLANO === "Ativo"
+                                ).length
+                            %>
+
+                        </p>
+
+                        <p class="stat-label">
+                            Clientes Ativos
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PENDENTES -->
+                <div class="col">
+
+                    <div
+                        class="stat-card"
+                        style="border-left-color: #e0a800;"
+                    >
+
+                        <i
+                            class="bi bi-clock-fill stat-icon"
+                            style="color: #e0a800;"
+                        ></i>
+
+                        <p class="stat-number">
+
+                            <%=
+                                clientes.filter(
+                                    cliente => cliente.STATUS_PLANO === "Pendente de plano"
+                                ).length
+                            %>
+
+                        </p>
+
+                        <p class="stat-label">
+                            Pendentes de Plano
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VENCIDOS -->
+                <div class="col">
+
+                    <div
+                        class="stat-card"
+                        style="border-left-color: #e74c3c;"
+                    >
+
+                        <i
+                            class="bi bi-exclamation-circle-fill stat-icon"
+                            style="color: #e74c3c;"
+                        ></i>
+
+                        <p class="stat-number">
+
+                            <%=
+                                clientes.filter(
+                                    cliente => cliente.STATUS_PLANO === "Vencido"
+                                ).length
+                            %>
+
+                        </p>
+
+                        <p class="stat-label">
+                            Planos Vencidos
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INATIVOS -->
+                <div class="col">
+
+                    <div
+                        class="stat-card"
+                        style="border-left-color: #7f8c8d;"
+                    >
+
+                        <i
+                            class="bi bi-person-x-fill stat-icon"
+                            style="color: #7f8c8d;"
+                        ></i>
+
+                        <p class="stat-number">
+
+                            <%=
+                                clientes.filter(
+                                    cliente => cliente.STATUS_PLANO === "Inativo"
+                                ).length
+                            %>
+
+                        </p>
+
+                        <p class="stat-label">
+                            Clientes Inativos
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="alertContainer"></div>
+
+
+        <!-- FORMULÁRIO -->
+        <div class="form-card">
+
+            <div class="card-header-custom">
+
+                <h3>
+                    <i class="bi bi-person-plus-fill"></i>
+                    Cadastrar Novo Cliente
+                </h3>
+
+            </div>
+
+
+            <form id="formCliente">
+
+
+                <!-- LINHA 1 -->
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="nomeCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-person"></i>
+                            Nome Completo *
+
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="nomeCli"
+                            placeholder="Digite o nome completo"
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="emailCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-envelope"></i>
+                            E-mail *
+
+                        </label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="emailCli"
+                            placeholder="exemplo@email.com"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- LINHA 2 -->
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label
+                            for="cpfCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-card-text"></i>
+                            CPF *
+
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="cpfCli"
+                            placeholder="000.000.000-00"
+                            maxlength="14"
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label
+                            for="rgCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-person-vcard"></i>
+                            RG *
+
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="rgCli"
+                            placeholder="00.000.000-0"
+                            maxlength="14"
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label
+                            for="dataNascCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-calendar"></i>
+                            Data de Nascimento *
+
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="dataNascCli"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- LINHA 3 -->
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="celCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-telephone"></i>
+                            Celular *
+
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="celCli"
+                            placeholder="(00) 00000-0000"
+                            maxlength="15"
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="senhaCli"
+                            class="form-label"
+                        >
+
+                            <i class="bi bi-lock"></i>
+                            Senha *
+
+                        </label>
+
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="senhaCli"
+                            placeholder="Digite a senha inicial"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTÕES -->
+                <div class="row mt-3">
+
+                    <div class="col-12 text-end">
+
+                        <button
+                            type="button"
+                            class="btn-clear"
+                            id="btnLimpar"
+                        >
+
+                            <i class="bi bi-x-circle"></i>
+                            Limpar
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="btn-save"
+                            id="btnSalvar"
+                        >
+
+                            <i class="bi bi-check-circle"></i>
+                            Salvar Cliente
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- TABELA -->
+        <div class="table-card">
+
+            <div class="table-header">
+
+                <h3 class="table-title">
+
+                    <i class="bi bi-table"></i>
+                    Lista de Clientes
+
+                </h3>
+
+                <button
+                    type="button"
+                    class="btn-delete-selected"
+                    id="btnExcluirSelecionados"
+                >
+
+                    <i class="bi bi-trash"></i>
+                    Excluir Selecionados
+
+                </button>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="table clientes-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>RG</th>
+                            <th>Nascimento</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tabelaClientes">
+
+
+                        <% if(clientes.length > 0) { %>
+
+
+                            <% for(let i = 0; i < clientes.length; i++) { %>
+
+                                <tr>
+
+                                    <td>
+                                        #<%= clientes[i].COD_CLI %>
+                                    </td>
+
+
+                                    <td class="cliente-nome">
+
+                                        <%= clientes[i].NOME_CLI %>
+
+                                    </td>
+
+
+                                    <td>
+                                        <%= clientes[i].CPF_CLI %>
+                                    </td>
+
+
+                                    <td>
+                                        <%= clientes[i].RG_CLI %>
+                                    </td>
+
+
+                                    <td>
+
+                                        <%=
+                                            clientes[i].DATA_NASC_CLI
+                                                .toLocaleDateString("pt-BR")
+                                        %>
+
+                                    </td>
+
+
+                                    <td class="cliente-email">
+
+                                        <%= clientes[i].EMAIL_CLI %>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <%= clientes[i].CELULAR_CLI %>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <% if(clientes[i].STATUS_PLANO === "Ativo") { %>
+
+                                            <span class="status status-ativo">
+
+                                                <i class="bi bi-check-circle-fill"></i>
+
+                                                Ativo
+
+                                            </span>
+
+
+                                        <% } else if(clientes[i].STATUS_PLANO === "Pendente de plano") { %>
+
+                                            <span class="status status-pendente">
+
+                                                <i class="bi bi-clock-fill"></i>
+
+                                                Pendente de plano
+
+                                            </span>
+
+
+                                        <% } else if(clientes[i].STATUS_PLANO === "Vencido") { %>
+
+                                            <span class="status status-vencido">
+
+                                                <i class="bi bi-exclamation-circle-fill"></i>
+
+                                                Vencido
+
+                                            </span>
+
+
+                                        <% } else { %>
+
+                                            <span class="status status-inativo">
+
+                                                <i class="bi bi-x-circle-fill"></i>
+
+                                                Inativo
+
+                                            </span>
+
+                                        <% } %>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="acoes-cliente">
+
+                                            <button
+                                                type="button"
+                                                class="btn-acao btn-editar"
+                                                data-id="<%= clientes[i].COD_CLI %>"
+                                                title="Editar"
+                                            >
+
+                                                <i class="bi bi-pencil"></i>
+
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="btn-acao btn-excluir"
+                                                data-id="<%= clientes[i].COD_CLI %>"
+                                                title="Excluir"
+                                            >
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            <% } %>
+
+
+                        <% } else { %>
+
+
+                            <tr>
+
+                                <td
+                                    colspan="9"
+                                    class="sem-clientes"
+                                >
+
+                                    <i class="bi bi-people"></i>
+
+                                    <p>
+                                        Nenhum cliente cadastrado.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+
+                        <% } %>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height: 50px;"></div>
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
+</body>
+
+</html>

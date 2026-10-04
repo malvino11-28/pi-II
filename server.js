@@ -8,6 +8,7 @@ const routes = require("./routes/routes");
 server.use(express.static("public"));
 server.set("view engine", "ejs");
 server.use(express.urlencoded());
+server.use(express.json());
 
 server.use("/", routes);
 

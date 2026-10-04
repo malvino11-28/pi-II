@@ -1,4 +1,5 @@
 const ClienteModel = require("../models/clienteModel");
+const FornecedorModel = require("../models/fornecedorModel");
 
 const {
     somenteNumeros,
@@ -121,6 +122,31 @@ class adminController {
             res.send({ ok: false});
         }
     }
+
+    async rotaCadastrarFornecedorView(req, res) {
+
+        let fornecedor = new FornecedorModel();
+        let listaFornecedores = await fornecedor.listarFornecedores();
+
+        res.render("admin/fornecedor", {
+            fornecedores: listaFornecedores
+        });
+    }
+
+    async rotaCadastrarFornecedor(req, res) {
+
+        if(req.body.razao != "" && req.body.nomeFan != "" && req.body.cnpj != "" && req.body.email != "" && req.body.telefone != "") {
+
+            let fornecedor = new FornecedorModel(0, req.body.cnpj, req.body.razao, req.body.nomeFan, req.body.email, req.body.telefone);
+            let result = await fornecedor.cadastrarFornecedor();
+            res.send({ ok: result });
+
+        } else {
+            res.send({ ok: false });
+
+        }
+    }
+
 }
 
 module.exports = adminController;

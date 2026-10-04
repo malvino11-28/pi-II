@@ -148,6 +148,10 @@ class adminController {
         }
     }
 
+
+    rotaGerenciarProduto(req, res) {
+        res.render("admin/produto");
+    }
 }
 
 module.exports = adminController;

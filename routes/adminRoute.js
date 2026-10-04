@@ -15,4 +15,6 @@ router.get("/admin/cadastrar-fornecedor", controller.rotaCadastrarFornecedorView
 router.post("/admin/cadastrar-fornecedor", controller.rotaCadastrarFornecedor);
 router.post("/admin/cadastrar-fornecedor", controller.rotaExcluirCliente);
 
+router.get("/admin/produto", controller.rotaGerenciarProduto);
+
 module.exports = router;

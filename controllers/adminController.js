@@ -118,7 +118,8 @@ class adminController {
             res.send({ ok: result });
 
         } else {
-            res.send({ ok: false});
+            
+            res.send({ ok: false });
         }
     }
 }

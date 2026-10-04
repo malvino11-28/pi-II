@@ -172,6 +172,19 @@ class adminController {
             res.send({ ok: false })
         }
     }
+
+    async rotaExcluirMarca(req, res) {
+        let idExclusao = req.body.id;
+        if (idExclusao && idExclusao > 0) {
+            let marca = new MarcaModel();
+            let result = marca.excluirMarca(idExclusao);
+
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
     // =================== MARCA -
 
 }

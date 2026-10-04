@@ -45,7 +45,7 @@ class MarcaModel {
     return lista;
   }
 
-  async excluirMarca() {
+  async excluirMarca(id) {
     let sql = "DELETE FROM MARCA WHERE COD_MAR = ?";
     let db = new Database();
     let value = [id];

@@ -8,7 +8,8 @@ const routes = require("./routes/routes");
 const {
     formatarCPF,
     formatarTelefone,
-    formatarData
+    formatarData,
+    formatarCNPJ
 } = require("./utils/formatadores");
 
 server.use(express.static("public"));
@@ -17,6 +18,7 @@ server.set("view engine", "ejs");
 server.locals.formatarCPF = formatarCPF;
 server.locals.formatarTelefone = formatarTelefone;
 server.locals.formatarData = formatarData;
+server.locals.formatarCNPJ = formatarCNPJ;
 
 server.use(express.urlencoded());
 server.use(express.json());

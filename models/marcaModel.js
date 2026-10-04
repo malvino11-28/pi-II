@@ -32,7 +32,7 @@ class MarcaModel {
     return result;
   }
 
-  async listarMarca() {
+  async listarMarcas() {
     let sql = "SELECT * FROM MARCA;";
     let db = new Database();
     let linhas = await db.ExecutaComando(sql);

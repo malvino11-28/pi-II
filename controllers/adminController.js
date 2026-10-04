@@ -1,5 +1,6 @@
 const ClienteModel = require("../models/clienteModel");
 const FornecedorModel = require("../models/fornecedorModel");
+const MarcaModel = require("../models/marcaModel");
 
 const {
     somenteNumeros,
@@ -147,6 +148,17 @@ class adminController {
 
         }
     }
+
+
+    // ==================== MARCA
+    async rotaMarcas(req, res) {
+        let marca = new MarcaModel();
+        let listaMarcas = await marca.listarMarcas();
+        res.render("admin/marca", {
+        marcas: listaMarcas,
+        });
+    }
+    // =================== MARCA -
 
 }
 

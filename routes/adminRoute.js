@@ -16,5 +16,7 @@ router.post("/admin/cadastrar-fornecedor", controller.rotaCadastrarFornecedor);
 router.post("/admin/cadastrar-fornecedor", controller.rotaExcluirCliente);
 
 router.get("/admin/marca", controller.rotaMarcas);
+router.get("/admin/cadastrar-marca", controller.rotaCadastrarMarcaView);
+router.post("/admin/cadastrar-marca", controller.rotaCadastrarMarca);
 
 module.exports = router;

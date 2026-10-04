@@ -158,6 +158,20 @@ class adminController {
         marcas: listaMarcas,
         });
     }
+
+    rotaCadastrarMarcaView(req, res) {
+        res.render("admin/cadastrar-marca");
+    }
+
+    async rotaCadastrarMarca(req, res) {
+        if (req.body.nome != "") {
+            let marca = new MarcaModel(0, req.body.nome);
+            let result = await marca.cadastrarMarca();
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false })
+        }
+    }
     // =================== MARCA -
 
 }

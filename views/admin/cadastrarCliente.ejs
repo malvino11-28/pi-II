@@ -378,7 +378,7 @@
                             class="form-control"
                             id="rgCli"
                             placeholder="00.000.000-0"
-                            maxlength="14"
+                            maxlength="12"
                         >
 
                     </div>
@@ -566,7 +566,7 @@
 
 
                                     <td>
-                                        <%= clientes[i].CPF_CLI %>
+                                        <%= formatarCPF(clientes[i].CPF_CLI) %>
                                     </td>
 
 
@@ -576,12 +576,7 @@
 
 
                                     <td>
-
-                                        <%=
-                                            clientes[i].DATA_NASC_CLI
-                                                .toLocaleDateString("pt-BR")
-                                        %>
-
+                                        <%= formatarData(clientes[i].DATA_NASC_CLI) %>
                                     </td>
 
 
@@ -594,7 +589,7 @@
 
                                     <td>
 
-                                        <%= clientes[i].CELULAR_CLI %>
+                                        <%= formatarTelefone(clientes[i].CELULAR_CLI) %>
 
                                     </td>
 

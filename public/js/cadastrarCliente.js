@@ -317,3 +317,41 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 })
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    let btn = document.querySelectorAll(".btn-excluir");
+    for(let i = 0; i < btn.length; i++) {
+        btn[i].addEventListener("click", excluir);
+    }
+
+    function excluir() {
+
+        let idExclusao = this.dataset.id;
+        if(confirm("Deseja realmente excluir esse cliente?")) {
+
+            let obj = {
+
+                id: idExclusao
+            }
+
+            fetch("/admin/excluir-cliente", {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(function(resposta){
+                return resposta.json();
+
+            }).then(function (corpoResp) {
+                if (corpoResp.ok) {
+                    alert("Cliente excluído com sucesso!");
+                    window.location.reload();
+                } else {
+                    alert("Erro ao excluir o cliente.");
+                }
+            })
+        }
+    }
+})

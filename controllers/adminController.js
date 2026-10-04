@@ -12,8 +12,14 @@ const {
 
 class adminController {
 
-    rotaDashboardView(req, res) {
-        res.render("admin/dashboard");
+    async rotaDashboardView(req, res) {
+
+        let cliente = new ClienteModel();
+        let listaClientes = await cliente.listarClientes();
+
+        res.render("admin/dashboard", {
+            clientes: listaClientes
+        });
     }
 
     async rotaCadastrarClientesView(req, res) {
@@ -26,6 +32,7 @@ class adminController {
     }
 
     async rotaCadastrarClientes(req, res) {
+        
         try {
             let erros = [];
 
@@ -97,6 +104,21 @@ class adminController {
                 ok: false,
                 erros: ["Erro interno ao cadastrar o cliente."]
             });
+        }
+    }
+
+    async rotaExcluirCliente(req, res) {
+
+        let idExclusao = req.body.id;
+        if(idExclusao && idExclusao > 0) {
+
+            let cliente = new ClienteModel();
+            let result = cliente.excluirCliente(idExclusao);
+
+            res.send({ ok: result });
+
+        } else {
+            res.send({ ok: false});
         }
     }
 }

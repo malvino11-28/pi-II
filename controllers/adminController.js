@@ -114,12 +114,11 @@ class adminController {
         if(idExclusao && idExclusao > 0) {
 
             let cliente = new ClienteModel();
-            let result = cliente.excluirCliente(idExclusao);
+            let result = await cliente.excluirCliente(idExclusao);
 
             res.send({ ok: result });
 
         } else {
-            
             res.send({ ok: false });
         }
     }
@@ -145,6 +144,22 @@ class adminController {
         } else {
             res.send({ ok: false });
 
+        }
+    }
+
+    async rotaExcluirFornecedor(req, res) {
+
+        let idExclusao = req.body.id;
+        if(idExclusao && idExclusao > 0) {
+
+            let fornecedor = new FornecedorModel();
+            let result = await fornecedor.excluirFornecedor(idExclusao);
+
+            res.send({ ok: result });
+        
+        } else {
+
+            res.send({ ok: false });
         }
     }
 

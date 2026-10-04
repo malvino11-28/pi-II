@@ -321,6 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function() {
 
     let btn = document.querySelectorAll(".btn-excluir");
+
     for(let i = 0; i < btn.length; i++) {
         btn[i].addEventListener("click", excluir);
     }
@@ -328,6 +329,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function excluir() {
 
         let idExclusao = this.dataset.id;
+        
         if(confirm("Deseja realmente excluir esse cliente?")) {
 
             let obj = {

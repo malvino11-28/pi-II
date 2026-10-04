@@ -18,8 +18,12 @@ class adminController {
         let cliente = new ClienteModel();
         let listaClientes = await cliente.listarClientes();
 
+        let fornecedor = new FornecedorModel();
+        let listarFornecedores = await fornecedor.listarFornecedores()
+
         res.render("admin/dashboard", {
-            clientes: listaClientes
+            clientes: listaClientes,
+            fornecedores: listarFornecedores
         });
     }
 
@@ -135,17 +139,31 @@ class adminController {
 
     async rotaCadastrarFornecedor(req, res) {
 
-        if(req.body.razao != "" && req.body.nomeFan != "" && req.body.cnpj != "" && req.body.email != "" && req.body.telefone != "") {
+        if (
+            req.body.razao != "" &&
+            req.body.nomeFan != "" &&
+            req.body.cnpj != "" &&
+            req.body.email != "" &&
+            req.body.telefone != ""
+        ) {
 
-            let fornecedor = new FornecedorModel(0, req.body.cnpj, req.body.razao, req.body.nomeFan, req.body.email, req.body.telefone);
+            let fornecedor = new FornecedorModel(
+                0,
+                somenteNumeros(req.body.cnpj),
+                req.body.razao.trim(),
+                req.body.nomeFan.trim(),
+                req.body.email.trim().toLowerCase(),
+                somenteNumeros(req.body.telefone)
+            );
+
             let result = await fornecedor.cadastrarFornecedor();
+
             res.send({ ok: result });
 
         } else {
             res.send({ ok: false });
-
         }
-    }
+}
 
     async rotaExcluirFornecedor(req, res) {
 

@@ -160,10 +160,10 @@ class adminController {
     }
 
     // ==================== MARCA
-    async rotaMarcas(req, res) {
+    async rotaGerenciarMarca(req, res) {
         let marca = new MarcaModel();
         let listaMarcas = await marca.listarMarcas();
-        res.render("admin/marca", {
+        res.render("admin/gerenciamentoMarca", {
         marcas: listaMarcas,
         });
     }

@@ -149,6 +149,15 @@ class adminController {
         }
     }
 
+        // =========== GERENCIAR PRODUTO
+
+    rotaGerenciarProdutoView(req, res) {
+        res.render("admin/produto");
+    }
+
+    rotaGerenciarProduto(req, res) { // precisa implementar um listar
+        res.render("admin/gerenciamentoProduto");
+    }
 
     // ==================== MARCA
     async rotaMarcas(req, res) {
@@ -182,7 +191,6 @@ class adminController {
     }
 
     // =================== MARCA -
-
 }
 
 module.exports = adminController;

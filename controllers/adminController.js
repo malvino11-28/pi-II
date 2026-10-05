@@ -182,7 +182,7 @@ class adminController {
         let idExclusao = req.body.id;
         if (idExclusao && idExclusao > 0) {
             let marca = new MarcaModel();
-            let result = marca.excluirMarca(idExclusao);
+            let result = await marca.excluirMarca(idExclusao);
 
             res.send({ ok: result });
         } else {

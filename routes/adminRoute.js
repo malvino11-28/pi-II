@@ -19,7 +19,7 @@ router.get("/admin/produto", controller.rotaGerenciarProdutoView);
 router.get("/admin/produto/gerenciamento-produto", controller.rotaGerenciarProduto);
 
 router.get("/admin/produto/gerenciamento-marca", controller.rotaGerenciarMarca);
-router.post("/admin/produto/gerenciamento-marca", controller.rotaCadastrarMarca);
-router.post("/admin/produto/gerenciamento-marca", controller.rotaExcluirMarca);
+router.post("/admin/produto/cadastrar-marca", controller.rotaCadastrarMarca);
+router.post("/admin/produto/excluir-marca", controller.rotaExcluirMarca);
 
 module.exports = router;

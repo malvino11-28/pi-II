@@ -148,9 +148,14 @@ class adminController {
         }
     }
 
+    // =========== GERENCIAR PRODUTO
 
-    rotaGerenciarProduto(req, res) {
+    rotaGerenciarProdutoView(req, res) {
         res.render("admin/produto");
+    }
+
+    rotaGerenciarProduto(req, res) { // precisa implementar um listar
+        res.render("admin/gerenciamentoProduto");
     }
 }
 

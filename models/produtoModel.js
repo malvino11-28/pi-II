@@ -1,3 +1,5 @@
+const Database = require("../database/database");
+
 class ProdutoModel {
   #COD_PROD;
   #COD_MAR; // marca fk
@@ -73,6 +75,66 @@ class ProdutoModel {
     this.#DESC_RED_PROD = desc_red;
     this.#UNI_MEDIDA_PROD = uni;
     this.#VALOR_UNI_PROD = valor;
+  }
+
+  async listarProdutos() {
+    let sql = "SELECT * FROM PRODUTO"
+    let db = new Database();
+    let linhas = await db.ExecutaComando(sql);
+    let lista = [];
+
+    for (let i = 0;i<linhas.length;i++) {
+      let linha = linhas[i];
+      let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD']);
+      
+      lista.push(produto);
+    }
+  }
+
+  async cadastrarProduto() {
+    let sql = "INSERT INTO PRODUTO (COD_MAR, COD_CAT, NOME_PROD, DESC_PROD, DESC_RED_PROD, UNI_MEDIDA_PROD, VALOR_UNI_PROD) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD];
+    let db = new Database();
+
+    let result = await db.ExecutaComandoNonQuery(sql, values);
+
+    return result;
+  }
+
+  async obterPorId(id) {
+    let sql = "SELECT * FROM PRODUTO WHERE COD_PROD = ?";
+    let value = [id];
+    let db = new Database();
+
+    let linhas = await db.ExecutaComando(sql, values);
+
+    if (linhas.length > 0) {
+      let linha = linhas[0];
+      
+      let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD']);
+      return produto;
+    }
+    return null;
+  }
+
+  async excluirProduto(id) {
+    let sql = "DELETE FROM PRODUTO WHERE COD_PROD = ?";
+    let value = [id];
+    let db = new Database();
+
+    let result = await db.ExecutaComandoNonQuery(sql, value);
+
+    return result;
+  }
+
+  async atualizarProduto() {
+    let sql = "UPDATE PRODUTO SET COD_MAR = ?, COD_CAT = ?, NOME_PROD = ?, DESC_PROD = ?, DESC_RED_PROD = ?, UNI_MEDIDA_PROD = ?, VALOR_UNI_PROD = ?";
+    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD];
+    let db = new Database();
+
+    let result = await db.ExecutaComandoNonQuery(sql, values);
+
+    return result;
   }
 }
 

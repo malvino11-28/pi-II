@@ -107,8 +107,15 @@ class ClienteModel {
         return result;
     }
 
-    async buscarCliente() {
+    async atualizarCliente() {
 
+        let sql = "UPDATE CLIENTE SET NOME_CLI = ?, CPF_CLI = ?, RG_CLI = ?, DATA_NASC_CLI = ?, EMAIL_CLI = ?, TELEFONE_CLI = ?, SENHA_CLI = ?";
+        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#CELULAR_CLI, this.#SENHA_CLI];
+
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
+
+        return result;
     }
 
     async listarClientes() {
@@ -136,6 +143,27 @@ class ClienteModel {
         let result = await banco.ExecutaComandoNonQuery(sql, value);
 
         return result;
+    }
+
+    async obterPorId(id) {
+
+        let sql = "SELECT * FROM CLIENTE WHERE COD_CLI = ?";
+        let value = [id];
+
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql, value);
+
+        if(linhas.length > 0) {
+
+            let linha = linhas[i];
+            let cliente = new ClienteModel(linha["COD_CLI"], linha["NOME_CLI"], linha["CPF_CLI"], linha["RG_CLI"], linha["DATA_NASC_CLI"], linha["EMAIL_CLI"], linha["TELEFONE_CLI"], linha["SENHA_CLI"], linha["STATUS_PLANO"]);
+
+            return cliente;
+
+        } else {
+
+            return null;
+        }
     }
 
 }

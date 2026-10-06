@@ -118,6 +118,7 @@ body {
     text-align: center;
     border-left: 4px solid rgb(238, 123, 48);
     height: 100%;
+    transition: 0.3s;
 }
 
 .stat-icon {
@@ -137,6 +138,10 @@ body {
     font-size: 14px;
     color: #7f8c8d;
     margin: 5px 0 0;
+}
+
+.stat-card:hover{
+    transform: translateY(-5px);
 }
 
 

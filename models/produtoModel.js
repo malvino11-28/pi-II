@@ -138,6 +138,8 @@ class ProdutoModel {
   }
 }
 
+module.exports = ProdutoModel;
+
 // COD_PROD INT PRIMARY KEY AUTO_INCREMENT,
 // COD_MAR INT NOT NULL,
 // COD_CAT INT NOT NULL,

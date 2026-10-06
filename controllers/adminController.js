@@ -1,5 +1,6 @@
 const ClienteModel = require("../models/clienteModel");
 const FornecedorModel = require("../models/fornecedorModel");
+const ProdutoModel = require("../models/produtoModel");
 
 const {
     somenteNumeros,
@@ -154,8 +155,38 @@ class adminController {
         res.render("admin/produto");
     }
 
-    rotaGerenciarProduto(req, res) { // precisa implementar um listar
-        res.render("admin/gerenciamentoProduto");
+    async rotaGerenciarProduto(req, res) {
+        let produto = new ProdutoModel();
+        let listaProduto = produto.listarProdutos();
+
+        res.render("admin/gerenciamentoProduto", { produtos: listaProduto});
+    }
+
+    async rotaCadastrarProduto(req, res) {
+        if (req.body.marca != "" && req.body.categoria != "" && req.body.nome != "" && req.body.desc != "" && req.body.desc_red != "" && req.body.uni != "" && req.body.valor != "") {
+            let produto = new ProdutoModel(0, req.body.marca, req.body.categoria, req.body.nome, req.body.desc, req.body.desc_red, req.body.uni, req.body.valor);
+            let result = await produto.cadastrarProduto();
+
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
+    async rotaExcluirProduto(req, res) {
+        let id = req.body.id;
+        if (id && id > 0) {
+            let produto = new ProdutoModel();
+            let result = await produto.excluirProduto(id);
+
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
+    async rotaAtualizarProduto(req, res) {
+
     }
 }
 

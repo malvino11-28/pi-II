@@ -191,7 +191,13 @@ class adminController {
     }
   }
 
-  async rotaAlterarCategoria(req, res) {}marcas
+  async rotaAlterarCategoria(req, res) {
+    let id = req.body.id;
+    let categoria = new CategoriaModel();
+
+    categoria = await categoria.obterPorId(id);
+    res.render("admin/gerenciamentoCateogira", { catAlteracao: categoria }); //
+  }
 }
 
 module.exports = adminController;

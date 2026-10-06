@@ -21,6 +21,6 @@ router.get("/admin/produto/gerenciamento-produto", controller.rotaGerenciarProdu
 router.get("/admin/produto/gerenciamento-categoria", controller.rotaGerenciarCategoria);
 router.post("/admin/produto/cadastrar-categoria", controller.rotaCadastrarCategoria);
 router.post("/admin/produto/excluir-categoria", controller.rotaExcluirCategoria);
-router.post("/admin/produto/alterar-categoria", controller.rotaAlterarCategoria);
+router.get("/admin/produto/alterar-categoria/:id", controller.rotaAlterarCategoria);
 
 module.exports = router;

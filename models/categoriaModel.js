@@ -55,6 +55,33 @@ class CategoriaModel {
 
     return result;
   }
+
+  async atualizarCategoria() {
+    let sql = "UPDATE CATEGORIA SET NOME_CAT = ? WHERE COD_CAT = ?";
+    let db = new Database();
+    let values = [this.#NOME_CAT, this, this.#COD_CAT];
+    let result = await db.ExecutaComandoNonQuery(sql, values);
+
+    return result;
+  }
+
+  async obterPorId(id) {
+    let sql = "SELECT * FROM CATEGORIA WHERE COD_CAT = ?"
+    let value = [id];
+    
+    let db = new Database();
+    let rows = await db.ExecutaComando(sql, value);
+
+    if (rows.length > 0) {
+        let row = rows[0];
+
+        let categoria = new CategoriaModel(row["COD_CAT"], row["NOME_CAT"]);
+
+        return categoria;
+    }
+
+    return null;
+  }
 }
 
 module.exports = CategoriaModel;

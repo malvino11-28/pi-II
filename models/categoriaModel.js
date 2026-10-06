@@ -29,6 +29,8 @@ class CategoriaModel {
     let rows = await db.ExecutaComando(sql);
     let lista = [];
 
+    console.log(rows);
+
     for (let i = 0; i < rows.length; i++) {
       lista.push(rows[i]);
     }

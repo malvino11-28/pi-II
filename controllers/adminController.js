@@ -165,13 +165,13 @@ class adminController {
   async rotaGerenciarCategoria(req, res) {
     let categoria = new CategoriaModel();
     let listaCategoria = categoria.listarCategoria();
-    res.render("admin/gerenciarCategoria", { categorias: listaCategoria });
+    res.render("admin/gerenciamentoCategoria", { categorias: listaCategoria });
   }
 
   async rotaCadastrarCategoria(req, res) {
     if (req.body.nome != "") {
         let categoria = new CategoriaModel(0, req.body.nome);
-        let result = categoria.cadastrarCategoria();
+        let result = await categoria.cadastrarCategoria();
         res.send({ ok: result })
     } else {
         res.send({ ok: false })

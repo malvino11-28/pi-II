@@ -93,6 +93,7 @@
             </label>
             <input type="text" class="form-control" id="nomeMar" placeholder="Digite o nome da categoria">
           </div>
+        </div>
 
         <!-- BOTÕES -->
         <div class="row mt-3">
@@ -134,7 +135,7 @@
               <% for (let i = 0; i < categorias.length; i++) { %>
                 <tr>
                   <td>#<%= categorias[i].COD_CAT %></td>
-                  <td class="cliente-nome"><%= categoria[i].NOME_CAT %></td>
+                  <td class="cliente-nome"><%= categorias[i].NOME_CAT %></td>
                   <td>
                     <div class="acoes-cliente">
                       <button type="button" class="btn-acao btn-editar" data-id="<%= categorias[i].COD_CAT %>" title="Editar">

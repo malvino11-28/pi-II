@@ -164,7 +164,8 @@ class adminController {
 
   async rotaGerenciarCategoria(req, res) {
     let categoria = new CategoriaModel();
-    let listaCategoria = categoria.listarCategoria();
+    let listaCategoria = await categoria.listarCategoria();
+    console.log(listaCategoria);
     res.render("admin/gerenciamentoCategoria", { categorias: listaCategoria });
   }
 
@@ -182,7 +183,7 @@ class adminController {
     let id = req.body.id;
     if (id && id > 0) {
         let categoria = new CategoriaModel();
-        let result = categoria.excluirCategoria(id);
+        let result = await categoria.excluirCategoria(id);
 
         res.send({ ok: result });
     } else {
@@ -190,7 +191,7 @@ class adminController {
     }
   }
 
-  async rotaAlterarCategoria(req, res) {}
+  async rotaAlterarCategoria(req, res) {}marcas
 }
 
 module.exports = adminController;

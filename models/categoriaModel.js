@@ -45,7 +45,7 @@ class CategoriaModel {
     return result;
   }
 
-  async excluirCategoria() {
+  async excluirCategoria(id) {
     let sql = "DELETE FROM CATEGORIA WHERE COD_CAT = ?";
     let value = [id];
     let db = new Database();

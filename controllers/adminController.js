@@ -168,9 +168,27 @@ class adminController {
     res.render("admin/gerenciarCategoria", { categorias: listaCategoria });
   }
 
-  async rotaCadastrarCategoria(req, res) {}
+  async rotaCadastrarCategoria(req, res) {
+    if (req.body.nome != "") {
+        let categoria = new CategoriaModel(0, req.body.nome);
+        let result = categoria.cadastrarCategoria();
+        res.send({ ok: result })
+    } else {
+        res.send({ ok: false })
+    }
+  }
 
-  async rotaExcluirCategoria(req, res) {}
+  async rotaExcluirCategoria(req, res) {
+    let id = req.body.id;
+    if (id && id > 0) {
+        let categoria = new CategoriaModel();
+        let result = categoria.excluirCategoria(id);
+
+        res.send({ ok: result });
+    } else {
+        res.send({ ok: false });
+    }
+  }
 
   async rotaAlterarCategoria(req, res) {}
 }

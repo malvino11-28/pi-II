@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.reload();
                 } else 
                 {
-                    console.log(resBody);
                     alert("Erro ao cadastrar produto.")
                 }
             })

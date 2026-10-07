@@ -237,9 +237,11 @@
                   <td><%= produtos[i].VALOR_UNI_PROD %></td>
                   <td>
                     <div class="acoes-cliente">
-                      <button type="button" class="btn-acao btn-editar" data-id="<%= produtos[i].COD_PROD %>" title="Editar">
-                        <i class="bi bi-pencil"></i>
-                      </button>
+                      <a href="/admin/produto/gerenciamento-produto/alterar-produto">
+                        <button type="button" class="btn-acao btn-editar" data-id="<%= produtos[i].COD_PROD %>" title="Editar">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </a>
                       <button type="button" class="btn-acao btn-excluir" data-id="<%= produtos[i].COD_PROD %>" title="Excluir">
                         <i class="bi bi-trash"></i>
                       </button>

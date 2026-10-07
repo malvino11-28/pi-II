@@ -268,7 +268,18 @@ class adminController {
     }
   }
 
-  async rotaAtualizarProduto(req, res) {}
+  async rotaAtualizarProduto(req, res) {
+    let marca = new MarcaModel();
+    let categoria = new CategoriaModel();
+
+    let listaMarcas = await marca.listarMarcas();
+    let listaCategorias = await categoria.listarCategoria();
+
+    res.render("admin/alterarProduto", {
+      marcas: listaMarcas,
+      categorias: listaCategorias,
+    });
+  }
 
   // ==================== MARCA
   async rotaGerenciarMarca(req, res) {
@@ -299,6 +310,10 @@ class adminController {
     } else {
       res.send({ ok: false });
     }
+  }
+
+  async rotaAlterarMarca(req, res) {
+    res.render("admin/alterarMarca");
   }
 
   // =================== MARCA -

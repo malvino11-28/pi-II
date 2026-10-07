@@ -17,10 +17,13 @@ const {
 class adminController {
   async rotaDashboardView(req, res) {
     let cliente = new ClienteModel();
+    let produto = new ProdutoModel();
     let listaClientes = await cliente.listarClientes();
+    let listaProdutos = await produto.listarProdutos();
 
     res.render("admin/dashboard", {
       clientes: listaClientes,
+      produtos: listaProdutos,
     });
   }
 
@@ -153,7 +156,6 @@ class adminController {
 
   // =========== GERENCIAR PRODUTO
 
-
   // =========== GERENCIAR CATEGORIA
 
   async rotaGerenciarCategoria(req, res) {
@@ -165,23 +167,23 @@ class adminController {
 
   async rotaCadastrarCategoria(req, res) {
     if (req.body.nome != "") {
-        let categoria = new CategoriaModel(0, req.body.nome);
-        let result = await categoria.cadastrarCategoria();
-        res.send({ ok: result })
+      let categoria = new CategoriaModel(0, req.body.nome);
+      let result = await categoria.cadastrarCategoria();
+      res.send({ ok: result });
     } else {
-        res.send({ ok: false })
+      res.send({ ok: false });
     }
   }
 
   async rotaExcluirCategoria(req, res) {
     let id = req.body.id;
     if (id && id > 0) {
-        let categoria = new CategoriaModel();
-        let result = await categoria.excluirCategoria(id);
+      let categoria = new CategoriaModel();
+      let result = await categoria.excluirCategoria(id);
 
-        res.send({ ok: result });
+      res.send({ ok: result });
     } else {
-        res.send({ ok: false });
+      res.send({ ok: false });
     }
   }
 
@@ -193,83 +195,113 @@ class adminController {
     res.render("admin/gerenciamentoCateogira", { catAlteracao: categoria }); //
   }
 
-        // =========== GERENCIAR PRODUTO
+  // =========== GERENCIAR PRODUTO
 
-    rotaGerenciarProdutoView(req, res) {
-        res.render("admin/produto");
+  async rotaGerenciarProdutoView(req, res) {
+    let produto = new ProdutoModel();
+    let marca = new MarcaModel();
+    let categoria = new CategoriaModel();
+
+    let listaProduto = await produto.listarProdutos();
+    let listaMarca = await marca.listarMarcas();
+    let listaCategoria = await categoria.listarCategoria();
+    res.render("admin/produto", {
+      produtos: listaProduto,
+      marcas: listaMarca,
+      categorias: listaCategoria,
+    });
+  }
+
+  async rotaGerenciarProduto(req, res) {
+    let produto = new ProdutoModel();
+    let marca = new MarcaModel();
+    let categoria = new CategoriaModel();
+
+    let listaProduto = await produto.listarProdutos();
+    let listaMarca = await marca.listarMarcas();
+    let listaCategoria = await categoria.listarCategoria();
+
+    res.render("admin/gerenciamentoProduto", {
+      produtos: listaProduto,
+      marcas: listaMarca,
+      categorias: listaCategoria,
+    });
+  }
+
+  async rotaCadastrarProduto(req, res) {
+    if (
+      req.body.marca != "0" &&
+      req.body.categoria != "0" &&
+      req.body.nome != "" &&
+      req.body.desc != "" &&
+      req.body.desc_red != "" &&
+      req.body.uni != "0" &&
+      req.body.valor != ""
+    ) {
+      let produto = new ProdutoModel(
+        0,
+        req.body.marca,
+        req.body.categoria,
+        req.body.nome,
+        req.body.desc,
+        req.body.desc_red,
+        req.body.uni,
+        req.body.valor,
+      );
+      let result = await produto.cadastrarProduto();
+
+      res.send({ ok: result });
+    } else {
+      res.send({ ok: false });
     }
+  }
 
-    async rotaGerenciarProduto(req, res) {
-        let produto = new ProdutoModel();
-        let marca = new MarcaModel();
-        let categoria = new CategoriaModel();
+  async rotaExcluirProduto(req, res) {
+    let id = req.body.id;
+    if (id && id > 0) {
+      let produto = new ProdutoModel();
+      let result = await produto.excluirProduto(id);
 
-        let listaProduto = await produto.listarProdutos();
-        let listaMarca = await marca.listarMarcas();
-        let listaCategoria = await categoria.listarCategoria();
-
-        res.render("admin/gerenciamentoProduto", { produtos: listaProduto, marcas: listaMarca, categorias: listaCategoria });
+      res.send({ ok: result });
+    } else {
+      res.send({ ok: false });
     }
+  }
 
-    async rotaCadastrarProduto(req, res) {
-        if (req.body.marca != "0" && req.body.categoria != "0" && req.body.nome != "" && req.body.desc != "" && req.body.desc_red != "" && req.body.uni != "0" && req.body.valor != "") {
-            let produto = new ProdutoModel(0, req.body.marca, req.body.categoria, req.body.nome, req.body.desc, req.body.desc_red, req.body.uni, req.body.valor);
-            let result = await produto.cadastrarProduto();
+  async rotaAtualizarProduto(req, res) {}
 
-            res.send({ ok: result });
-        } else {
-            res.send({ ok: false });
-        }
+  // ==================== MARCA
+  async rotaGerenciarMarca(req, res) {
+    let marca = new MarcaModel();
+    let listaMarcas = await marca.listarMarcas();
+    res.render("admin/gerenciamentoMarca", {
+      marcas: listaMarcas,
+    });
+  }
+
+  async rotaCadastrarMarca(req, res) {
+    if (req.body.nome != "") {
+      let marca = new MarcaModel(0, req.body.nome);
+      let result = await marca.cadastrarMarca();
+      res.send({ ok: result });
+    } else {
+      res.send({ ok: false });
     }
+  }
 
-    async rotaExcluirProduto(req, res) {
-        let id = req.body.id;
-        if (id && id > 0) {
-            let produto = new ProdutoModel();
-            let result = await produto.excluirProduto(id);
+  async rotaExcluirMarca(req, res) {
+    let idExclusao = req.body.id;
+    if (idExclusao && idExclusao > 0) {
+      let marca = new MarcaModel();
+      let result = await marca.excluirMarca(idExclusao);
 
-            res.send({ ok: result });
-        } else {
-            res.send({ ok: false });
-        }
+      res.send({ ok: result });
+    } else {
+      res.send({ ok: false });
     }
+  }
 
-    async rotaAtualizarProduto(req, res) {
-
-    }
-
-    // ==================== MARCA
-    async rotaGerenciarMarca(req, res) {
-        let marca = new MarcaModel();
-        let listaMarcas = await marca.listarMarcas();
-        res.render("admin/gerenciamentoMarca", {
-        marcas: listaMarcas,
-        });
-    }
-
-    async rotaCadastrarMarca(req, res) {
-        if (req.body.nome != "") {
-            let marca = new MarcaModel(0, req.body.nome);
-            let result = await marca.cadastrarMarca();
-            res.send({ ok: result });
-        } else {
-            res.send({ ok: false })
-        }
-    }
-
-    async rotaExcluirMarca(req, res) {
-        let idExclusao = req.body.id;
-        if (idExclusao && idExclusao > 0) {
-            let marca = new MarcaModel();
-            let result = await marca.excluirMarca(idExclusao);
-
-            res.send({ ok: result });
-        } else {
-            res.send({ ok: false });
-        }
-    }
-
-    // =================== MARCA -
+  // =================== MARCA -
 }
 
 module.exports = adminController;

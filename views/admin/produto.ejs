@@ -79,7 +79,7 @@
               <div class="dashboard-stat-card">
                 <i class="bi bi-box-seam-fill dashboard-icon"></i>
 
-                <h3>126</h3>
+                <h3><%= produtos.length %></h3>
 
                 <p>Produtos</p>
               </div>
@@ -89,7 +89,7 @@
               <div class="dashboard-stat-card">
                 <i class="bi bi-truck dashboard-icon"></i>
 
-                <h3>34</h3>
+                <h3><%= marcas.length %></h3>
 
                 <p>Marcas</p>
               </div>
@@ -99,7 +99,7 @@
               <div class="dashboard-stat-card">
                 <i class="bi bi-bar-chart-fill dashboard-icon"></i>
 
-                <h3>18</h3>
+                <h3><%= categorias.length %></h3>
 
                 <p>Categorias</p>
               </div>
@@ -112,14 +112,17 @@
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="menu-card">
                   <div class="menu-icon">
-                    <i class="bi bi-people-fill"></i>
+                    <i class="bi bi-box-seam"></i>
                   </div>
 
                   <h4>Produtos</h4>
 
                   <p>Gerencie os produtos.</p>
 
-                  <a href="/admin/produto/gerenciamento-produto" class="btn-access">
+                  <a
+                    href="/admin/produto/gerenciamento-produto"
+                    class="btn-access"
+                  >
                     <i class="bi bi-arrow-right-circle"></i>
                     Acessar
                   </a>
@@ -130,14 +133,17 @@
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="menu-card">
                   <div class="menu-icon">
-                    <i class="bi bi-truck"></i>
+                    <i class="bi bi-award"></i>
                   </div>
 
                   <h4>Marcas</h4>
 
                   <p>Gerencie as marcas</p>
 
-                  <a href="/admin/produto/gerenciamento-marca" class="btn-access">
+                  <a
+                    href="/admin/produto/gerenciamento-marca"
+                    class="btn-access"
+                  >
                     <i class="bi bi-arrow-right-circle"></i>
                     Acessar
                   </a>
@@ -148,14 +154,17 @@
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="menu-card">
                   <div class="menu-icon">
-                    <i class="bi bi-bar-chart-fill"></i>
+                    <i class="bi bi-tag"></i>
                   </div>
 
                   <h4>Categorias</h4>
 
                   <p>Gerencie as categorias.</p>
 
-                  <a href="/admin/produto/gerenciamento-categoria" class="btn-access">
+                  <a
+                    href="/admin/produto/gerenciamento-categoria"
+                    class="btn-access"
+                  >
                     <i class="bi bi-arrow-right-circle"></i>
                     Acessar
                   </a>

@@ -1,6 +1,7 @@
 const ClienteModel = require("../models/clienteModel");
 const FornecedorModel = require("../models/fornecedorModel");
 const ProdutoModel = require("../models/produtoModel");
+const MarcaModel = require("../models/marcaModel");
 
 const {
     somenteNumeros,
@@ -149,7 +150,7 @@ class adminController {
         }
     }
 
-    // =========== GERENCIAR PRODUTO
+        // =========== GERENCIAR PRODUTO
 
     rotaGerenciarProdutoView(req, res) {
         res.render("admin/produto");
@@ -188,6 +189,39 @@ class adminController {
     async rotaAtualizarProduto(req, res) {
 
     }
+
+    // ==================== MARCA
+    async rotaGerenciarMarca(req, res) {
+        let marca = new MarcaModel();
+        let listaMarcas = await marca.listarMarcas();
+        res.render("admin/gerenciamentoMarca", {
+        marcas: listaMarcas,
+        });
+    }
+
+    async rotaCadastrarMarca(req, res) {
+        if (req.body.nome != "") {
+            let marca = new MarcaModel(0, req.body.nome);
+            let result = await marca.cadastrarMarca();
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false })
+        }
+    }
+
+    async rotaExcluirMarca(req, res) {
+        let idExclusao = req.body.id;
+        if (idExclusao && idExclusao > 0) {
+            let marca = new MarcaModel();
+            let result = await marca.excluirMarca(idExclusao);
+
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
+    // =================== MARCA -
 }
 
 module.exports = adminController;

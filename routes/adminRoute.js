@@ -21,4 +21,8 @@ router.get("/admin/produto/gerenciamento-produto", controller.rotaGerenciarProdu
 router.post("/admin/produto/cadastrar-produto", controller.rotaCadastrarProduto);
 router.post("/admin/produto/excluir-produto", controller.rotaExcluirProduto);
 
+router.get("/admin/produto/gerenciamento-marca", controller.rotaGerenciarMarca);
+router.post("/admin/produto/cadastrar-marca", controller.rotaCadastrarMarca);
+router.post("/admin/produto/excluir-marca", controller.rotaExcluirMarca);
+
 module.exports = router;

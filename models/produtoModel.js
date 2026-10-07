@@ -138,6 +138,24 @@ class ProdutoModel {
 
     return result;
   }
+
+    async obterProdutoId(id) {
+    let sql = "SELECT * FROM PRODUTO WHERE COD_PROD = ?"
+    let value = [id];
+    
+    let db = new Database();
+    let linhas = await db.ExecutaComando(sql, value);
+
+    if (linhas.length > 0) {
+        let linha = linhas[0];
+
+        let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD']);
+
+        return produto;
+    }
+
+    return null;
+  }
 }
 
 module.exports = ProdutoModel;

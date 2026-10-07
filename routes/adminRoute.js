@@ -20,7 +20,7 @@ router.get("/admin/produto", controller.rotaGerenciarProdutoView);
 router.get("/admin/produto/gerenciamento-produto", controller.rotaGerenciarProduto);
 router.post("/admin/produto/cadastrar-produto", controller.rotaCadastrarProduto);
 router.post("/admin/produto/excluir-produto", controller.rotaExcluirProduto);
-router.get("/admin/produto/gerenciamento-produto/alterar-produto", controller.rotaAtualizarProduto);
+router.get("/admin/produto/gerenciamento-produto/alterar-produto/:id", controller.rotaAtualizarProduto);
 
 router.get("/admin/produto/gerenciamento-marca", controller.rotaGerenciarMarca);
 router.post("/admin/produto/cadastrar-marca", controller.rotaCadastrarMarca);

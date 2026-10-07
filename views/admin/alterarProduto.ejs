@@ -19,6 +19,7 @@
     />
 
     <link rel="stylesheet" href="/style/admin.css" />
+    <script src="/js/cadastrarProduto.js"></script>
   </head>
 
   <body>
@@ -88,6 +89,8 @@
 
     <!-- CONTEÚDO -->
 
+    <input type="hidden" data-id="<%= produtoId.id %>">
+
     <div class="container">
       <div class="editar-cliente-card">
         <!-- CABEÇALHO -->
@@ -134,6 +137,8 @@ DADOS CADASTRAIS DO PRODUTO
               <p>Altere as informações do produto.</p>
             </div>
 
+
+
             <!-- LINHA 1: NOME E MARCA -->
 
             <div class="row">
@@ -149,6 +154,7 @@ DADOS CADASTRAIS DO PRODUTO
                   class="form-control"
                   id="nomeProd"
                   placeholder="Digite o nome do produto"
+                  value="<%= produtoId.nome %>"
                 />
               </div>
 
@@ -164,6 +170,7 @@ DADOS CADASTRAIS DO PRODUTO
                   class="form-control"
                   id="descRed"
                   placeholder="Digite a descrição reduzida do produto que será exibida na página"
+                  value="<%= produtoId.desc_red%>"
                 />
               </div>
             </div>
@@ -183,7 +190,7 @@ DADOS CADASTRAIS DO PRODUTO
 
                   <% for (let i=0;i<categorias.length;i++) { %>
 
-                  <option value="<%=categorias[i].COD_CAT%>">
+                  <option value="<%=categorias[i].COD_CAT%>" <%= produto.categoria === categorias[i].COD_CAT ? 'selected' : ''%> >
                     <%= categorias[i].NOME_CAT %>
                   </option>
 
@@ -203,7 +210,7 @@ DADOS CADASTRAIS DO PRODUTO
 
                   <% for (let i=0;i<marcas.length;i++) { %>
 
-                  <option value="<%=marcas[i].COD_MAR%>">
+                  <option value="<%=marcas[i].COD_MAR%>" <%= produto.marca === marcas[i].COD_MAR ? 'selected' : ''%>>
                     <%= marcas[i].NOME_MAR %>
                   </option>
 

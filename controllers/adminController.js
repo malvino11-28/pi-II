@@ -229,6 +229,7 @@ class adminController {
   }
 
   async rotaCadastrarProduto(req, res) {
+    let result;
     if (
       req.body.marca != "0" &&
       req.body.categoria != "0" &&
@@ -248,8 +249,11 @@ class adminController {
         req.body.uni,
         req.body.valor,
       );
-      let result = await produto.cadastrarProduto();
-
+      if (req.body.id > 0) {
+        result = await produto.atualizarProduto();
+      } else {
+        result = await produto.cadastrarProduto();
+      }
       res.send({ ok: result });
     } else {
       res.send({ ok: false });
@@ -269,15 +273,19 @@ class adminController {
   }
 
   async rotaAtualizarProduto(req, res) {
+    let id = req.params.id;
+    let produto = new ProdutoModel();
     let marca = new MarcaModel();
     let categoria = new CategoriaModel();
 
+    let produtoId = produto.obterProdutoId(id);
     let listaMarcas = await marca.listarMarcas();
     let listaCategorias = await categoria.listarCategoria();
 
     res.render("admin/alterarProduto", {
       marcas: listaMarcas,
       categorias: listaCategorias,
+      produto: produtoId
     });
   }
 

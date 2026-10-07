@@ -1,12 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     let btnCadastrar = document.querySelector("#btnSalvar");
     let btnExcluir = document.querySelectorAll(".btn-excluir");
+    let btnAlterar = document.querySelector("#btnSalvarAlteracao");
 
     for(let i = 0; i < btnExcluir.length; i++) {
         btnExcluir[i].addEventListener("click", excluirProduto);
     }
 
     btnCadastrar.addEventListener("click", cadastrarProduto);
+
+    btnAlterar.addEventListener("click", alterarProduto);
 
     let nome = document.querySelector("#nomeProd"); //nomeProd
     let marca = document.querySelector("#marca");// marca
@@ -69,12 +72,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }).then(function (resBody) {
                 if (resBody.ok) {
-                    alert("Produto excluída com sucesso!");
+                    alert("Produto excluído com sucesso!");
                     window.location.reload();
                 } else {
                     alert("Erro ao excluir produto.");
                 }
             })
+        }
+    }
+
+    function alterarProduto() {
+        let idAlteracao = this.dataset.id;
+
+        if (idAlteracao > 0 && nome.value.trim() != "" && marca.value != "0" && categoria.value != "0" && desc.value.trim() != "" && descRed.value.trim() != "" && uniMedida.value != "0" && valor.value != "") {
+            let obj = {
+                id: idAlteracao.value,
+                nome: nome.value,
+                marca: marca.value,
+                categoria: categoria.value,
+                desc: desc.value,
+                desc_red: descRed.value,
+                uni: uniMedida.value,
+                valor: valor.value,
+            }
+
+            fetch("/admin/produto/gerenciar-produto/alterar-produto/:id",
+                {
+                    method: "POST",
+                    body: JSON.stringify(obj),
+                    headers: { "Content-Type": "application/json"},
+                }).then((res) => {
+                    return res.json();
+                }).then((resBody) => {
+                    if (resBody.ok) {
+                        alert("Produto atualizado com sucesso!");
+                        window.location.reload();
+                    } else {
+                        alert("Erro ao atualizar produto.");
+                    }
+                })
         }
     }
 })

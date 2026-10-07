@@ -25,4 +25,9 @@ router.get("/admin/produto/gerenciamento-marca", controller.rotaGerenciarMarca);
 router.post("/admin/produto/cadastrar-marca", controller.rotaCadastrarMarca);
 router.post("/admin/produto/excluir-marca", controller.rotaExcluirMarca);
 
+router.get("/admin/produto/gerenciamento-categoria", controller.rotaGerenciarCategoria);
+router.post("/admin/produto/cadastrar-categoria", controller.rotaCadastrarCategoria);
+router.post("/admin/produto/excluir-categoria", controller.rotaExcluirCategoria);
+router.get("/admin/produto/alterar-categoria/:id", controller.rotaAlterarCategoria);
+
 module.exports = router;

@@ -8,7 +8,7 @@
     "multer": "^2.3.0",
     "mysql2": "^3.24.2"
   },
-  "script": {
+  "scripts": {
     "start": "node --watch server.js"
   }
 }

@@ -112,6 +112,12 @@ class adminController {
         }
     }
 
+    async alterarClienteView(req, res) {
+
+        res.render("admin/")
+
+    }
+
     async rotaExcluirCliente(req, res) {
 
         let idExclusao = req.body.id;

@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function alterarProduto() {
         let idAlteracao = document.querySelector("#idProd");
 
-        if (idAlteracao > 0 && nome.value.trim() != "" && marca.value != "0" && categoria.value != "0" && desc.value.trim() != "" && descRed.value.trim() != "" && uniMedida.value != "0" && valor.value != "") {
+        if (idAlteracao.value > 0 && nome.value.trim() != "" && marca.value != "0" && categoria.value != "0" && desc.value.trim() != "" && descRed.value.trim() != "" && uniMedida.value != "0" && valor.value != "") {
             let obj = {
                 id: idAlteracao.value,
                 nome: nome.value,
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 valor: valor.value,
             }
 
-            fetch("/admin/produto/gerenciamento-produto/cadastrar-produto",
+            fetch("/admin/produto/cadastrar-produto",
                 {
                     method: "POST",
                     body: JSON.stringify(obj),

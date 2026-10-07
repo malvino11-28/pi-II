@@ -153,7 +153,7 @@ class adminController {
 
   // =========== GERENCIAR PRODUTO
 
-  
+
   // =========== GERENCIAR CATEGORIA
 
   async rotaGerenciarCategoria(req, res) {
@@ -201,13 +201,18 @@ class adminController {
 
     async rotaGerenciarProduto(req, res) {
         let produto = new ProdutoModel();
-        let listaProduto = produto.listarProdutos();
+        let marca = new MarcaModel();
+        let categoria = new CategoriaModel();
 
-        res.render("admin/gerenciamentoProduto", { produtos: listaProduto});
+        let listaProduto = await produto.listarProdutos();
+        let listaMarca = await marca.listarMarcas();
+        let listaCategoria = await categoria.listarCategoria();
+
+        res.render("admin/gerenciamentoProduto", { produtos: listaProduto, marcas: listaMarca, categorias: listaCategoria });
     }
 
     async rotaCadastrarProduto(req, res) {
-        if (req.body.marca != "" && req.body.categoria != "" && req.body.nome != "" && req.body.desc != "" && req.body.desc_red != "" && req.body.uni != "" && req.body.valor != "") {
+        if (req.body.marca != "0" && req.body.categoria != "0" && req.body.nome != "" && req.body.desc != "" && req.body.desc_red != "" && req.body.uni != "0" && req.body.valor != "") {
             let produto = new ProdutoModel(0, req.body.marca, req.body.categoria, req.body.nome, req.body.desc, req.body.desc_red, req.body.uni, req.body.valor);
             let result = await produto.cadastrarProduto();
 

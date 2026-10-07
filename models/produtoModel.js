@@ -89,6 +89,8 @@ class ProdutoModel {
       
       lista.push(produto);
     }
+
+    return lista;
   }
 
   async cadastrarProduto() {

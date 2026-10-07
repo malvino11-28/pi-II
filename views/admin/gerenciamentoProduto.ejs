@@ -98,7 +98,7 @@
         <!-- LINHA 1 -->
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="nomeCli" class="form-label">
+            <label for="nomeProd" class="form-label">
               <i class="bi bi-person"></i> Nome do Produto *
             </label>
             <input type="text" class="form-control" id="nomeProd" placeholder="Digite o nome do produto">
@@ -111,8 +111,11 @@
             <label for="marca" class="form-label">
               <i class="bi bi-telephone"></i> Marca *
             </label>
-            <select name="" id="marca">
-              <option value="0">-- Selecione uma Medida --</option>
+            <select class="form-control" id="marca">
+              <option value="0">-- Selecione uma Marca --</option>
+              <% for (let i=0;i<marcas.length;i++) { %> 
+                  <option value="<%=marcas[i].COD_MAR%>"><%= marcas[i].NOME_MAR %></option>
+              <% } %>
             </select>
           </div>
 
@@ -122,34 +125,21 @@
             <label for="categoria" class="form-label">
               <i class="bi bi-telephone"></i> Categoria *
             </label>
-            <select name="" id="categoria">
-              <option value="0">-- Selecione uma Medida --</option>
+            <select class="form-control" id="categoria">
+              <option value="0">-- Selecione uma Categoria --</option>
+              <% for (let i=0;i<categorias.length;i++) { %> 
+                  <option value="<%=categorias[i].COD_CAT%>"><%= categorias[i].NOME_CAT %></option>
+              <% } %>
             </select>
           </div>
 
-          <!-- <div class="col-md-6 mb-3">
-            <label for="emailCli" class="form-label">
-              <i class="bi bi-envelope"></i> E-mail *
-            </label>
-            <input type="email" class="form-control" id="emailCli" placeholder="exemplo@email.com">
-          </div>
-        </div> -->
-
-        <!-- LINHA 2
-        <div class="row">
           <div class="col-md-4 mb-3">
-            <label for="cpfCli" class="form-label">
-              <i class="bi bi-card-text"></i> CPF *
-            </label>
-            <input type="text" class="form-control" id="cpfCli" placeholder="000.000.000-00" maxlength="14">
-          </div> -->
-
-          <div class="col-md-4 mb-3">
-            <label for="rgCli" class="form-label">
+            <label for="desc" class="form-label">
               <i class="bi bi-person-vcard"></i> Descrição do Produto *
             </label>
-            <input type="textarea" class="form-control" id="desc" placeholder="Digite a descrição que será exibida na página">
+            <textarea class="form-control" id="desc" rows="3" placeholder="Digite a descrição que será exibida na página"></textarea>
           </div>
+
 
           <div class="row">
             <div class="col-md-6 mb-3">
@@ -166,7 +156,7 @@
             <label for="uniMedida" class="form-label">
               <i class="bi bi-telephone"></i> Unidade de Medida *
             </label>
-            <select name="" id="uniMedida">
+            <select class="form-control" id="uniMedida">
               <option value="0">-- Selecione uma Medida --</option>
               <option value="UN">UN (Unidade) </option>
               <option value="KG">KG (quilograma)</option>
@@ -231,8 +221,16 @@
                 <tr>
                   <td>#<%= produtos[i].COD_PROD %></td>
                   <td class="cliente-nome"><%= produtos[i].NOME_PROD %></td>
-                  <td><%= produtos[i].COD_MAR %></td>
-                  <td><%= produtos[i].COD_CAT %></td>
+                  <% for (let j=0;j<marcas.length;j++) { %>
+                    <% if (produtos[i].COD_MAR == marcas[j].COD_MAR) { %>
+                      <td><%= marcas[j].NOME_MAR %></td>
+                    <% } %>
+                  <% }%>
+                  <% for (let j=0;j<categorias.length;j++) { %>
+                    <% if (produtos[i].COD_CAT == categorias[j].COD_CAT) { %>
+                      <td><%= categorias[j].NOME_CAT %></td>
+                    <% } %>
+                  <% }%>
                   <td><%= produtos[i].DESC_PROD%></td>
                   <td><%= produtos[i].DESC_RED_PROD%></td>
                   <td><%= produtos[i].UNI_MEDIDA_PROD %></td>

@@ -102,23 +102,7 @@ class ProdutoModel {
 
     return result;
   }
-
-  async obterPorId(id) {
-    let sql = "SELECT * FROM PRODUTO WHERE COD_PROD = ?";
-    let value = [id];
-    let db = new Database();
-
-    let linhas = await db.ExecutaComando(sql, values);
-
-    if (linhas.length > 0) {
-      let linha = linhas[0];
-      
-      let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD']);
-      return produto;
-    }
-    return null;
-  }
-
+  
   async excluirProduto(id) {
     let sql = "DELETE FROM PRODUTO WHERE COD_PROD = ?";
     let value = [id];
@@ -130,8 +114,8 @@ class ProdutoModel {
   }
 
   async atualizarProduto() {
-    let sql = "UPDATE PRODUTO SET COD_MAR = ?, COD_CAT = ?, NOME_PROD = ?, DESC_PROD = ?, DESC_RED_PROD = ?, UNI_MEDIDA_PROD = ?, VALOR_UNI_PROD = ?";
-    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD];
+    let sql = "UPDATE PRODUTO SET COD_MAR = ?, COD_CAT = ?, NOME_PROD = ?, DESC_PROD = ?, DESC_RED_PROD = ?, UNI_MEDIDA_PROD = ?, VALOR_UNI_PROD = ? WHERE COD_PROD = ?";
+    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD, this.#COD_PROD];
     let db = new Database();
 
     let result = await db.ExecutaComandoNonQuery(sql, values);

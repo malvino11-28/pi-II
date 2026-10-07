@@ -89,7 +89,7 @@
 
     <!-- CONTEÚDO -->
 
-    <input type="hidden" data-id="<%= produtoId.id %>">
+    <input type="hidden" id="idProd" value="<%= produto.COD_PROD %>">
 
     <div class="container">
       <div class="editar-cliente-card">
@@ -154,7 +154,7 @@ DADOS CADASTRAIS DO PRODUTO
                   class="form-control"
                   id="nomeProd"
                   placeholder="Digite o nome do produto"
-                  value="<%= produtoId.nome %>"
+                  value="<%= produto.NOME_PROD %>"
                 />
               </div>
 
@@ -170,7 +170,7 @@ DADOS CADASTRAIS DO PRODUTO
                   class="form-control"
                   id="descRed"
                   placeholder="Digite a descrição reduzida do produto que será exibida na página"
-                  value="<%= produtoId.desc_red%>"
+                  value="<%= produto.DESC_RED_PROD%>"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ DADOS CADASTRAIS DO PRODUTO
 
                   <% for (let i=0;i<categorias.length;i++) { %>
 
-                  <option value="<%=categorias[i].COD_CAT%>" <%= produto.categoria === categorias[i].COD_CAT ? 'selected' : ''%> >
+                  <option value="<%=categorias[i].COD_CAT%>" <%= produto.COD_CAT === categorias[i].COD_CAT ? 'selected' : ''%> >
                     <%= categorias[i].NOME_CAT %>
                   </option>
 
@@ -210,7 +210,7 @@ DADOS CADASTRAIS DO PRODUTO
 
                   <% for (let i=0;i<marcas.length;i++) { %>
 
-                  <option value="<%=marcas[i].COD_MAR%>" <%= produto.marca === marcas[i].COD_MAR ? 'selected' : ''%>>
+                  <option value="<%=marcas[i].COD_MAR%>" <%= produto.COD_MAR === marcas[i].COD_MAR ? 'selected' : ''%>>
                     <%= marcas[i].NOME_MAR %>
                   </option>
 
@@ -234,7 +234,8 @@ DADOS CADASTRAIS DO PRODUTO
                   id="desc"
                   rows="3"
                   placeholder="Digite a descrição que será exibida na página"
-                ></textarea>
+                  
+                ><%=produto.DESC_PROD%></textarea>
               </div>
             </div>
 
@@ -250,16 +251,11 @@ DADOS CADASTRAIS DO PRODUTO
 
                 <select class="form-control" id="uniMedida">
                   <option value="0">-- Selecione uma Medida --</option>
-
-                  <option value="UN">UN (Unidade)</option>
-
-                  <option value="KG">KG (quilograma)</option>
-
-                  <option value="G">G (grama)</option>
-
-                  <option value="L">L (litro)</option>
-
-                  <option value="ML">ML (mililitro)</option>
+                  <option value="UN" <%= produto.UNI_MEDIDA_PROD === "UN" ? 'selected' : ''%> >UN (Unidade)</option>
+                  <option value="KG" <%= produto.UNI_MEDIDA_PROD === "KG" ? 'selected' : ''%> >KG (quilograma)</option>
+                  <option value="G" <%= produto.UNI_MEDIDA_PROD === "G" ? 'selected' : ''%> >G (grama)</option>
+                  <option value="L" <%= produto.UNI_MEDIDA_PROD === "L" ? 'selected' : ''%> >L (litro)</option>
+                  <option value="ML" <%= produto.UNI_MEDIDA_PROD === "ML" ? 'selected' : ''%> >ML (mililitro)</option>
                 </select>
               </div>
 
@@ -275,6 +271,7 @@ DADOS CADASTRAIS DO PRODUTO
                   class="form-control"
                   id="valor"
                   placeholder="0,00"
+                  value="<%=produto.VALOR_UNI_PROD%>"
                 />
               </div>
             </div>

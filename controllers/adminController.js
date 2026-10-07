@@ -239,7 +239,20 @@ class adminController {
       req.body.uni != "0" &&
       req.body.valor != ""
     ) {
-      let produto = new ProdutoModel(
+      if (req.body.id > 0) {
+        let produto = new ProdutoModel(
+        req.body.id,
+        req.body.marca,
+        req.body.categoria,
+        req.body.nome,
+        req.body.desc,
+        req.body.desc_red,
+        req.body.uni,
+        req.body.valor,
+      );
+        result = await produto.atualizarProduto();
+      } else {
+        let produto = new ProdutoModel(
         0,
         req.body.marca,
         req.body.categoria,
@@ -249,9 +262,6 @@ class adminController {
         req.body.uni,
         req.body.valor,
       );
-      if (req.body.id > 0) {
-        result = await produto.atualizarProduto();
-      } else {
         result = await produto.cadastrarProduto();
       }
       res.send({ ok: result });
@@ -278,7 +288,7 @@ class adminController {
     let marca = new MarcaModel();
     let categoria = new CategoriaModel();
 
-    let produtoId = produto.obterProdutoId(id);
+    let produtoId = await produto.obterProdutoId(id);
     let listaMarcas = await marca.listarMarcas();
     let listaCategorias = await categoria.listarCategoria();
 

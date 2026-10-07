@@ -3,13 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
     let btnExcluir = document.querySelectorAll(".btn-excluir");
     let btnAlterar = document.querySelector("#btnSalvarAlteracao");
 
-    for(let i = 0; i < btnExcluir.length; i++) {
-        btnExcluir[i].addEventListener("click", excluirProduto);
+    if (btnExcluir.length > 0) {
+        for(let i = 0; i < btnExcluir.length; i++) {
+            btnExcluir[i].addEventListener("click", excluirProduto);
+        }
     }
 
-    btnCadastrar.addEventListener("click", cadastrarProduto);
+    if (btnCadastrar) {
+        btnCadastrar.addEventListener("click", cadastrarProduto);
+    }
 
-    btnAlterar.addEventListener("click", alterarProduto);
+    if (btnAlterar) {
+        btnAlterar.addEventListener("click", alterarProduto);
+    }
 
     let nome = document.querySelector("#nomeProd"); //nomeProd
     let marca = document.querySelector("#marca");// marca
@@ -82,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function alterarProduto() {
-        let idAlteracao = this.dataset.id;
+        let idAlteracao = document.querySelector("#idProd");
 
         if (idAlteracao > 0 && nome.value.trim() != "" && marca.value != "0" && categoria.value != "0" && desc.value.trim() != "" && descRed.value.trim() != "" && uniMedida.value != "0" && valor.value != "") {
             let obj = {
@@ -96,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 valor: valor.value,
             }
 
-            fetch("/admin/produto/gerenciar-produto/alterar-produto/:id",
+            fetch("/admin/produto/gerenciamento-produto/cadastrar-produto",
                 {
                     method: "POST",
                     body: JSON.stringify(obj),

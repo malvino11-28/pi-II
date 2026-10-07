@@ -237,7 +237,7 @@
                   <td><%= produtos[i].VALOR_UNI_PROD %></td>
                   <td>
                     <div class="acoes-cliente">
-                      <a href="/admin/produto/gerenciamento-produto/alterar-produto">
+                      <a href="/admin/produto/gerenciamento-produto/alterar-produto/<%= produtos[i].COD_PROD %>">
                         <button type="button" class="btn-acao btn-editar" data-id="<%= produtos[i].COD_PROD %>" title="Editar">
                           <i class="bi bi-pencil"></i>
                         </button>

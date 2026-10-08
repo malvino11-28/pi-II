@@ -164,7 +164,16 @@ class adminController {
                 somenteNumeros(req.body.telefone)
             );
 
-            let result = await fornecedor.cadastrarFornecedor();
+            let retornoBan = false;
+
+            if(req.body.id) {
+                cliente.COD_FOR = req.body.id;
+                retornoBan = await fornecedor.atualizarFornecedor();
+
+            } else {
+
+                retornoBan = await fornecedor.cadastrarFornecedor;
+            }
 
             res.send({ ok: result });
 
@@ -175,6 +184,13 @@ class adminController {
 
     async rotaAlterarFornecedorView(req, res) {
         
+        let idFornecedor = req.params.id;
+        let fornecedor = new FornecedorModel();
+        fornecedor = await fornecedor.obterPorId(idFornecedor);
+
+        res.render("admin/alterarFornecedor", {
+            forAlter: fornecedor
+        });
     }
 
     async rotaExcluirFornecedor(req, res) {

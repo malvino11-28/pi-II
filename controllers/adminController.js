@@ -171,7 +171,11 @@ class adminController {
         } else {
             res.send({ ok: false });
         }
-}
+    }
+
+    async rotaAlterarFornecedorView(req, res) {
+        
+    }
 
     async rotaExcluirFornecedor(req, res) {
 

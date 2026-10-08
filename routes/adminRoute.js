@@ -14,6 +14,7 @@ router.post("/admin/excluir-cliente", controller.rotaExcluirCliente);
 
 router.get("/admin/cadastrar-fornecedor", controller.rotaCadastrarFornecedorView);
 router.post("/admin/cadastrar-fornecedor", controller.rotaCadastrarFornecedor);
+router.get("/admin/alterar-fornecedor/:id", controller.rotaAlterarFornecedorView);
 router.post("/admin/excluir-fornecedor", controller.rotaExcluirFornecedor);
 
 module.exports = router;

@@ -136,9 +136,11 @@
                   <td class="cliente-nome"><%= marcas[i].NOME_MAR %></td>
                   <td>
                     <div class="acoes-cliente">
-                      <button type="button" class="btn-acao btn-editar" data-id="<%= marcas[i].COD_MAR %>" title="Editar">
-                        <i class="bi bi-pencil"></i>
-                      </button>
+                      <a href="/admin/produto/gerenciamento-marca/alterar-marca/<%= marcas[i].COD_MAR %>">
+                        <button type="button" class="btn-acao btn-editar" data-id="<%= marcas[i].COD_MAR %>" title="Editar">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </a>
                       <button type="button" class="btn-acao btn-excluir" data-id="<%= marcas[i].COD_MAR %>" title="Excluir">
                         <i class="bi bi-trash"></i>
                       </button>

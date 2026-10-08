@@ -1,12 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
     let btnCadastrar = document.querySelector("#btnSalvar");
     let btnExcluir = document.querySelectorAll(".btn-excluir");
+    let btnAlterar = document.querySelector("#btnSalvarAlteracao");
 
-    for(let i = 0; i < btnExcluir.length; i++) {
-        btnExcluir[i].addEventListener("click", excluirMarca);
+    if (btnExcluir.length > 0) {
+        for(let i = 0; i < btnExcluir.length; i++) {
+            btnExcluir[i].addEventListener("click", excluirMarca);
+        }
     }
 
-    btnCadastrar.addEventListener("click", cadastrarMarca);
+    if (btnCadastrar) {
+        btnCadastrar.addEventListener("click", cadastrarMarca);
+    }
+
+    if (btnAlterar) {
+        btnAlterar.addEventListener("click", alterarMarca);
+    }
 
     let nome = document.querySelector("#nomeMar");
 
@@ -64,4 +73,32 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         }
     }
-})
+
+    function alterarMarca() {
+        let idAlteracao = document.querySelector("#idMar");
+
+        if (idAlteracao.value > 0 && nome.value.trim() != "") {
+            
+            let obj = {
+                id: idAlteracao.value,
+                nome: nome.value,
+                }
+
+            fetch("/admin/produto/cadastrar-marca", {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: { "Content-Type": "application/json" },
+                }
+            ).then((res) => {
+                return res.json();
+            }).then((resBody) => {
+                if (resBody.ok) {
+                    alert("Marca atualizada com sucesso!");
+                    window.location.reload();
+                } else {
+                    alert("Erro ao atualizar marca.");
+                }
+            });
+        }
+    }
+});

@@ -316,9 +316,16 @@ class adminController {
   }
 
   async rotaCadastrarMarca(req, res) {
+    let result;
     if (req.body.nome != "") {
-      let marca = new MarcaModel(0, req.body.nome);
-      let result = await marca.cadastrarMarca();
+      if (req.body.id > 0) {
+        let marca = new MarcaModel(req.body.id, req.body.nome);
+        result = await marca.atualizarMarca();
+      } else {
+        let marca = new MarcaModel(0, req.body.nome);
+        result = await marca.cadastrarMarca();
+      }
+
       res.send({ ok: result });
     } else {
       res.send({ ok: false });
@@ -338,7 +345,11 @@ class adminController {
   }
 
   async rotaAlterarMarca(req, res) {
-    res.render("admin/alterarMarca");
+    let id = req.params.id;
+    let marca = new MarcaModel();
+
+    marca = await marca.obterMarcaId(id);
+    res.render("admin/alterarMarca", { marca });
   }
 
   // =================== MARCA -

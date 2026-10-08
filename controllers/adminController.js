@@ -65,8 +65,11 @@ class adminController {
                 erros.push("Celular inválido.");
             }
 
-            if (!validarSenha(req.body.senha)) {
-                erros.push("A senha deve ter ao menos 8 caracteres.");
+            // Exige senha no cadastro ou quando uma nova senha é enviada na edição.
+            if (!req.body.id || req.body.senha) {
+                if (!validarSenha(req.body.senha)) {
+                    erros.push("A senha deve ter ao menos 8 caracteres.");
+                }
             }
 
             if (erros.length > 0) {

@@ -95,16 +95,16 @@
 
                     <div class="row">
 
-                        <input id="inputId" type="hidden" value="<%= cliAlter.id %>">
+                        <input id="inputId" type="hidden" value="<%= cliAlter.COD_CLI %>">
 
                         <div class="col-md-6 mb-3">
                             <label for="nomeCli" class="form-label"><i class="bi bi-person"></i> Nome Completo *</label>
-                            <input type="text" class="form-control" id="nomeCli" placeholder="Digite o nome completo">
+                            <input value="<%= cliAlter.NOME_CLI %>" type="text" class="form-control" id="nomeCli" placeholder="Digite o nome completo">
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="emailCli" class="form-label"><i class="bi bi-envelope"></i> E-mail *</label>
-                            <input type="email" class="form-control" id="emailCli" placeholder="exemplo@email.com">
+                            <input value="<%= cliAlter.EMAIL_CLI %>" type="email" class="form-control" id="emailCli" placeholder="exemplo@email.com">
                         </div>
 
                     </div>
@@ -114,17 +114,17 @@
 
                         <div class="col-md-4 mb-3">
                             <label for="cpfCli" class="form-label"><i class="bi bi-card-text"></i> CPF *</label>
-                            <input type="text" class="form-control" id="cpfCli" placeholder="000.000.000-00" maxlength="14">
+                            <input value="<%= formatarCPF(cliAlter.CPF_CLI) %>" type="text" class="form-control" id="cpfCli" placeholder="000.000.000-00" maxlength="14">
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <label for="rgCli" class="form-label"><i class="bi bi-person-vcard"></i> RG *</label>
-                            <input type="text" class="form-control" id="rgCli" placeholder="00.000.000-0" maxlength="14">
+                            <input value="<%= cliAlter.RG_CLI %>" type="text" class="form-control" id="rgCli" placeholder="00.000.000-0" maxlength="14">
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <label for="dataNascCli" class="form-label"><i class="bi bi-calendar"></i> Data de Nascimento *</label>
-                            <input type="date" class="form-control" id="dataNascCli">
+                            <input value="<%= formatarData(cliAlter.DATA_NASC_CLI).split('/').reverse().join('-') %>" type="date" class="form-control" id="dataNascCli">
                         </div>
 
                     </div>
@@ -134,7 +134,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="celCli" class="form-label"><i class="bi bi-telephone"></i> Celular *</label>
-                            <input type="text" class="form-control" id="celCli" placeholder="(00) 00000-0000" maxlength="15">
+                            <input value="<%= formatarTelefone(cliAlter.CELULAR_CLI) %>" type="text" class="form-control" id="celCli" placeholder="(00) 00000-0000" maxlength="15">
                         </div>
 
                     </div>

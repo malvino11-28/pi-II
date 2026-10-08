@@ -118,6 +118,11 @@ body {
     text-align: center;
     border-left: 4px solid rgb(238, 123, 48);
     height: 100%;
+    transition: 0.3s;
+}
+
+.stat-card:hover{
+    transform: translateY(-5px);
 }
 
 .stat-icon {

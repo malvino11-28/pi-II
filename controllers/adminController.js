@@ -172,12 +172,13 @@ class adminController {
 
             } else {
 
-                retornoBan = await fornecedor.cadastrarFornecedor;
+                retornoBan = await fornecedor.cadastrarFornecedor();
             }
 
             res.send({ ok: result });
 
         } else {
+            
             res.send({ ok: false });
         }
     }

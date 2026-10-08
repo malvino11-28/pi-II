@@ -226,7 +226,6 @@ class adminController {
     async rotaGerenciarCategoria(req, res) {
   let categoria = new CategoriaModel();
   let listaCategoria = await categoria.listarCategoria();
-  console.log(listaCategoria);
   res.render("admin/gerenciamentoCategoria", { categorias: listaCategoria });
 }
 
@@ -263,7 +262,6 @@ async rotaAlterarCategoria(req, res) {
   let categoria = new CategoriaModel();
 
   categoria = await categoria.obterCategoriaId(id);
-  console.log(categoria);
   res.render("admin/alterarCategoria", { categoria }); //
 }
 
@@ -432,6 +430,7 @@ async rotaGerenciamentoLote(req, res) {
 async rotaCadastrarLote(req, res) {
   let result;
 
+  let id = req.body.id;
   let idProduto = req.body.produto;
   let numeroLote = req.body.numeroLote;
   let dataFabricacao = req.body.dataFabricacao || null;

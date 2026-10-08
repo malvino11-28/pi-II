@@ -1,5 +1,9 @@
 const ClienteModel = require("../models/clienteModel");
 const FornecedorModel = require("../models/fornecedorModel");
+const CategoriaModel = require("../models/categoriaModel");
+const ProdutoModel = require("../models/produtoModel");
+const MarcaModel = require("../models/marcaModel");
+const LoteModel = require("../models/loteModel");
 
 const {
     somenteNumeros,
@@ -18,12 +22,16 @@ class adminController {
         let cliente = new ClienteModel();
         let listaClientes = await cliente.listarClientes();
 
+        let produtos = new ProdutoModel();
+        let listarProdutos = await produtos.listarProdutos();
+
         let fornecedor = new FornecedorModel();
         let listarFornecedores = await fornecedor.listarFornecedores()
 
         res.render("admin/dashboard", {
             clientes: listaClientes,
-            fornecedores: listarFornecedores
+            fornecedores: listarFornecedores,
+            produtos: listarProdutos,
         });
     }
 

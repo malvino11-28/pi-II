@@ -213,6 +213,284 @@ class adminController {
         }
     }
 
+    /////////////////
+
+    async rotaGerenciarCategoria(req, res) {
+  let categoria = new CategoriaModel();
+  let listaCategoria = await categoria.listarCategoria();
+  console.log(listaCategoria);
+  res.render("admin/gerenciamentoCategoria", { categorias: listaCategoria });
+}
+
+async rotaCadastrarCategoria(req, res) {
+  let result;
+  if (req.body.nome != "") {
+    if (req.body.id > 0) {
+      let categoria = new CategoriaModel(req.body.id, req.body.nome);
+      result = await categoria.atualizarCategoria();
+    } else {
+      let categoria = new CategoriaModel(0, req.body.nome);
+      result = await categoria.cadastrarCategoria();
+    }
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaExcluirCategoria(req, res) {
+  let id = req.body.id;
+  if (id && id > 0) {
+    let categoria = new CategoriaModel();
+    let result = await categoria.excluirCategoria(id);
+
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaAlterarCategoria(req, res) {
+  let id = req.params.id;
+  let categoria = new CategoriaModel();
+
+  categoria = await categoria.obterCategoriaId(id);
+  console.log(categoria);
+  res.render("admin/alterarCategoria", { categoria }); //
+}
+
+async rotaGerenciarProdutoView(req, res) {
+  let produto = new ProdutoModel();
+  let marca = new MarcaModel();
+  let categoria = new CategoriaModel();
+
+  let listaProduto = await produto.listarProdutos();
+  let listaMarca = await marca.listarMarcas();
+  let listaCategoria = await categoria.listarCategoria();
+  res.render("admin/produto", {
+    produtos: listaProduto,
+    marcas: listaMarca,
+    categorias: listaCategoria,
+  });
+}
+
+async rotaGerenciarProduto(req, res) {
+  let produto = new ProdutoModel();
+  let marca = new MarcaModel();
+  let categoria = new CategoriaModel();
+
+  let listaProduto = await produto.listarProdutos();
+  let listaMarca = await marca.listarMarcas();
+  let listaCategoria = await categoria.listarCategoria();
+
+  res.render("admin/gerenciamentoProduto", {
+    produtos: listaProduto,
+    marcas: listaMarca,
+    categorias: listaCategoria,
+  });
+}
+
+async rotaCadastrarProduto(req, res) {
+  let result;
+  if (
+    req.body.marca != "0" &&
+    req.body.categoria != "0" &&
+    req.body.nome != "" &&
+    req.body.desc != "" &&
+    req.body.desc_red != "" &&
+    req.body.uni != "0" &&
+    req.body.valor != ""
+  ) {
+    if (req.body.id > 0) {
+      let produto = new ProdutoModel(
+        req.body.id,
+        req.body.marca,
+        req.body.categoria,
+        req.body.nome,
+        req.body.desc,
+        req.body.desc_red,
+        req.body.uni,
+        req.body.valor,
+      );
+      result = await produto.atualizarProduto();
+    } else {
+      let produto = new ProdutoModel(
+        0,
+        req.body.marca,
+        req.body.categoria,
+        req.body.nome,
+        req.body.desc,
+        req.body.desc_red,
+        req.body.uni,
+        req.body.valor,
+      );
+      result = await produto.cadastrarProduto();
+    }
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaExcluirProduto(req, res) {
+  let id = req.body.id;
+  if (id && id > 0) {
+    let produto = new ProdutoModel();
+    let result = await produto.excluirProduto(id);
+
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaAtualizarProduto(req, res) {
+  let id = req.params.id;
+  let produto = new ProdutoModel();
+  let marca = new MarcaModel();
+  let categoria = new CategoriaModel();
+
+  let produtoId = await produto.obterProdutoId(id);
+  let listaMarcas = await marca.listarMarcas();
+  let listaCategorias = await categoria.listarCategoria();
+
+  res.render("admin/alterarProduto", {
+    marcas: listaMarcas,
+    categorias: listaCategorias,
+    produto: produtoId,
+  });
+}
+
+async rotaGerenciarMarca(req, res) {
+  let marca = new MarcaModel();
+  let listaMarcas = await marca.listarMarcas();
+  res.render("admin/gerenciamentoMarca", {
+    marcas: listaMarcas,
+  });
+}
+
+async rotaCadastrarMarca(req, res) {
+  let result;
+  if (req.body.nome != "") {
+    if (req.body.id > 0) {
+      let marca = new MarcaModel(req.body.id, req.body.nome);
+      result = await marca.atualizarMarca();
+    } else {
+      let marca = new MarcaModel(0, req.body.nome);
+      result = await marca.cadastrarMarca();
+    }
+
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaExcluirMarca(req, res) {
+  let idExclusao = req.body.id;
+  if (idExclusao && idExclusao > 0) {
+    let marca = new MarcaModel();
+    let result = await marca.excluirMarca(idExclusao);
+
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaAlterarMarca(req, res) {
+  let id = req.params.id;
+  let marca = new MarcaModel();
+
+  marca = await marca.obterMarcaId(id);
+  res.render("admin/alterarMarca", { marca });
+}
+
+async rotaGerenciamentoLote(req, res) {
+  let idProduto = req.params.id;
+
+  let produtoModel = new ProdutoModel();
+  let loteModel = new LoteModel();
+
+  let produto = await produtoModel.obterProdutoId(idProduto);
+  let lotes = await loteModel.listarLoteProduto(idProduto);
+
+  res.render("admin/gerenciamentoLote", {
+    produto: produto,
+    lotes: lotes,
+  });
+}
+
+async rotaCadastrarLote(req, res) {
+  let result;
+
+  let idProduto = req.body.produto;
+  let numeroLote = req.body.numeroLote;
+  let dataFabricacao = req.body.dataFabricacao || null;
+  let dataVencimento = req.body.dataVencimento;
+  let estoque = req.body.estoque;
+
+  if (
+    idProduto > 0 &&
+    numeroLote.trim() != "" &&
+    dataVencimento != "" &&
+    estoque != "" &&
+    estoque > 0 &&
+    dataFabricacao != "" &&
+    dataVencimento > dataFabricacao
+  ) {
+    if (id > 0) {
+      let lote = new LoteModel(
+        id,
+        idProduto,
+        null,
+        numeroLote.trim(),
+        dataFabricacao,
+        dataVencimento,
+        estoque,
+      );
+      result = await lote.atualizarLote();
+    } else {
+      let lote = new LoteModel(
+        0,
+        idProduto,
+        null,
+        numeroLote.trim(),
+        dataFabricacao,
+        dataVencimento,
+        estoque,
+      );
+      result = await lote.cadastrarLote();
+    }
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
+async rotaAlterarLote(req, res) {
+  let idLote = req.params.id;
+  let loteModel = new LoteModel();
+  let produtoModel = new ProdutoModel();
+
+  let lote = await loteModel.obterLoteId(idLote);
+  let produto = await produtoModel.obterProdutoId(lote.COD_PROD);
+
+  res.render("admin/alterarLote", { lote: lote, produto: produto });
+}
+
+async rotaExcluirLote(req, res) {
+  let idLote = req.body.id;
+  if (idLote > 0) {
+    let lote = new LoteModel();
+    let result = await lote.excluirLote(idLote);
+
+    res.send({ ok: result });
+  } else {
+    res.send({ ok: false });
+  }
+}
+
 }
 
 module.exports = adminController;

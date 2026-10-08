@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <title>
+    Gerenciamento de Lotes - Corte Imperial Admin
+  </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../style/admin.css">
+  <script src="/js/cadastrarLote.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center">
+            <a href="/admin">
+              <img src="../../imgs/logo.png"alt="Corte Imperial" class="admin-logo me-3">
+            </a>
+            <div>
+              <h1 class="admin-brand"> Corte Imperial </h1>
+              <p class="admin-subtitle"> Painel Administrativo </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <span class="user-info">
+            <i class="bi bi-person-circle"></i>
+            Administrador
+          </span>
+          <button class="btn-logout">
+            <i class="bi bi-box-arrow-right"></i>
+            Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- TÍTULO -->
+  <div class="page-title-section">
+    <div class="container">
+      <h2 class="page-title">
+        Gerenciamento de Lotes
+      </h2>
+      <p class="page-breadcrumb">
+        <a href="/admin">
+          <i class="bi bi-house-door"></i>
+          Início
+        </a>
+        <i class="bi bi-chevron-right"></i>
+        <a href="/admin/produto/gerenciamento-produto">
+          Produtos
+        </a>
+        <i class="bi bi-chevron-right"></i>
+        Lotes de <%= produto.NOME_PROD %>
+      </p>
+    </div>
+  </div>
+  <div class="container">
+    <% let estoqueTotal = 0;
+      for (let i = 0; i < lotes.length; i++) {
+        estoqueTotal += lotes[i].EST_LOTE;
+      }
+    %>
+    <!-- CARDS -->
+    <div class="stats-container">
+      <div
+        class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-3">
+        <div class="col">
+          <div class="stat-card">
+            <i
+              class="bi bi-box-seam-fill stat-icon">
+            </i>
+            <p class="stat-number">
+              <%= lotes.length %>
+            </p>
+            <p class="stat-label">
+              Total de Lotes
+            </p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="stat-card">
+            <i
+              class="bi bi-boxes stat-icon">
+            </i>
+            <p class="stat-number">
+              <%= estoqueTotal %>
+            </p>
+            <p class="stat-label">
+              Estoque Total
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="alertContainer"></div>
+    <!-- FORMULÁRIO -->
+    <div class="form-card">
+      <div class="card-header-custom">
+        <h3>
+          <i class="bi bi-box-seam"></i>
+          Cadastrar Lote - <%= produto.NOME_PROD %>
+        </h3>
+      </div>
+      <form id="formLote">
+
+        <input type="hidden" id="produtoLote" value="<%= produto.COD_PROD %>">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">
+              <i class="bi bi-bag"></i>
+              Produto
+            </label>
+            <input type="text" class="form-control" value="<%= produto.NOME_PROD %>" disabled>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="numLote" class="form-label">
+              <i class="bi bi-upc-scan"></i>
+              Número do Lote *
+            </label>
+            <input type="text" class="form-control"id="numLote" maxlength="50" placeholder="LT-001">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label
+              for="dataFabLote"
+              class="form-label">
+              <i class="bi bi-calendar-event"></i>
+              Data de Fabricação
+            </label>
+            <input type="date" class="form-control" id="dataFabLote">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="dataVencLote" class="form-label">
+              <i class="bi bi-calendar-x"></i>
+              Data de Vencimento *
+            </label>
+            <input type="date" class="form-control" id="dataVencLote">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="estLote" class="form-label">
+              <i class="bi bi-boxes"></i>
+              Estoque do Lote *
+            </label>
+            <input type="number" class="form-control" id="estLote" placeholder="0">
+          </div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="row mt-3">
+          <div class="col-12 text-end">
+            <button type="reset" class="btn-clear" id="btnLimpar">
+              <i class="bi bi-x-circle"></i>
+              Limpar
+            </button>
+            <button type="button" class="btn-save" id="btnSalvar">
+              <i class="bi bi-check-circle"></i>
+              Salvar Lote
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3 class="table-title">
+          <i class="bi bi-table"></i>
+          Lotes de <%= produto.NOME_PROD %>
+        </h3>
+      </div>
+      <div class="table-responsive">
+        <table class="table clientes-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nº do Lote</th>
+              <th>Fabricação</th>
+              <th>Vencimento</th>
+              <th>Estoque</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (lotes.length > 0) { %>
+              <% for (let i = 0; i < lotes.length; i++) { %>
+                <tr>
+                  <td>
+                    #<%= lotes[i].COD_LOTE %>
+                  </td>
+                  <td class="cliente-nome">
+                    <%= lotes[i].NUM_LOTE %>
+                  </td>
+                  <td>
+                    <%= lotes[i].DATA_FAB_LOTE%>
+                  </td>
+                  <td>
+                    <%= lotes[i].DATA_VENC_LOTE %>
+                  </td>
+                  <td>
+                    <%= lotes[i].EST_LOTE %>
+                  </td>
+                  <td>
+                    <div class="acoes-cliente">
+                      <a
+                        href="/admin/produto/gerenciamento-lote/alterar-lote/<%= lotes[i].COD_LOTE %>"
+                        class="btn-acao btn-editar"
+                        title="Editar lote">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                      <button
+                        type="button"
+                        class="btn-acao btn-excluir"
+                        data-id="<%= lotes[i].COD_LOTE %>"
+                        title="Excluir lote">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="sem-clientes">
+                  <i class="bi bi-box-seam"></i>
+                  <p>
+                    Nenhum lote cadastrado para este produto.
+                  </p>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div style="height: 50px;"></div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
+</body>
+</html>

@@ -32,4 +32,9 @@ router.post("/admin/produto/cadastrar-categoria", controller.rotaCadastrarCatego
 router.post("/admin/produto/excluir-categoria", controller.rotaExcluirCategoria);
 router.get("/admin/produto/gerenciamento-categoria/alterar-categoria/:id", controller.rotaAlterarCategoria);
 
+router.get("/admin/produto/gerenciamento-lote/:id", controller.rotaGerenciamentoLote);
+router.post("/admin/produto/cadastrar-lote", controller.rotaCadastrarLote);
+router.get("/admin/produto/gerenciamento-lote/alterar-lote/:id", controller.rotaAlterarLote);
+router.post("/admin/produto/excluir-lote", controller.rotaExcluirLote);
+
 module.exports = router;

@@ -3,6 +3,7 @@ const ClienteModel = require("../models/clienteModel");
 const FornecedorModel = require("../models/fornecedorModel");
 const ProdutoModel = require("../models/produtoModel");
 const MarcaModel = require("../models/marcaModel");
+const LoteModel = require("../models/loteModel");
 
 const {
   somenteNumeros,
@@ -306,7 +307,6 @@ class adminController {
     });
   }
 
-  // ==================== MARCA
   async rotaGerenciarMarca(req, res) {
     let marca = new MarcaModel();
     let listaMarcas = await marca.listarMarcas();
@@ -352,7 +352,71 @@ class adminController {
     res.render("admin/alterarMarca", { marca });
   }
 
-  // =================== MARCA -
+  async rotaGerenciamentoLote(req, res) {
+    let idProduto = req.params.id;
+
+    let produtoModel = new ProdutoModel();
+    let loteModel = new LoteModel();
+
+    let produto = await produtoModel.obterProdutoId(idProduto);
+    let lotes = await loteModel.listarLoteProduto(idProduto);
+
+    res.render("admin/gerenciamentoLote", {
+        produto: produto,
+        lotes: lotes
+    });
+}
+
+
+async rotaCadastrarLote(req, res) {
+    let result;
+
+    let id = req.body.id;
+
+    let idProduto = req.body.produto;
+    let numeroLote = req.body.numeroLote;
+    let dataFabricacao = req.body.dataFabricacao || null;
+    let dataVencimento = req.body.dataVencimento;
+    let estoque = req.body.estoque;
+
+    if (idProduto > 0 && numeroLote.trim() != "" && dataVencimento != "" && estoque != "" && estoque > 0 && dataFabricacao != "" && dataVencimento > dataFabricacao) {
+      if (id > 0) {
+          let lote = new LoteModel(id, idProduto, null, numeroLote.trim(), dataFabricacao, dataVencimento, estoque);
+          result = await lote.atualizarLote();
+      } else {
+          let lote = new LoteModel(0, idProduto, null, numeroLote.trim(), dataFabricacao, dataVencimento, estoque);
+          result = await lote.cadastrarLote();
+      }
+      res.send({ ok: result });
+    } else {
+      res.send({ ok: false });
+    }
+}
+
+
+async rotaAlterarLote(req, res) {
+    let idLote = req.params.id;
+    let loteModel = new LoteModel();
+    let produtoModel = new ProdutoModel();
+
+    let lote = await loteModel.obterLoteId(idLote);
+    let produto = await produtoModel.obterProdutoId(lote.COD_PROD);
+
+    res.render("admin/alterarLote", { lote: lote, produto: produto });
+}
+
+  async rotaExcluirLote(req, res) {
+    let idLote = req.body.id;
+    if (idLote > 0) {
+      let lote = new LoteModel();
+      let result = await lote.excluirLote(idLote);
+
+      res.send({ ok: result });
+    } else {
+      res.send({ ok: false });
+    }
+  }
+
 }
 
 module.exports = adminController;

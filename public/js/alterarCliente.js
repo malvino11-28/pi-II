@@ -216,9 +216,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     senhaCampo.addEventListener("input", function () {
-        if (validarSenha(senhaCampo.value)) {
-            senhaCampo.classList.remove("is-invalid");
-            senhaCampo.classList.add("is-valid");
+        if (senhaCampo.value === "") {
+            senhaCampo.classList.remove("is-valid", "is-invalid");
+            return;
+            
         } else {
             senhaCampo.classList.remove("is-valid");
             senhaCampo.classList.add("is-invalid");
@@ -244,7 +245,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let email = document.querySelector("#emailCli");
         let cel = document.querySelector("#celCli");
         let senha = document.querySelector("#senhaCli");
-        let id = document.querySelector("#codCli")
+        let id = document.querySelector("#inputId");
+        let confirmarSenha = document.querySelector("#confirmarSenhaCli");
 
         let nomeValido = validarNomeCompleto(nome.value);
         let cpfValido = validarCPF(cpf.value);
@@ -252,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let dataValida = validarDataNascimento(dt_nasc.value);
         let emailValido = validarEmail(email.value);
         let celularValido = validarTelefone(cel.value);
-        let senhaValida = validarSenha(senha.value);
+        let senhaValida = (senha.value === "" && confirmarSenha.value === "") || (validarSenha(senha.value) && senha.value === confirmarSenha.value);
 
         nome.classList.toggle("is-valid", nomeValido);
         nome.classList.toggle("is-invalid", !nomeValido);
@@ -276,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
         senha.classList.toggle("is-invalid", !senhaValida);
 
         if (
-            id.value < 0 ||
+            !(Number(id.value) > 0) ||
             !nomeValido ||
             !cpfValido ||
             !rgValido ||
@@ -313,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(function (corpoResp) {
             if (corpoResp.ok) {
                 alert("Cliente Alterado com Sucesso!");
-                window.location.reload();
+                window.location.href="/admin/cadastrar-clientes";
             } else {
                 alert("Erro ao alterar o cliente.");
             }

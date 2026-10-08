@@ -25,7 +25,7 @@ class ClienteModel {
     }
 
     set NOME_CLI(value) {
-        this.#CPF_CLI = value;
+        this.#NOME_CLI = value;
     }
 
     get CPF_CLI() {
@@ -109,8 +109,16 @@ class ClienteModel {
 
     async atualizarCliente() {
 
-        let sql = "UPDATE CLIENTE SET NOME_CLI = ?, CPF_CLI = ?, RG_CLI = ?, DATA_NASC_CLI = ?, EMAIL_CLI = ?, TELEFONE_CLI = ?, SENHA_CLI = ?";
-        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#CELULAR_CLI, this.#SENHA_CLI];
+        let sql = "UPDATE CLIENTE SET NOME_CLI = ?, CPF_CLI = ?, RG_CLI = ?, DATA_NASC_CLI = ?, EMAIL_CLI = ?, TELEFONE_CLI = ?";
+        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#CELULAR_CLI];
+
+        if (this.#SENHA_CLI) {
+            sql += ", SENHA_CLI = ?";
+            values.push(this.#SENHA_CLI);
+        }
+
+        sql += " WHERE COD_CLI = ?";
+        values.push(this.#COD_CLI);
 
         let banco = new Database();
         let result = await banco.ExecutaComandoNonQuery(sql, values);

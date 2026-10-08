@@ -168,9 +168,6 @@
 
             </div>
 
-
-
-            <!-- TOGGLE -->
             <div class="editar-toggle">
 
                 <button
@@ -200,20 +197,12 @@
 
             </div>
 
-
-
             <form id="formAlterarCliente">
-
-
-                <!-- ===============================
-                     DADOS CADASTRAIS
-                ================================ -->
 
                 <div
                     class="secao-edicao secao-ativa"
                     id="secaoDados"
                 >
-
 
                     <div class="secao-titulo">
 
@@ -231,7 +220,7 @@
                     <!-- LINHA 1 -->
                     <div class="row">
 
-
+                        <input id="inputId" type="hidden" value="<%= cliAlter.id %>">
                         <!-- NOME -->
                         <div class="col-md-6 mb-3">
 
@@ -389,31 +378,6 @@
                                 id="celCli"
                                 placeholder="(00) 00000-0000"
                                 maxlength="15"
-                            >
-
-                        </div>
-
-
-                        <!-- STATUS -->
-                        <div class="col-md-6 mb-3">
-
-                            <label
-                                for="statusPlano"
-                                class="form-label"
-                            >
-
-                                <i class="bi bi-person-check"></i>
-
-                                Status do Plano
-
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control campo-bloqueado"
-                                id="statusPlano"
-                                placeholder="Status atual do plano"
-                                disabled
                             >
 
                         </div>

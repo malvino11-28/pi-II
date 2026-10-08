@@ -91,9 +91,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let btn = document.querySelector("#btnSalvarAlteracaoFornecedor");
     btn.addEventListener("click", alterarFornecedor);
 
-    let cnpjCampo = document.querySelector("#inputCNPJ");
-    let emailCampo = document.querySelector("#inputEmail");
-    let telefoneCampo = document.querySelector("#inputTel");
+    let cnpjCampo = document.querySelector("#cnpjFornecedor");
+    let emailCampo = document.querySelector("#emailFornecedor");
+    let telefoneCampo = document.querySelector("#telefoneFornecedor");
 
     cnpjCampo.addEventListener("input", function () {
         cnpjCampo.value = mascaraCNPJ(cnpjCampo.value);
@@ -135,11 +135,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function alterarFornecedor() {
 
-        let razao = document.querySelector("#inputRazao");
-        let nomeFan = document.querySelector("#inputNomeFan");
-        let cnpj = document.querySelector("#inputCNPJ");
-        let email = document.querySelector("#inputEmail");
-        let telefone = document.querySelector("#inputTel");
+        let razao = document.querySelector("#razaoFornecedor");
+        let nomeFan = document.querySelector("#nomeFantasiaFornecedor");
+        let cnpj = document.querySelector("#cnpjFornecedor");
+        let email = document.querySelector("#emailFornecedor");
+        let telefone = document.querySelector("#telefoneFornecedor");
         let id = document.querySelector("#inputId");
 
         if(id.value > 0 && razao.value != "" && nomeFan.value != "" && cnpj.value != "" && email.value != "" && telefone.value != "") {
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 telefone: telefone.value
             };
 
-            fetch("/admin/cadastrar-fornecedor", {
+            fetch("/admin/cadastrar-fornecedores", {
 
                 method: "POST",
                 body: JSON.stringify(obj),
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }).then(function(corpo){
                 if(corpo.ok){
                     alert("Fornecedor alterado com sucesso!!!");
-                    window.location.reload();
+                    window.location.href="/admin/cadastrar-fornecedores";
 
                 } else {
                     alert("Erro ao alterar o fornecedor");
@@ -177,23 +177,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
             alert("Por favor, preencha todos os respectivos campos.");
         }
-    }
-})
-
-
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-
-    let btn = document.querySelector("#btnSalvarAlteracaoFornecedor");
-    btn.addEventListener("click", alterarFornecedor);
-
-    function alterarFornecedor() {
-
-
     }
 })

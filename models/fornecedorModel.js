@@ -80,8 +80,8 @@ class FornecedorModel{
 
     async atualizarFornecedor() {
         
-        let sql = "UPDATE FORNECEDOR SET COD_FOR = ?, CNPJ_FOR = ?, RAZAO_FOR = ?, NOME_FAN_FOR = ?, EMAIL_FOR = ?, TELEFONE_FOR = ?";
-        let values = [this.#COD_FOR, this.#CNPJ_FOR, this.#RAZAO_FOR, this.#NOME_FAN_FOR, this.#EMAIL_FOR, this.#TELEFONE_FOR];
+        let sql = "UPDATE FORNECEDOR SET CNPJ_FOR = ?, RAZAO_FOR = ?, NOME_FAN_FOR = ?, EMAIL_FOR = ?, TELEFONE_FOR = ? WHERE COD_FOR = ?";
+        let values = [this.#CNPJ_FOR, this.#RAZAO_FOR, this.#NOME_FAN_FOR, this.#EMAIL_FOR, this.#TELEFONE_FOR, this.#COD_FOR];
 
         let banco = new Database();
         let result = await banco.ExecutaComandoNonQuery(sql, values);
@@ -127,7 +127,7 @@ class FornecedorModel{
 
         if(linhas.length > 0) {
 
-            let linha = linhas[i];
+            let linha = linhas[0];
             let fornecedor = new FornecedorModel(linha["COD_FOR"], linha["CNPJ_FOR"], linha["RAZAO_FOR"], linha["NOME_FAN_FOR"], linha["EMAIL_FOR"], linha["TELEFONE_FOR"]);
 
             return fornecedor;

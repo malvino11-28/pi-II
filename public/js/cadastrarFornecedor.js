@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 telefone: telefone.value
             };
 
-            fetch("/admin/cadastrar-fornecedor", {
+            fetch("/admin/cadastrar-fornecedores", {
 
                 method: "POST",
                 body: JSON.stringify(obj),

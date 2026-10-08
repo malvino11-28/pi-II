@@ -167,7 +167,7 @@ class adminController {
             let retornoBan = false;
 
             if(req.body.id) {
-                cliente.COD_FOR = req.body.id;
+                fornecedor.COD_FOR = req.body.id;
                 retornoBan = await fornecedor.atualizarFornecedor();
 
             } else {
@@ -175,7 +175,7 @@ class adminController {
                 retornoBan = await fornecedor.cadastrarFornecedor();
             }
 
-            res.send({ ok: result });
+            res.send({ ok: retornoBan });
 
         } else {
             

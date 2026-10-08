@@ -79,29 +79,27 @@ class adminController {
             let cliente = new ClienteModel(
                 0,
                 req.body.nome.trim(),
-
-                // Remove . e - antes de salvar.
                 somenteNumeros(req.body.cpf),
-
                 req.body.rg.trim(),
-
-                // Continua em AAAA-MM-DD, como o input type="date" envia.
                 req.body.dt_nasc,
-
                 req.body.email.trim().toLowerCase(),
-
-                // Remove (, ), espaço e - antes de salvar.
                 somenteNumeros(req.body.cel),
-
                 req.body.senha
             );
 
-            let retornoBan = await cliente.cadastrarCliente();
+            let retornoBan = false;
 
-            return res.send({
-                ok: retornoBan
-            });
+            if(req.body.id) {
+                cliente.COD_CLI = req.body.id;
+                retornoBan = await cliente.atualizarCliente();
 
+            } else {
+
+                retornoBan = await cliente.cadastrarCliente();
+            }
+
+            res.send({ ok: retornoBan });
+            
         } catch (erro) {
             console.log(erro);
 
@@ -114,8 +112,11 @@ class adminController {
 
     async alterarClienteView(req, res) {
 
-        res.render("admin/")
+        let idCliente = req.params.id;
+        let cliente = new ClienteModel();
+        cliente = await cliente.obterPorId(idCliente);
 
+        res.render("admin/alterarCliente", { cliAlter: cliente });
     }
 
     async rotaExcluirCliente(req, res) {
@@ -129,6 +130,7 @@ class adminController {
             res.send({ ok: result });
 
         } else {
+
             res.send({ ok: false });
         }
     }

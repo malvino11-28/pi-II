@@ -19,7 +19,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     >
 
-    <link rel="stylesheet" href="/style/admin.css">
+    <link rel="stylesheet" href="../../style/admin.css">
 
 </head>
 
@@ -168,9 +168,6 @@
 
             </div>
 
-
-
-            <!-- TOGGLE -->
             <div class="editar-toggle">
 
                 <button
@@ -200,20 +197,12 @@
 
             </div>
 
-
-
             <form id="formAlterarCliente">
-
-
-                <!-- =====================================
-                     DADOS CADASTRAIS
-                ====================================== -->
 
                 <div
                     class="secao-edicao secao-ativa"
                     id="secaoDados"
                 >
-
 
                     <div class="secao-titulo">
 
@@ -228,11 +217,11 @@
                     </div>
 
 
-
                     <!-- LINHA 1 -->
                     <div class="row">
 
-
+                        <input id="inputId" type="hidden" value="<%= cliAlter.id %>">
+                        <!-- NOME -->
                         <div class="col-md-6 mb-3">
 
                             <label
@@ -256,7 +245,7 @@
                         </div>
 
 
-
+                        <!-- EMAIL -->
                         <div class="col-md-6 mb-3">
 
                             <label
@@ -279,6 +268,7 @@
 
                         </div>
 
+
                     </div>
 
 
@@ -287,6 +277,7 @@
                     <div class="row">
 
 
+                        <!-- CPF -->
                         <div class="col-md-4 mb-3">
 
                             <label
@@ -311,7 +302,7 @@
                         </div>
 
 
-
+                        <!-- RG -->
                         <div class="col-md-4 mb-3">
 
                             <label
@@ -330,12 +321,13 @@
                                 class="form-control"
                                 id="rgCli"
                                 placeholder="00.000.000-0"
+                                maxlength="14"
                             >
 
                         </div>
 
 
-
+                        <!-- DATA NASCIMENTO -->
                         <div class="col-md-4 mb-3">
 
                             <label
@@ -357,6 +349,7 @@
 
                         </div>
 
+
                     </div>
 
 
@@ -365,6 +358,7 @@
                     <div class="row">
 
 
+                        <!-- CELULAR -->
                         <div class="col-md-6 mb-3">
 
                             <label
@@ -389,30 +383,6 @@
                         </div>
 
 
-
-                        <div class="col-md-6 mb-3">
-
-                            <label
-                                for="statusPlano"
-                                class="form-label"
-                            >
-
-                                <i class="bi bi-person-check"></i>
-
-                                Status do Plano
-
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control campo-bloqueado"
-                                id="statusPlano"
-                                placeholder="Status atual do plano"
-                                disabled
-                            >
-
-                        </div>
-
                     </div>
 
 
@@ -420,9 +390,9 @@
 
 
 
-                <!-- =====================================
-                     SENHA
-                ====================================== -->
+                <!-- ===============================
+                     SENHA E SEGURANÇA
+                ================================ -->
 
                 <div
                     class="secao-edicao"
@@ -443,14 +413,15 @@
                     </div>
 
 
-
                     <div class="aviso-senha">
 
                         <i class="bi bi-info-circle"></i>
 
                         <div>
 
-                            <strong>Alteração opcional</strong>
+                            <strong>
+                                Alteração opcional
+                            </strong>
 
                             <p>
                                 Caso não queira alterar a senha, deixe os campos abaixo em branco.
@@ -465,6 +436,7 @@
                     <div class="row">
 
 
+                        <!-- NOVA SENHA -->
                         <div class="col-md-6 mb-3">
 
                             <label
@@ -488,7 +460,7 @@
                         </div>
 
 
-
+                        <!-- CONFIRMAR SENHA -->
                         <div class="col-md-6 mb-3">
 
                             <label
@@ -511,6 +483,7 @@
 
                         </div>
 
+
                     </div>
 
 
@@ -520,6 +493,7 @@
 
                 <!-- BOTÕES -->
                 <div class="editar-footer">
+
 
                     <a
                         href="/admin/cadastrar-clientes"
@@ -544,6 +518,7 @@
                         Salvar Alterações
 
                     </button>
+
 
                 </div>
 

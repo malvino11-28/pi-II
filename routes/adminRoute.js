@@ -9,6 +9,7 @@ router.get("/admin", controller.rotaDashboardView);
 
 router.get("/admin/cadastrar-clientes", controller.rotaCadastrarClientesView);
 router.post("/admin/cadastrar-clientes", controller.rotaCadastrarClientes);
+router.get("/admin/alterar-cliente/:id", controller.alterarClienteView)
 router.post("/admin/excluir-cliente", controller.rotaExcluirCliente);
 
 router.get("/admin/cadastrar-fornecedor", controller.rotaCadastrarFornecedorView);

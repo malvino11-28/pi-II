@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Produtos - Corte Imperial Admin</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../style/admin.css">
+
+  <script src="/js/cadastrarProduto.js"></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center">
+            <a href="/admin">
+              <img src="../../imgs/logo.png" alt="Corte Imperial" class="admin-logo me-3">
+            </a>
+            <div>
+              <h1 class="admin-brand">Corte Imperial</h1>
+              <p class="admin-subtitle">Painel Administrativo</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 text-end">
+          <span class="user-info">
+            <i class="bi bi-person-circle"></i> Administrador
+          </span>
+          <button class="btn-logout">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TÍTULO -->
+  <div class="page-title-section">
+    <div class="container">
+      <h2 class="page-title">Gerenciamento de Produtos</h2>
+      <p class="page-breadcrumb">
+        <a href="/admin">
+          <i class="bi bi-house-door"></i> Início
+        </a>
+        <i class="bi bi-chevron-right"></i> Produtos
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- CARDS DE ESTATÍSTICAS -->
+    <div class="stats-container">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-3">
+
+        <!-- TOTAL -->
+        <div class="col">
+          <div class="stat-card">
+            <i class="bi bi-people-fill stat-icon"></i>
+            <p class="stat-number"><%= produtos.length %></p>
+            <p class="stat-label">Total de Produtos</p>
+          </div>
+        </div>
+
+        <!-- VENCIDOS -->
+        <!-- <div class="col">
+          <div class="stat-card" style="border-left-color: #e74c3c;">
+            <i class="bi bi-exclamation-circle-fill stat-icon" style="color: #e74c3c;"></i>
+            <p class="stat-number">
+            </p>
+            <p class="stat-label">Planos Vencidos</p>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+
+    <div id="alertContainer"></div>
+
+    <!-- FORMULÁRIO -->
+    <div class="form-card">
+      <div class="card-header-custom">
+        <h3>
+          <i class="bi bi-person-plus-fill"></i> Cadastrar Novo Produto
+        </h3>
+      </div>
+
+      <form id="formProduto">
+        <!-- LINHA 1 -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="nomeProd" class="form-label">
+              <i class="bi bi-person"></i> Nome do Produto *
+            </label>
+            <input type="text" class="form-control" id="nomeProd" placeholder="Digite o nome do produto">
+          </div>
+        </div>
+
+        <!-- LINHA 3 -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="marca" class="form-label">
+              <i class="bi bi-telephone"></i> Marca *
+            </label>
+            <select class="form-control" id="marca">
+              <option value="0">-- Selecione uma Marca --</option>
+              <% for (let i=0;i<marcas.length;i++) { %> 
+                  <option value="<%=marcas[i].COD_MAR%>"><%= marcas[i].NOME_MAR %></option>
+              <% } %>
+            </select>
+          </div>
+
+          <!-- LINHA 3 -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="categoria" class="form-label">
+              <i class="bi bi-telephone"></i> Categoria *
+            </label>
+            <select class="form-control" id="categoria">
+              <option value="0">-- Selecione uma Categoria --</option>
+              <% for (let i=0;i<categorias.length;i++) { %> 
+                  <option value="<%=categorias[i].COD_CAT%>"><%= categorias[i].NOME_CAT %></option>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="desc" class="form-label">
+              <i class="bi bi-person-vcard"></i> Descrição do Produto *
+            </label>
+            <textarea class="form-control" id="desc" rows="3" placeholder="Digite a descrição que será exibida na página"></textarea>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nomeCli" class="form-label">
+                <i class="bi bi-person"></i> Descrição Reduzida do Produto *
+              </label>
+              <input type="text" class="form-control" id="descRed" placeholder="Digite a descrição reduzida do produto que será exibida na página">
+            </div>
+          </div>
+
+        <!-- LINHA 3 -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="uniMedida" class="form-label">
+              <i class="bi bi-telephone"></i> Unidade de Medida *
+            </label>
+            <select class="form-control" id="uniMedida">
+              <option value="0">-- Selecione uma Medida --</option>
+              <option value="UN">UN (Unidade) </option>
+              <option value="KG">KG (quilograma)</option>
+              <option value="G">G (grama)</option>
+              <option value="L">L (litro)</option>
+              <option value="ML">ML (mililitro)</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="valor" class="form-label">
+              <i class="bi bi-lock"></i> Valor Unitário do Produto *
+            </label>
+            <input type="number" class="form-control" id="valor" placeholder="0,00">
+          </div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="row mt-3">
+          <div class="col-12 text-end">
+            <button type="button" class="btn-clear" id="btnLimpar">
+              <i class="bi bi-x-circle"></i> Limpar
+            </button>
+            <button type="button" class="btn-save" id="btnSalvar">
+              <i class="bi bi-check-circle"></i> Salvar Produto
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3 class="table-title">
+          <i class="bi bi-table"></i> Lista de Produtos
+        </h3>
+        <button type="button" class="btn-delete-selected" id="btnExcluirSelecionados">
+          <i class="bi bi-trash"></i> Excluir Selecionados
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table clientes-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Marca</th>
+              <th>Categoria</th>
+              <th>Descrição</th>
+              <th>Descrição Reduzida</th>
+              <th>Medida</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabelaClientes">
+            <% if (produtos.length > 0) { %>
+              <% for (let i = 0; i < produtos.length; i++) { %>
+                <tr>
+                  <td>#<%= produtos[i].COD_PROD %></td>
+                  <td class="cliente-nome"><%= produtos[i].NOME_PROD %></td>
+                  <% for (let j=0;j<marcas.length;j++) { %>
+                    <% if (produtos[i].COD_MAR == marcas[j].COD_MAR) { %>
+                      <td><%= marcas[j].NOME_MAR %></td>
+                    <% } %>
+                  <% }%>
+                  <% for (let j=0;j<categorias.length;j++) { %>
+                    <% if (produtos[i].COD_CAT == categorias[j].COD_CAT) { %>
+                      <td><%= categorias[j].NOME_CAT %></td>
+                    <% } %>
+                  <% }%>
+                  <td><%= produtos[i].DESC_PROD%></td>
+                  <td><%= produtos[i].DESC_RED_PROD%></td>
+                  <td><%= produtos[i].UNI_MEDIDA_PROD %></td>
+                  <td><%= produtos[i].VALOR_UNI_PROD %></td>
+                  <td>
+                    <div class="acoes-cliente">
+                      <a href="/admin/produto/gerenciamento-produto/alterar-produto/<%= produtos[i].COD_PROD %>">
+                        <button type="button" class="btn-acao btn-editar" data-id="<%= produtos[i].COD_PROD %>" title="Editar">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </a>
+                      <a href="/admin/produto/gerenciamento-lote/<%= produtos[i].COD_PROD %>" class="btn-acao">
+                            <i class="bi bi-box-seam"></i>
+                      </a>
+                      <button type="button" class="btn-acao btn-excluir" data-id="<%= produtos[i].COD_PROD %>" title="Excluir">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            <% } else { %>
+              <tr>
+                <td colspan="9" class="sem-clientes">
+                  <i class="bi bi-people"></i>
+                  <p>Nenhum produto cadastrado.</p>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="height: 50px;"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Categoria - Corte Imperial Admin</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../style/admin.css">
+
+  <script src="/js/cadastrarCategoria.js"></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center">
+            <a href="/admin">
+              <img src="../../imgs/logo.png" alt="Corte Imperial" class="admin-logo me-3">
+            </a>
+            <div>
+              <h1 class="admin-brand">Corte Imperial</h1>
+              <p class="admin-subtitle">Painel Administrativo</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 text-end">
+          <span class="user-info">
+            <i class="bi bi-person-circle"></i> Administrador
+          </span>
+          <button class="btn-logout">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TÍTULO -->
+  <div class="page-title-section">
+    <div class="container">
+      <h2 class="page-title">Gerenciamento de Categorias</h2>
+      <p class="page-breadcrumb">
+        <a href="/admin">
+          <i class="bi bi-house-door"></i> Início
+        </a>
+        <i class="bi bi-chevron-right"></i> Categorias
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- CARDS DE ESTATÍSTICAS -->
+    <div class="stats-container">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-3">
+
+        <!-- TOTAL -->
+        <div class="col">
+          <div class="stat-card">
+            <i class="bi bi-people-fill stat-icon"></i>
+            <p class="stat-number"><%= categorias.length %></p>
+            <p class="stat-label">Total de Categorias</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="alertContainer"></div>
+
+    <!-- FORMULÁRIO -->
+    <div class="form-card">
+      <div class="card-header-custom">
+        <h3>
+          <i class="bi bi-person-plus-fill"></i> Cadastrar Nova Categoria
+        </h3>
+      </div>
+
+      <form id="formMarca">
+        <!-- LINHA 1 -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="nomeMar" class="form-label">
+              <i class="bi bi-person"></i> Nome da Categoria *
+            </label>
+            <input type="text" class="form-control" id="nomeMar" placeholder="Digite o nome da categoria">
+          </div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="row mt-3">
+          <div class="col-12 text-end">
+            <button type="button" class="btn-clear" id="btnLimpar">
+              <i class="bi bi-x-circle"></i> Limpar
+            </button>
+            <button type="button" class="btn-save" id="btnSalvar">
+              <i class="bi bi-check-circle"></i> Salvar Categoria
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3 class="table-title">
+          <i class="bi bi-table"></i> Lista de Categorias
+        </h3>
+        <button type="button" class="btn-delete-selected" id="btnExcluirSelecionados">
+          <i class="bi bi-trash"></i> Excluir Selecionados
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table clientes-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabelaClientes">
+            <% if (categorias.length > 0) { %>
+              <% for (let i = 0; i < categorias.length; i++) { %>
+                <tr>
+                  <td>#<%= categorias[i].COD_CAT %></td>
+                  <td class="cliente-nome"><%= categorias[i].NOME_CAT %></td>
+                  <td>
+                    <div class="acoes-cliente">
+                      <a href="/admin/produto/gerenciamento-categoria/alterar-categoria/<%=categorias[i].COD_CAT%>">
+                        <button type="button" class="btn-acao btn-editar" data-id="<%= categorias[i].COD_CAT %>" title="Editar">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </a>
+                      <button type="button" class="btn-acao btn-excluir" data-id="<%= categorias[i].COD_CAT %>" title="Excluir">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            <% } else { %>
+              <tr>
+                <td colspan="9" class="sem-clientes">
+                  <i class="bi bi-people"></i>
+                  <p>Nenhuma categoria cadastrada.</p>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="height: 50px;"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

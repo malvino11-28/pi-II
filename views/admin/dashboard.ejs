@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Painel Administrativo - Corte Imperial</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
 
-    <link rel="stylesheet" href="../../style/inicio.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="../../style/inicio.css" />
+  </head>
+  <body>
     <!-- HEADER -->
     <header class="admin-header">
-        <div class="container">
-            <div class="row align-items-center">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="d-flex align-items-center">
+              <img
+                src="../../imgs/logo.png"
+                alt="Corte Imperial"
+                class="admin-logo me-3"
+              />
 
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center">
-                        <img src="../../imgs/logo.png" alt="Corte Imperial" class="admin-logo me-3">
-
-                        <div>
-                            <h1 class="admin-brand">Corte Imperial</h1>
-                            <p class="admin-subtitle">Painel Administrativo</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 text-end">
-                    <span class="user-info">
-                        <i class="bi bi-person-circle"></i> Administrador
-                    </span>
-
-                    <button class="btn-logout">
-                        <i class="bi bi-box-arrow-right"></i> Sair
-                    </button>
-                </div>
-
+              <div>
+                <h1 class="admin-brand">Corte Imperial</h1>
+                <p class="admin-subtitle">Painel Administrativo</p>
+              </div>
             </div>
+          </div>
+
+          <div class="col-md-6 text-end">
+            <span class="user-info">
+              <i class="bi bi-person-circle"></i> Administrador
+            </span>
+
+            <button class="btn-logout">
+              <i class="bi bi-box-arrow-right"></i> Sair
+            </button>
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- TÍTULO -->
     <section class="page-title-section">
-        <div class="container">
+      <div class="container">
+        <h2 class="page-title">Dashboard Administrativo</h2>
 
-            <h2 class="page-title">
-                Dashboard Administrativo
-            </h2>
-
-            <p class="page-breadcrumb">
-                <i class="bi bi-house-door"></i> Início
-            </p>
-
-        </div>
+        <p class="page-breadcrumb"><i class="bi bi-house-door"></i> Início</p>
+      </div>
     </section>
 
     <!-- CONTEÚDO -->
     <div class="container">
+      <!-- CARDS ESTATÍSTICAS -->
+      <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="dashboard-stat-card">
+            <i class="bi bi-people-fill dashboard-icon"></i>
 
         <!-- CARDS ESTATÍSTICAS -->
         <div class="row mb-4">
@@ -107,22 +113,15 @@
                 </div>
             </div>
 
+            <p>Clientes Cadastrados</p>
+          </div>
         </div>
 
-        <!-- ÁREAS DO SISTEMA -->
-        <div class="system-card">
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="dashboard-stat-card">
+            <i class="bi bi-truck dashboard-icon"></i>
 
-            <div class="card-header-custom">
-                <h3>
-                    <i class="bi bi-grid-fill"></i>
-                    Áreas do Sistema
-                </h3>
-            </div>
-
-            <div class="row">
-
-                <!-- CLIENTES -->
-                <div class="col-lg-4 col-md-6 mb-4">
+            <h3>34</h3>
 
                     <div class="menu-card">
 
@@ -178,102 +177,150 @@
                             <i class="bi bi-bar-chart-fill"></i>
                         </div>
 
-                        <h4>Relatórios</h4>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="dashboard-stat-card">
+            <i class="bi bi-bar-chart-fill dashboard-icon"></i>
 
-                        <p>
-                            Visualize relatórios e métricas do sistema.
-                        </p>
+            <h3>18</h3>
 
-                        <a href="#" class="btn-access">
-                            <i class="bi bi-arrow-right-circle"></i>
-                            Acessar
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <!-- PRODUTOS -->
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                    <div class="menu-card">
-
-                        <div class="menu-icon">
-                            <i class="bi bi-box-seam-fill"></i>
-                        </div>
-
-                        <h4>Produtos</h4>
-
-                        <p>
-                            Gerencie produtos, estoque e categorias.
-                        </p>
-
-                        <a href="#" class="btn-access">
-                            <i class="bi bi-arrow-right-circle"></i>
-                            Acessar
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <!-- PEDIDOS -->
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                    <div class="menu-card">
-
-                        <div class="menu-icon">
-                            <i class="bi bi-cart-check-fill"></i>
-                        </div>
-
-                        <h4>Pedidos</h4>
-
-                        <p>
-                            Acompanhe todos os pedidos realizados.
-                        </p>
-
-                        <a href="#" class="btn-access">
-                            <i class="bi bi-arrow-right-circle"></i>
-                            Acessar
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <!-- CONFIGURAÇÕES -->
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                    <div class="menu-card">
-
-                        <div class="menu-icon">
-                            <i class="bi bi-gear-fill"></i>
-                        </div>
-
-                        <h4>Configurações</h4>
-
-                        <p>
-                            Personalize preferências do sistema.
-                        </p>
-
-                        <a href="#" class="btn-access">
-                            <i class="bi bi-arrow-right-circle"></i>
-                            Acessar
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            <p>Relatórios</p>
+          </div>
         </div>
 
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="dashboard-stat-card">
+            <i class="bi bi-box-seam-fill dashboard-icon"></i>
+
+            <h3><%=produtos.length%></h3>
+
+            <p>Produtos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÁREAS DO SISTEMA -->
+      <div class="system-card">
+        <div class="card-header-custom">
+          <h3>
+            <i class="bi bi-grid-fill"></i>
+            Áreas do Sistema
+          </h3>
+        </div>
+
+        <div class="row">
+          <!-- CLIENTES -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="menu-card">
+              <div class="menu-icon">
+                <i class="bi bi-people-fill"></i>
+              </div>
+
+              <h4>Clientes</h4>
+
+              <p>Gerencie os clientes cadastrados no sistema.</p>
+
+              <a href="/admin/cadastrar-clientes" class="btn-access">
+                <i class="bi bi-arrow-right-circle"></i>
+                Acessar
+              </a>
+            </div>
+          </div>
+
+          <!-- FORNECEDORES -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="menu-card">
+              <div class="menu-icon">
+                <i class="bi bi-truck"></i>
+              </div>
+
+              <h4>Fornecedores</h4>
+
+              <p>Controle e cadastro de fornecedores.</p>
+
+              <a href="/admin/cadastrar-fornecedor" class="btn-access">
+                <i class="bi bi-arrow-right-circle"></i>
+                Acessar
+              </a>
+            </div>
+          </div>
+
+          <!-- RELATÓRIOS -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="menu-card">
+              <div class="menu-icon">
+                <i class="bi bi-bar-chart-fill"></i>
+              </div>
+
+              <h4>Relatórios</h4>
+
+              <p>Visualize relatórios e métricas do sistema.</p>
+
+              <a href="#" class="btn-access">
+                <i class="bi bi-arrow-right-circle"></i>
+                Acessar
+              </a>
+            </div>
+          </div>
+
+          <!-- PRODUTOS -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="menu-card">
+              <div class="menu-icon">
+                <i class="bi bi-box-seam-fill"></i>
+              </div>
+
+              <h4>Produtos</h4>
+
+              <p>Gerencie produtos, marcas e categorias.</p>
+
+              <a href="/admin/produto" class="btn-access">
+                <i class="bi bi-arrow-right-circle"></i>
+                Acessar
+              </a>
+            </div>
+          </div>
+
+          <!-- PEDIDOS -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="menu-card">
+              <div class="menu-icon">
+                <i class="bi bi-cart-check-fill"></i>
+              </div>
+
+              <h4>Pedidos</h4>
+
+              <p>Acompanhe todos os pedidos realizados.</p>
+
+              <a href="#" class="btn-access">
+                <i class="bi bi-arrow-right-circle"></i>
+                Acessar
+              </a>
+            </div>
+          </div>
+
+          <!-- CONFIGURAÇÕES -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="menu-card">
+              <div class="menu-icon">
+                <i class="bi bi-gear-fill"></i>
+              </div>
+
+              <h4>Configurações</h4>
+
+              <p>Personalize preferências do sistema.</p>
+
+              <a href="#" class="btn-access">
+                <i class="bi bi-arrow-right-circle"></i>
+                Acessar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div style="height: 50px;"></div>
+    <div style="height: 50px"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+  </body>
 </html>

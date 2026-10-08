@@ -155,7 +155,7 @@ class ClienteModel {
 
         if(linhas.length > 0) {
 
-            let linha = linhas[i];
+            let linha = linhas[0];
             let cliente = new ClienteModel(linha["COD_CLI"], linha["NOME_CLI"], linha["CPF_CLI"], linha["RG_CLI"], linha["DATA_NASC_CLI"], linha["EMAIL_CLI"], linha["TELEFONE_CLI"], linha["SENHA_CLI"], linha["STATUS_PLANO"]);
 
             return cliente;

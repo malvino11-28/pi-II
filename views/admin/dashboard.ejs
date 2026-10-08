@@ -67,7 +67,51 @@
           <div class="dashboard-stat-card">
             <i class="bi bi-people-fill dashboard-icon"></i>
 
-            <h3><%= clientes.length %></h3>
+        <!-- CARDS ESTATÍSTICAS -->
+        <div class="row mb-4">
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="dashboard-stat-card">
+                    <i class="bi bi-people-fill dashboard-icon"></i>
+
+                    <h3><%= clientes.length %></h3>
+
+                    <p>Clientes Cadastrados</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="dashboard-stat-card">
+
+                    <i class="bi bi-truck dashboard-icon"></i>
+
+                    <h3><%= fornecedores.length %></h3>
+
+                    <p>Fornecedores</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="dashboard-stat-card">
+
+                    <i class="bi bi-bar-chart-fill dashboard-icon"></i>
+
+                    <h3>18</h3>
+
+                    <p>Relatórios</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="dashboard-stat-card">
+
+                    <i class="bi bi-box-seam-fill dashboard-icon"></i>
+
+                    <h3>126</h3>
+
+                    <p>Produtos</p>
+                </div>
+            </div>
 
             <p>Clientes Cadastrados</p>
           </div>
@@ -79,9 +123,59 @@
 
             <h3>34</h3>
 
-            <p>Fornecedores</p>
-          </div>
-        </div>
+                    <div class="menu-card">
+
+                        <div class="menu-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+
+                        <h4>Clientes</h4>
+
+                        <p>
+                            Gerencie os clientes cadastrados no sistema.
+                        </p>
+
+                        <a href="/admin/cadastrar-clientes" class="btn-access">
+                            <i class="bi bi-arrow-right-circle"></i>
+                            Acessar
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- FORNECEDORES -->
+                <div class="col-lg-4 col-md-6 mb-4">
+
+                    <div class="menu-card">
+
+                        <div class="menu-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+
+                        <h4>Fornecedores</h4>
+
+                        <p>
+                            Controle e cadastro de fornecedores.
+                        </p>
+
+                        <a href="/admin/cadastrar-fornecedores" class="btn-access">
+                            <i class="bi bi-arrow-right-circle"></i>
+                            Acessar
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- RELATÓRIOS -->
+                <div class="col-lg-4 col-md-6 mb-4">
+
+                    <div class="menu-card">
+
+                        <div class="menu-icon">
+                            <i class="bi bi-bar-chart-fill"></i>
+                        </div>
 
         <div class="col-lg-3 col-md-6 mb-3">
           <div class="dashboard-stat-card">

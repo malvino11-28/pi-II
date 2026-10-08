@@ -88,12 +88,12 @@ function validarTelefone(telefone) {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    let btn = document.querySelector(".btn-save");
-    btn.addEventListener("click", cadastrarFornecedor);
+    let btn = document.querySelector("#btnSalvarAlteracaoFornecedor");
+    btn.addEventListener("click", alterarFornecedor);
 
-    let cnpjCampo = document.querySelector("#inputCNPJ");
-    let emailCampo = document.querySelector("#inputEmail");
-    let telefoneCampo = document.querySelector("#inputTel");
+    let cnpjCampo = document.querySelector("#cnpjFornecedor");
+    let emailCampo = document.querySelector("#emailFornecedor");
+    let telefoneCampo = document.querySelector("#telefoneFornecedor");
 
     cnpjCampo.addEventListener("input", function () {
         cnpjCampo.value = mascaraCNPJ(cnpjCampo.value);
@@ -133,17 +133,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    function cadastrarFornecedor() {
+    function alterarFornecedor() {
 
-        let razao = document.querySelector("#inputRazao");
-        let nomeFan = document.querySelector("#inputNomeFan");
-        let cnpj = document.querySelector("#inputCNPJ");
-        let email = document.querySelector("#inputEmail");
-        let telefone = document.querySelector("#inputTel");
+        let razao = document.querySelector("#razaoFornecedor");
+        let nomeFan = document.querySelector("#nomeFantasiaFornecedor");
+        let cnpj = document.querySelector("#cnpjFornecedor");
+        let email = document.querySelector("#emailFornecedor");
+        let telefone = document.querySelector("#telefoneFornecedor");
+        let id = document.querySelector("#inputId");
 
-        if(razao.value != "" && nomeFan.value != "" && cnpj.value != "" && email.value != "" && telefone.value != "") {
+        if(id.value > 0 && razao.value != "" && nomeFan.value != "" && cnpj.value != "" && email.value != "" && telefone.value != "") {
 
             obj = {
+                id: id.value,
                 razao: razao.value,
                 nomeFan: nomeFan.value,
                 cnpj: cnpj.value,
@@ -163,11 +165,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
             }).then(function(corpo){
                 if(corpo.ok){
-                    alert("Fornecedor cadastrado com sucesso!!!");
-                    window.location.reload();
+                    alert("Fornecedor alterado com sucesso!!!");
+                    window.location.href="/admin/cadastrar-fornecedores";
 
                 } else {
-                    alert("Erro ao cadastrar o fornecedor");
+                    alert("Erro ao alterar o fornecedor");
                 }
             })
 
@@ -175,46 +177,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
             alert("Por favor, preencha todos os respectivos campos.");
         }
-    }
-})
-
-document.addEventListener("DOMContentLoaded", function() {
-
-    let btn = document.querySelectorAll(".btn-excluir");
-    
-    for(let i = 0; i < btn.length; i++) {
-        btn[i].addEventListener("click", excluirFornecedor);
-    }
-
-    function excluirFornecedor() {
-
-        let idExclusao = this.dataset.id;
-
-        if(confirm("Deseja realmente excluir esse fornecedor?")) {
-
-            let obj = {
-
-                id: idExclusao
-            };
-
-            fetch("/admin/excluir-fornecedor", {
-                method: "POST",
-                body: JSON.stringify(obj),
-                headers: { 
-                    "Content-Type" : "application/json" 
-                }
-            }).then(function(resposta){
-                return resposta.json();
-
-            }).then(function(corpo) {
-                if(corpo.ok) {
-                    alert("Fornecedor excluído com sucesso!!!");
-                    window.location.reload();
-
-                } else {
-                    alert("Erro ao excluir fornecedor");
-                }
-            })
-        } 
     }
 })

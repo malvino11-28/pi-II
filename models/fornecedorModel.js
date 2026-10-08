@@ -78,6 +78,17 @@ class FornecedorModel{
 
     }
 
+    async atualizarFornecedor() {
+        
+        let sql = "UPDATE FORNECEDOR SET CNPJ_FOR = ?, RAZAO_FOR = ?, NOME_FAN_FOR = ?, EMAIL_FOR = ?, TELEFONE_FOR = ? WHERE COD_FOR = ?";
+        let values = [this.#CNPJ_FOR, this.#RAZAO_FOR, this.#NOME_FAN_FOR, this.#EMAIL_FOR, this.#TELEFONE_FOR, this.#COD_FOR];
+
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
+
+        return result;
+    }
+
     async listarFornecedores() {
 
         let sql = "SELECT * FROM FORNECEDOR";
@@ -104,6 +115,27 @@ class FornecedorModel{
         let result = await banco.ExecutaComandoNonQuery(sql, value);
 
         return result;
+    }
+
+    async obterPorId(id) {
+
+        let sql = "SELECT * FROM FORNECEDOR WHERE COD_FOR = ?";
+        let value = [id];
+
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql, value);
+
+        if(linhas.length > 0) {
+
+            let linha = linhas[0];
+            let fornecedor = new FornecedorModel(linha["COD_FOR"], linha["CNPJ_FOR"], linha["RAZAO_FOR"], linha["NOME_FAN_FOR"], linha["EMAIL_FOR"], linha["TELEFONE_FOR"]);
+
+            return fornecedor;
+
+        } else {
+
+            return null;
+        }
     }
 }
 

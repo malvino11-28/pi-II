@@ -118,6 +118,11 @@ body {
     text-align: center;
     border-left: 4px solid rgb(238, 123, 48);
     height: 100%;
+    transition: 0.3s;
+}
+
+.stat-card:hover{
+    transform: translateY(-5px);
 }
 
 .stat-icon {
@@ -545,5 +550,417 @@ body {
 
     .stat-number {
         font-size: 27px;
+    }
+}
+
+/* =========================================
+   ALTERAR CLIENTE
+========================================= */
+
+.editar-cliente-card {
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    overflow: hidden;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================
+   CABEÇALHO
+========================================= */
+
+.editar-cliente-header {
+    background-color: #440a0a;
+
+    color: white;
+
+    padding: 22px 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.editar-cliente-header h3 {
+    margin: 0;
+
+    font-size: 21px;
+
+    font-weight: bold;
+}
+
+
+.editar-cliente-header h3 i {
+    color: rgb(238, 123, 48);
+
+    margin-right: 8px;
+}
+
+
+.editar-cliente-header p {
+    margin: 5px 0 0;
+
+    font-size: 13px;
+
+    color: #dddddd;
+}
+
+
+/* =========================================
+   BOTÃO VOLTAR
+========================================= */
+
+.btn-voltar-clientes {
+    padding: 9px 17px;
+
+    background-color: rgba(255, 255, 255, 0.12);
+
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    border-radius: 5px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+
+.btn-voltar-clientes:hover {
+    background-color: rgb(238, 123, 48);
+
+    color: white;
+}
+
+
+/* =========================================
+   TOGGLE
+========================================= */
+
+.editar-toggle {
+    width: fit-content;
+
+    margin: 25px auto 5px;
+
+    padding: 5px;
+
+    background-color: #eef0f2;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    gap: 4px;
+}
+
+
+.toggle-opcao {
+    border: none;
+
+    background-color: transparent;
+
+    color: #7f8c8d;
+
+    padding: 10px 20px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+.toggle-opcao i {
+    margin-right: 5px;
+}
+
+
+.toggle-opcao:hover {
+    color: #440a0a;
+}
+
+
+.toggle-opcao.ativo {
+    background-color: white;
+
+    color: #440a0a;
+
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================
+   CONTEÚDO
+========================================= */
+
+#formAlterarCliente {
+    padding: 25px 30px 30px;
+}
+
+
+.secao-edicao {
+    display: none;
+}
+
+
+.secao-edicao.secao-ativa {
+    display: block;
+
+    animation: aparecerSecao 0.25s ease;
+}
+
+
+@keyframes aparecerSecao {
+
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   TÍTULO DA SEÇÃO
+========================================= */
+
+.secao-titulo {
+    margin-bottom: 22px;
+
+    padding-bottom: 15px;
+
+    border-bottom: 1px solid #ecf0f1;
+}
+
+
+.secao-titulo h4 {
+    margin: 0;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: #2c3e50;
+}
+
+
+.secao-titulo p {
+    margin: 5px 0 0;
+
+    color: #7f8c8d;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   INPUT BLOQUEADO
+========================================= */
+
+.campo-bloqueado {
+    background-color: #f4f6f7 !important;
+
+    color: #7f8c8d;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   AVISO DE SENHA
+========================================= */
+
+.aviso-senha {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+
+    padding: 15px;
+
+    background-color: #fff8e7;
+
+    border-left: 4px solid rgb(238, 123, 48);
+
+    border-radius: 6px;
+}
+
+
+.aviso-senha > i {
+    color: rgb(238, 123, 48);
+
+    font-size: 20px;
+}
+
+
+.aviso-senha strong {
+    color: #2c3e50;
+
+    font-size: 14px;
+}
+
+
+.aviso-senha p {
+    margin: 2px 0 0;
+
+    font-size: 12px;
+
+    color: #7f8c8d;
+}
+
+
+/* =========================================
+   RODAPÉ
+========================================= */
+
+.editar-footer {
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #ecf0f1;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* =========================================
+   CANCELAR
+========================================= */
+
+.btn-cancelar-edicao {
+    border: none;
+
+    background-color: #95a5a6;
+
+    color: white;
+
+    padding: 11px 22px;
+
+    border-radius: 5px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.btn-cancelar-edicao:hover {
+    background-color: #7f8c8d;
+
+    color: white;
+}
+
+
+/* =========================================
+   SALVAR
+========================================= */
+
+.btn-salvar-edicao {
+    border: none;
+
+    background-color: #27ae60;
+
+    color: white;
+
+    padding: 11px 24px;
+
+    border-radius: 5px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.btn-salvar-edicao:hover {
+    background-color: #229954;
+}
+
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .editar-cliente-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .btn-voltar-clientes {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .editar-toggle {
+        width: calc(100% - 30px);
+
+        flex-direction: column;
+    }
+
+
+    .toggle-opcao {
+        width: 100%;
+    }
+
+
+    #formAlterarCliente {
+        padding: 20px;
+    }
+
+
+    .editar-footer {
+        flex-direction: column-reverse;
+    }
+
+
+    .btn-cancelar-edicao,
+    .btn-salvar-edicao {
+        width: 100%;
+
+        text-align: center;
     }
 }

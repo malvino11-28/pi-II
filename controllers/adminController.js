@@ -73,6 +73,27 @@ class adminController {
         return res.status(400).send({
           ok: false,
           erros: erros,
+
+    async rotaDashboardView(req, res) {
+
+        let cliente = new ClienteModel();
+        let listaClientes = await cliente.listarClientes();
+
+        let fornecedor = new FornecedorModel();
+        let listarFornecedores = await fornecedor.listarFornecedores()
+
+        res.render("admin/dashboard", {
+            clientes: listaClientes,
+            fornecedores: listarFornecedores
+        });
+    }
+
+    async rotaCadastrarClientesView(req, res) {
+        let cliente = new ClienteModel();
+        let listaClientes = await cliente.listarClientes();
+
+        res.render("admin/cadastrarCliente", {
+            clientes: listaClientes
         });
       }
 
@@ -95,6 +116,12 @@ class adminController {
 
         req.body.senha,
       );
+            // Exige senha no cadastro ou quando uma nova senha é enviada na edição.
+            if (!req.body.id || req.body.senha) {
+                if (!validarSenha(req.body.senha)) {
+                    erros.push("A senha deve ter ao menos 8 caracteres.");
+                }
+            }
 
       let retornoBan = await cliente.cadastrarCliente();
 
@@ -337,6 +364,32 @@ class adminController {
     if (idExclusao && idExclusao > 0) {
       let marca = new MarcaModel();
       let result = await marca.excluirMarca(idExclusao);
+            let cliente = new ClienteModel(
+                0,
+                req.body.nome.trim(),
+                somenteNumeros(req.body.cpf),
+                req.body.rg.trim(),
+                req.body.dt_nasc,
+                req.body.email.trim().toLowerCase(),
+                somenteNumeros(req.body.cel),
+                req.body.senha
+            );
+
+            let retornoBan = false;
+
+            if(req.body.id) {
+                cliente.COD_CLI = req.body.id;
+                retornoBan = await cliente.atualizarCliente();
+
+            } else {
+
+                retornoBan = await cliente.cadastrarCliente();
+            }
+
+            res.send({ ok: retornoBan });
+            
+        } catch (erro) {
+            console.log(erro);
 
       res.send({ ok: result });
     } else {
@@ -347,6 +400,16 @@ class adminController {
   async rotaAlterarMarca(req, res) {
     let id = req.params.id;
     let marca = new MarcaModel();
+    async alterarClienteView(req, res) {
+
+        let idCliente = req.params.id;
+        let cliente = new ClienteModel();
+        cliente = await cliente.obterPorId(idCliente);
+
+        res.render("admin/alterarCliente", { cliAlter: cliente });
+    }
+
+    async rotaExcluirCliente(req, res) {
 
     marca = await marca.obterMarcaId(id);
     res.render("admin/alterarMarca", { marca });
@@ -354,12 +417,19 @@ class adminController {
 
   async rotaGerenciamentoLote(req, res) {
     let idProduto = req.params.id;
+            let cliente = new ClienteModel();
+            let result = await cliente.excluirCliente(idExclusao);
 
     let produtoModel = new ProdutoModel();
     let loteModel = new LoteModel();
 
     let produto = await produtoModel.obterProdutoId(idProduto);
     let lotes = await loteModel.listarLoteProduto(idProduto);
+        } else {
+
+            res.send({ ok: false });
+        }
+    }
 
     res.render("admin/gerenciamentoLote", {
         produto: produto,
@@ -414,6 +484,67 @@ async rotaAlterarLote(req, res) {
       res.send({ ok: result });
     } else {
       res.send({ ok: false });
+        if (
+            req.body.razao != "" &&
+            req.body.nomeFan != "" &&
+            req.body.cnpj != "" &&
+            req.body.email != "" &&
+            req.body.telefone != ""
+        ) {
+
+            let fornecedor = new FornecedorModel(
+                0,
+                somenteNumeros(req.body.cnpj),
+                req.body.razao.trim(),
+                req.body.nomeFan.trim(),
+                req.body.email.trim().toLowerCase(),
+                somenteNumeros(req.body.telefone)
+            );
+
+            let retornoBan = false;
+
+            if(req.body.id) {
+                fornecedor.COD_FOR = req.body.id;
+                retornoBan = await fornecedor.atualizarFornecedor();
+
+            } else {
+
+                retornoBan = await fornecedor.cadastrarFornecedor();
+            }
+
+            res.send({ ok: retornoBan });
+
+        } else {
+            
+            res.send({ ok: false });
+        }
+    }
+
+    async rotaAlterarFornecedorView(req, res) {
+        
+        let idFornecedor = req.params.id;
+        let fornecedor = new FornecedorModel();
+        fornecedor = await fornecedor.obterPorId(idFornecedor);
+
+        res.render("admin/alterarFornecedor", {
+            forAlter: fornecedor
+        });
+    }
+
+    async rotaExcluirFornecedor(req, res) {
+
+        let idExclusao = req.body.id;
+        if(idExclusao && idExclusao > 0) {
+
+            let fornecedor = new FornecedorModel();
+            let result = await fornecedor.excluirFornecedor(idExclusao);
+
+            res.send({ ok: result });
+        
+        } else {
+
+            res.send({ ok: false });
+        }
     }
   }
 

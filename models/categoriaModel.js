@@ -4,17 +4,17 @@ class CategoriaModel {
   #COD_CAT;
   #NOME_CAT;
 
-  get cod_cat() {
+  get COD_CAT() {
     return this.#COD_CAT;
   }
-  set cod_cat(v) {
+  set COD_CAT(v) {
     this.#COD_CAT = v;
   }
 
-  get nome_cat() {
+  get NOME_CAT() {
     return this.#NOME_CAT;
   }
-  set nome_cat(v) {
+  set NOME_CAT(v) {
     this.#NOME_CAT = v;
   }
 
@@ -59,13 +59,13 @@ class CategoriaModel {
   async atualizarCategoria() {
     let sql = "UPDATE CATEGORIA SET NOME_CAT = ? WHERE COD_CAT = ?";
     let db = new Database();
-    let values = [this.#NOME_CAT, this, this.#COD_CAT];
+    let values = [this.#NOME_CAT, this.#COD_CAT];
     let result = await db.ExecutaComandoNonQuery(sql, values);
 
     return result;
   }
 
-  async obterPorId(id) {
+  async obterCategoriaId(id) {
     let sql = "SELECT * FROM CATEGORIA WHERE COD_CAT = ?"
     let value = [id];
     

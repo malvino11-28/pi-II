@@ -1,14 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
     let btnCadastrar = document.querySelector("#btnSalvar");
     let btnExcluir = document.querySelectorAll(".btn-excluir");
+    let btnAlterar = document.querySelector("#btnSalvarAlteracao");
 
-    for(let i = 0; i < btnExcluir.length; i++) {
-        btnExcluir[i].addEventListener("click", excluirCategoria);
+    if (btnExcluir.length > 0) {
+        for(let i = 0; i < btnExcluir.length; i++) {
+            btnExcluir[i].addEventListener("click", excluirCategoria);
+        }
     }
 
-    btnCadastrar.addEventListener("click", cadastrarCategoria);
+    if (btnCadastrar) {
+        btnCadastrar.addEventListener("click", cadastrarCategoria);
+    }
 
-    let nome = document.querySelector("#nomeMar");
+    if (btnAlterar) {
+        btnAlterar.addEventListener("click", alterarCategoria);
+    }
+
+    let nome = document.querySelector("#nomeCat");
 
     function cadastrarCategoria() { 
         if (nome.value.trim() != "") {
@@ -62,6 +71,34 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("Erro ao excluir a categoria.");
                 }
             })
+        }
+    }
+
+    function alterarCategoria() {
+        let idAlteracao = document.querySelector("#idCat");
+
+        if (idAlteracao.value > 0 && nome.value.trim() != "") {
+            
+            let obj = {
+                id: idAlteracao.value,
+                nome: nome.value,
+                }
+
+            fetch("/admin/produto/cadastrar-categoria", {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: { "Content-Type": "application/json" },
+                }
+            ).then((res) => {
+                return res.json();
+            }).then((resBody) => {
+                if (resBody.ok) {
+                    alert("Categoria atualizada com sucesso!");
+                    window.location.reload();
+                } else {
+                    alert("Erro ao atualizar categoria.");
+                }
+            });
         }
     }
 })

@@ -166,9 +166,15 @@ class adminController {
   }
 
   async rotaCadastrarCategoria(req, res) {
+    let result;
     if (req.body.nome != "") {
-      let categoria = new CategoriaModel(0, req.body.nome);
-      let result = await categoria.cadastrarCategoria();
+      if (req.body.id > 0) {
+        let categoria = new CategoriaModel(req.body.id, req.body.nome);
+        result = await categoria.atualizarCategoria();
+      } else {
+        let categoria = new CategoriaModel(0, req.body.nome);
+        result = await categoria.cadastrarCategoria();
+      }
       res.send({ ok: result });
     } else {
       res.send({ ok: false });
@@ -188,11 +194,12 @@ class adminController {
   }
 
   async rotaAlterarCategoria(req, res) {
-    let id = req.body.id;
+    let id = req.params.id;
     let categoria = new CategoriaModel();
 
-    categoria = await categoria.obterPorId(id);
-    res.render("admin/gerenciamentoCateogira", { catAlteracao: categoria }); //
+    categoria = await categoria.obterCategoriaId(id);
+    console.log(categoria)
+    res.render("admin/alterarCategoria", { categoria }); //
   }
 
   // =========== GERENCIAR PRODUTO

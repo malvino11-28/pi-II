@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("marca", marca.value);
             formData.append("categoria", categoria.value);
             formData.append("desc", desc.value);
-            formData.append("desc_red", desc.value);
+            formData.append("desc_red", descRed.value);
             formData.append("uni", uniMedida.value);
             formData.append("valor", valor.value);
             formData.append("imagem", imagem.files[0]);

@@ -97,8 +97,8 @@ class ProdutoModel {
 
       // convertendo binário para base64
       let imagemBase64 = "";
-      if (row["IMAGEM_PROD"] != null) {
-        imagemBase64 = "data:image/png;base64," + row["IMAGEM_PROD"].toString("base64");
+      if (linha["IMAGEM_PROD"] != null) {
+        imagemBase64 = "data:image/png;base64," + linha["IMAGEM_PROD"].toString("base64");
       }
       let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD'], imagemBase64);
       
@@ -158,8 +158,8 @@ class ProdutoModel {
 
         // convertendo binário para base64
         let imagemBase64 = "";
-        if (row["IMAGEM_PROD"] != null) {
-          imagemBase64 = "data:image/png;base64," + row["IMAGEM_PROD"].toString("base64");
+        if (linha["IMAGEM_PROD"] != null) {
+          imagemBase64 = "data:image/png;base64," + linha["IMAGEM_PROD"].toString("base64");
         }
 
         let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD'], imagemBase64);

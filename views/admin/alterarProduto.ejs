@@ -275,6 +275,18 @@ DADOS CADASTRAIS DO PRODUTO
                 />
               </div>
             </div>
+
+            <div class="form-group">
+              <label>Imagem do Produto:</label>
+              <input class="form-control" type="file" id="inputImagem">
+            </div>
+            <div class="form-group" id="divPrevia" style="display: <%= produto.IMAGEM_PROD ? 'block' : 'none' %>;">
+              <label>Prévia da Imagem</label>
+              <div>
+                <img src="<%= produto.IMAGEM_PROD %>" width="250" id="previaImagem">
+              </div>
+            </div>
+
           </div>
 
           <!-- BOTÕES -->

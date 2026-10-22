@@ -1,7 +1,9 @@
 const express = require("express");
 const adminController = require("../controllers/adminController");
+const multer = require("multer");
 
 const router = express.Router()
+const upload = multer({});
 
 let controller = new adminController;
 
@@ -20,7 +22,7 @@ router.post("/admin/excluir-fornecedor", controller.rotaExcluirFornecedor);
 router.get("/admin/produto", controller.rotaGerenciarProdutoView);
 
 router.get("/admin/produto/gerenciamento-produto", controller.rotaGerenciarProduto);
-router.post("/admin/produto/cadastrar-produto", controller.rotaCadastrarProduto);
+router.post("/admin/produto/cadastrar-produto", upload.single("imagem"), controller.rotaCadastrarProduto);
 router.post("/admin/produto/excluir-produto", controller.rotaExcluirProduto);
 router.get("/admin/produto/gerenciamento-produto/alterar-produto/:id", controller.rotaAtualizarProduto);
 

@@ -305,7 +305,8 @@ async rotaCadastrarProduto(req, res) {
     req.body.desc != "" &&
     req.body.desc_red != "" &&
     req.body.uni != "0" &&
-    req.body.valor != ""
+    req.body.valor != "" &&
+    req.file != null
   ) {
     if (req.body.id > 0) {
       let produto = new ProdutoModel(
@@ -317,6 +318,7 @@ async rotaCadastrarProduto(req, res) {
         req.body.desc_red,
         req.body.uni,
         req.body.valor,
+        req.file.buffer,
       );
       result = await produto.atualizarProduto();
     } else {
@@ -329,6 +331,7 @@ async rotaCadastrarProduto(req, res) {
         req.body.desc_red,
         req.body.uni,
         req.body.valor,
+        req.file.buffer,
       );
       result = await produto.cadastrarProduto();
     }
@@ -356,7 +359,10 @@ async rotaAtualizarProduto(req, res) {
   let marca = new MarcaModel();
   let categoria = new CategoriaModel();
 
-  let produtoId = await produto.obterProdutoId(id);
+  let produtoId;
+  if (req.params.id != undefined && req.params.id != "") {
+    produtoId = await produto.obterProdutoId(id);
+  }
   let listaMarcas = await marca.listarMarcas();
   let listaCategorias = await categoria.listarCategoria();
 

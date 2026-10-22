@@ -9,6 +9,7 @@ class ProdutoModel {
   #DESC_PROD;
   #UNI_MEDIDA_PROD;
   #VALOR_UNI_PROD;
+  #IMAGEM_PROD;
 
   get COD_PROD() {
     return this.#COD_PROD;
@@ -66,7 +67,14 @@ class ProdutoModel {
     this.#VALOR_UNI_PROD = v;
   }
 
-  constructor(cod_prod, cod_mar, cod_cat, nome, desc, desc_red, uni, valor) {
+  get IMAGEM_PROD() { 
+    return this.#IMAGEM_PROD;
+  }
+  set IMAGEM_PROD(v) {
+    this.#IMAGEM_PROD = v;
+  }
+
+  constructor(cod_prod, cod_mar, cod_cat, nome, desc, desc_red, uni, valor, img) {
     this.#COD_PROD = cod_prod;
     this.#COD_MAR = cod_mar;
     this.#COD_CAT = cod_cat;
@@ -75,6 +83,7 @@ class ProdutoModel {
     this.#DESC_RED_PROD = desc_red;
     this.#UNI_MEDIDA_PROD = uni;
     this.#VALOR_UNI_PROD = valor;
+    this.#IMAGEM_PROD = img;
   }
 
   async listarProdutos() {
@@ -85,7 +94,13 @@ class ProdutoModel {
 
     for (let i = 0;i<linhas.length;i++) {
       let linha = linhas[i];
-      let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD']);
+
+      // convertendo binário para base64
+      let imagemBase64 = "";
+      if (linha["IMAGEM_PROD"] != null) {
+        imagemBase64 = "data:image/png;base64," + linha["IMAGEM_PROD"].toString("base64");
+      }
+      let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD'], imagemBase64);
       
       lista.push(produto);
     }
@@ -94,8 +109,8 @@ class ProdutoModel {
   }
 
   async cadastrarProduto() {
-    let sql = "INSERT INTO PRODUTO (COD_MAR, COD_CAT, NOME_PROD, DESC_PROD, DESC_RED_PROD, UNI_MEDIDA_PROD, VALOR_UNI_PROD) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD];
+    let sql = "INSERT INTO PRODUTO (COD_MAR, COD_CAT, NOME_PROD, DESC_PROD, DESC_RED_PROD, UNI_MEDIDA_PROD, VALOR_UNI_PROD, IMAGEM_PROD) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD, this.#IMAGEM_PROD];
     let db = new Database();
 
     let result = await db.ExecutaComandoNonQuery(sql, values);
@@ -114,9 +129,17 @@ class ProdutoModel {
   }
 
   async atualizarProduto() {
-    let sql = "UPDATE PRODUTO SET COD_MAR = ?, COD_CAT = ?, NOME_PROD = ?, DESC_PROD = ?, DESC_RED_PROD = ?, UNI_MEDIDA_PROD = ?, VALOR_UNI_PROD = ? WHERE COD_PROD = ?";
-    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD, this.#COD_PROD];
+    let sql = "UPDATE PRODUTO SET COD_MAR = ?, COD_CAT = ?, NOME_PROD = ?, DESC_PROD = ?, DESC_RED_PROD = ?, UNI_MEDIDA_PROD = ?, VALOR_UNI_PROD = ?";
+    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD];
     let db = new Database();
+
+    if (this.#IMAGEM_PROD != null) {
+      sql += ", IMAGEM_PROD = ?";
+      values.push(this.#IMAGEM_PROD);
+    }
+
+    sql += " WHERE IMAGEM_PROD = ?";
+    values.push(this.#IMAGEM_PROD);
 
     let result = await db.ExecutaComandoNonQuery(sql, values);
 
@@ -133,7 +156,21 @@ class ProdutoModel {
     if (linhas.length > 0) {
         let linha = linhas[0];
 
-        let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD']);
+        // convertendo binário para base64
+        let imagemBase64 = "";
+        if (linha["IMAGEM_PROD"] != null) {
+          imagemBase64 = "data:image/png;base64," + linha["IMAGEM_PROD"].toString("base64");
+        }
+
+        let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD'], imagemBase64);
+
+        if (linha['IMAGEM_PROD'] != null) {
+          produto.imagemBase64 = global.CAMINHO_IMG_BROWSER + linha["IMAGEM_PROD"];
+          produto.possuiImagem = true;
+        } else {
+          produto.imagemBase64 = global.CAMINHO_IMG_BROWSER + "sem-foto.png";
+          produto.possuiImagem = false;
+        }
 
         return produto;
     }

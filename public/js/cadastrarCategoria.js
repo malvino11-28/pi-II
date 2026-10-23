@@ -19,9 +19,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let nome = document.querySelector("#nomeCat");
 
+    function validarNomeCategoria() {
+        const tamanho = nome.value.trim().length;
+        let valido;
+        if (tamanho >= 2 && tamanho <= 50) {
+            valido = true;
+            nome.classList.remove("is-invalid");
+            nome.classList.add("is-valid");
+        } else {
+            valido = false;
+            nome.classList.remove("is-valid");
+            nome.classList.add("is-invalid");
+        }
+
+        return valido;
+    }
+
+    nome.addEventListener("blur", validarNomeCategoria);
+
+    nome.addEventListener("input", () => {
+            validarNomeCategoria();
+    })
+
     function cadastrarCategoria() { 
-        if (nome.value.trim() != "") {
-            let obj = {nome: nome.value}
+        if (validarNomeCategoria()) {
+            let obj = {nome: nome.value.trim()}
 
             fetch("/admin/produto/cadastrar-categoria", {
                 body: JSON.stringify(obj),
@@ -39,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             })
         } else {
-            alert("Preencha todos os campos.")
+            alert("Revise os campos em vermelho.")
         }
     }
 
@@ -77,11 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function alterarCategoria() {
         let idAlteracao = document.querySelector("#idCat");
 
-        if (idAlteracao.value > 0 && nome.value.trim() != "") {
+        if (idAlteracao.value > 0 && validarNomeCategoria()) {
             
             let obj = {
                 id: idAlteracao.value,
-                nome: nome.value,
+                nome: nome.value.trim(),
                 }
 
             fetch("/admin/produto/cadastrar-categoria", {
@@ -99,6 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("Erro ao atualizar categoria.");
                 }
             });
+        } else {
+            alert("Revise os campos em vermelho.");
         }
     }
 });

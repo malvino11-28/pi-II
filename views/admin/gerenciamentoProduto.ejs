@@ -226,6 +226,7 @@
               <th>Descrição Reduzida</th>
               <th>Medida</th>
               <th>Valor</th>
+              <th>Imagem</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -250,6 +251,13 @@
                   <td><%= produtos[i].DESC_RED_PROD%></td>
                   <td><%= produtos[i].UNI_MEDIDA_PROD %></td>
                   <td><%= produtos[i].VALOR_UNI_PROD %></td>
+                  <td class="text-center">
+                  <% if (produtos[i].IMAGEM_PROD) { %>
+                    <i class="bi bi-check-circle-fill text-success"></i>  
+                  <% } else { %>
+                    <i class="bi bi-x-circle-fill text-danger"></i>
+                  <% } %>
+                </td>
                   <td>
                     <div class="acoes-cliente">
                       <a href="/admin/produto/gerenciamento-produto/alterar-produto/<%= produtos[i].COD_PROD %>">

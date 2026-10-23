@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("marca", marca.value);
             formData.append("categoria", categoria.value);
             formData.append("desc", desc.value);
-            formData.append("desc_red", desc.value);
+            formData.append("desc_red", descRed.value);
             formData.append("uni", uniMedida.value);
             formData.append("valor", valor.value);
             formData.append("imagem", imagem.files[0]);
@@ -126,14 +126,17 @@ document.addEventListener("DOMContentLoaded", () => {
             //     valor: valor.value,
             // }
             let formData = new FormData();
+            formData.append("id", idAlteracao.value);
             formData.append("nome", nome.value);
             formData.append("marca", marca.value);
             formData.append("categoria", categoria.value);
             formData.append("desc", desc.value);
-            formData.append("desc_red", desc.value);
+            formData.append("desc_red", descRed.value);
             formData.append("uni", uniMedida.value);
             formData.append("valor", valor.value);
-            formData.append("imagem", imagem.files[0]);
+            if (imagem.files.length > 0) {
+                formData.append("imagem", imagem.files[0]);
+            }
 
             fetch("/admin/produto/cadastrar-produto",
                 {

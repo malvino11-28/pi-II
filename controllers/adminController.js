@@ -306,7 +306,7 @@ async rotaCadastrarProduto(req, res) {
     req.body.desc_red != "" &&
     req.body.uni != "0" &&
     req.body.valor != "" &&
-    req.file != null
+    (req.body.id > 0 || req.file != null)
   ) {
     if (req.body.id > 0) {
       let produto = new ProdutoModel(
@@ -318,7 +318,7 @@ async rotaCadastrarProduto(req, res) {
         req.body.desc_red,
         req.body.uni,
         req.body.valor,
-        req.file.buffer,
+        req.file ? req.file.buffer : null,
       );
       result = await produto.atualizarProduto();
     } else {
@@ -331,7 +331,7 @@ async rotaCadastrarProduto(req, res) {
         req.body.desc_red,
         req.body.uni,
         req.body.valor,
-        req.file.buffer,
+        req.file ? req.file.buffer : null,
       );
       result = await produto.cadastrarProduto();
     }

@@ -138,8 +138,8 @@ class ProdutoModel {
       values.push(this.#IMAGEM_PROD);
     }
 
-    sql += " WHERE IMAGEM_PROD = ?";
-    values.push(this.#IMAGEM_PROD);
+    sql += " WHERE COD_PROD = ?";
+    values.push(this.#COD_PROD);
 
     let result = await db.ExecutaComandoNonQuery(sql, values);
 

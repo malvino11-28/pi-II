@@ -33,6 +33,12 @@ class authController {
     async rotaCadastro(req, res) {
 
     }
+
+    async rotaSignInView(req, res) {
+
+
+        res.render("auth/sign-in");
+    }
 }
 
 module.exports = authController;

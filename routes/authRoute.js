@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const authController = require("../controllers/authController");
 
 const router = express.Router();
@@ -6,6 +7,7 @@ const router = express.Router();
 let controller = new authController();
 
 router.get("/login", controller.rotaLoginView);
+router.get("/sign-in", controller.rotaSignInView);
 router.post("/login", controller.rotaLogin);
 
 router.get("/cadastrar", controller.rotaCadastroView);

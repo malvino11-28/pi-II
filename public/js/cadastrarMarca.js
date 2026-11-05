@@ -19,9 +19,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let nome = document.querySelector("#nomeMar");
 
+    function validarNomeMarca() {
+        const tamanho = nome.value.trim().length;
+        let valido;
+        if (tamanho >= 2 && tamanho <= 50) {
+            valido = true;
+            nome.classList.remove("is-invalid");
+            nome.classList.add("is-valid");
+        } else {
+            valido = false;
+            nome.classList.remove("is-valid");
+            nome.classList.add("is-invalid")
+        }
+
+        return valido;
+    }
+
+    nome.addEventListener("blur", validarNomeMarca);
+
+    nome.addEventListener("input", () => {
+        if (nome.classList.contains("is-valid") || nome.classList.contains("is-invalid")) {
+            validarNomeMarca();
+        }
+    })
+
+
     function cadastrarMarca() { 
-        if (nome.value.trim() != "") {
-            let obj = {nome: nome.value}
+        if (validarNomeMarca()) {
+            let obj = {nome: nome.value.trim()}
 
             fetch("/admin/produto/cadastrar-marca", {
                 body: JSON.stringify(obj),
@@ -35,11 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.reload();
                 } else 
                 {
-                    alert("Erro ao cadastrar marca.")
+                    alert("Erro ao cadastrar marca.");
                 }
             })
         } else {
-            alert("Preencha todos os campos.")
+            alert("Revise os campos em vermelho.");
         }
     }
 
@@ -77,11 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function alterarMarca() {
         let idAlteracao = document.querySelector("#idMar");
 
-        if (idAlteracao.value > 0 && nome.value.trim() != "") {
+        if (idAlteracao.value > 0 && validarNomeMarca()) {
             
             let obj = {
                 id: idAlteracao.value,
-                nome: nome.value,
+                nome: nome.value.trim(),
                 }
 
             fetch("/admin/produto/cadastrar-marca", {
@@ -96,9 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("Marca atualizada com sucesso!");
                     window.location.reload();
                 } else {
-                    alert("Erro ao atualizar marca.");
+                    alert("Revise os campos em vermelho.");
                 }
             });
+        } else {
+            alert("Revise os campos em vermelho.");
         }
     }
 });

@@ -9,7 +9,8 @@ const {
     formatarCPF,
     formatarTelefone,
     formatarData,
-    formatarCNPJ
+    formatarCNPJ,
+    formatarValor
 } = require("./utils/formatadores");
 
 server.use(express.static("public"));
@@ -19,6 +20,7 @@ server.locals.formatarCPF = formatarCPF;
 server.locals.formatarTelefone = formatarTelefone;
 server.locals.formatarData = formatarData;
 server.locals.formatarCNPJ = formatarCNPJ;
+server.locals.formatarValor = formatarValor;
 
 server.use(express.urlencoded());
 server.use(express.json());

@@ -56,4 +56,8 @@ function formatarCNPJ(cnpj) {
     );
 }
 
-module.exports = { formatarCPF, formatarTelefone, formatarData, formatarCNPJ };
+function formatarValor(valor) {
+    return Number(valor).toFixed(2).replace('.', ',');
+}
+
+module.exports = { formatarCPF, formatarTelefone, formatarData, formatarCNPJ, formatarValor };

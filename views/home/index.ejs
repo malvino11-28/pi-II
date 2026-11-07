@@ -258,7 +258,7 @@
                                         <div class="product-name"><%= lista[i].NOME_PROD %></div>
                                         <div class="product-price">R$ <%= formatarValor(lista[i].VALOR_UNI_PROD) %></div>
                                         <div class="product-installment">ou 2x de R$ <%= formatarValor(lista[i].VALOR_UNI_PROD / 2) %></div>
-                                        <a href="./pages/main/detalhe-produtos-tilapia.html" class="product-btn">
+                                        <a href="/produtos/<%= lista[i].COD_PROD %>" class="product-btn">
                                             <i class="bi bi-cart-plus"></i> Ver Mais
                                         </a>
                                     </div>

@@ -1,4 +1,5 @@
 const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
 
 const server = express();
 const PORT = 5138;
@@ -24,6 +25,9 @@ server.locals.formatarValor = formatarValor;
 
 server.use(express.urlencoded());
 server.use(express.json());
+server.use(expressLayouts);
+
+server.set("layout", false);
 
 server.use("/", routes);
 

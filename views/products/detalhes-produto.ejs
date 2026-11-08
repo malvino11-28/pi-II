@@ -6,7 +6,7 @@
         <div class="col-md-5">
             <div class="galeria-main" id="zoom-container">
                 <span class="badge-estoque">
-                    <%= lote.EST_LOTE > 0 ? 'Em Estoque' : 'Indisponível' %>
+                    <%= estoque > 0 ? 'Em Estoque' : 'Indisponível' %>
                 </span>
                 <img
                     id="imgPrincipal"
@@ -43,8 +43,8 @@
                     </div>
                 <% } %>
 
-                <div class="disponivel">
-                    <%= lote.EST_LOTE > 0 ? 'O produto está disponível.' : 'Produto indisponível no momento.' %>
+                <div class="indisponivel">
+                    <%= estoque > 0 ? 'O produto está disponível.' : 'Produto indisponível no momento.' %>
                 </div>
 
                 <div class="qty-wrap">
@@ -54,20 +54,23 @@
                         <input
                             type="number"
                             id="qty"
-                            value="<%= lote.EST_LOTE > 0 ? 1 : 0 %>"
-                            min="<%= lote.EST_LOTE > 0 ? 1 : 0 %>"
-                            max="<%= lote.EST_LOTE %>"
+                            value="<%= estoque > 0 ? 1 : 0 %>"
+                            min="<%= estoque > 0 ? 1 : 0 %>"
+                            max="<%= estoque %>"
                         />
 
                         <button type="button" onclick="altQty(1)">+</button>
                     </div>
 
+                    <div class="ultimas">
+                        <%= estoque < 10 ? 'Restam poucas unidades disponíveis.' : '' %>
+                    </div>
                     <!-- TODO: integrar o botão à lógica do carrinho. -->
                     <button
                         type="button"
                         class="btn-carrinho"
                         id="btnAdicionarCarrinho"
-                        <% if (lote.EST_LOTE <= 0) { %>disabled<% } %>
+                        <% if (estoque <= 0) { %>disabled<% } %>
                     >
                         <i class="bi bi-cart3"></i>
                         ADICIONAR AO CARRINHO
@@ -79,13 +82,12 @@
                     <span><%= produto.UNI_MEDIDA_PROD %></span>
                     <br>
 
-                    <!-- TODO: buscar os nomes da categoria e marca pelas chaves estrangeiras. -->
-                    <% if (typeof categoriaNome !== 'undefined' && categoriaNome) { %>
+                    <% if (categoriaNome !== 'undefined' && categoriaNome) { %>
                         Categoria: <span><%= categoriaNome %></span>
                         <br>
                     <% } %>
 
-                    <% if (typeof marcaNome !== 'undefined' && marcaNome) { %>
+                    <% if (marcaNome !== 'undefined' && marcaNome) { %>
                         Marca: <span><%= marcaNome %></span>
                     <% } %>
                 </div>
@@ -108,7 +110,7 @@
         </li>
 
         <!-- Informações nutricionais aparecem somente se existirem. -->
-        <% if (typeof informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
+        <% if (informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
             <li class="nav-item">
                 <button
                     class="nav-link"
@@ -130,7 +132,7 @@
         </div>
 
         <!-- TODO: implementar a model INF_NUTRICIONAIS e buscar os dados pelo COD_PROD. -->
-        <% if (typeof informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
+        <% if (informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
             <div class="tab-pane fade" id="nutricional">
                 <p class="mb-3" style="font-size:13px;color:var(--cinza)">
                     Valores por porção de 100g

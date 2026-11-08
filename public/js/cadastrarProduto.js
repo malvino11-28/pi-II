@@ -104,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             desc.classList.add("is-invalid");
             validar = false;
         }
+        return validar;
     }
 
     desc.addEventListener("blur", validarDescricao);
@@ -120,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descRed.classList.add("is-invalid");
             validar = false;
         }
+        return validar;
     }
 
     descRed.addEventListener("blur", validarDescricaoReduzida);
@@ -178,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
             imagem.classList.remove("is-valid");
             imagem.classList.add("is-invalid");
             return false;
-        }
+        } 
     }
 
         // function validarImagemProduto(obrigatoria) {
@@ -303,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function alterarProduto() {
+    function alterarProduto() { // corrigir problema imagem
         let idAlteracao = document.querySelector("#idProd");
 
         let nomeValido = validarNomeProduto();

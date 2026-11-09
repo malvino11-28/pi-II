@@ -7,7 +7,6 @@ const router = express.Router();
 let controller = new authController();
 
 router.get("/login", controller.rotaLoginView);
-router.get("/sign-in", controller.rotaSignInView);
 router.post("/login", controller.rotaLogin);
 
 router.get("/cadastrar", controller.rotaCadastroView);

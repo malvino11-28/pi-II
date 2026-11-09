@@ -9,11 +9,11 @@ class authController {
 
     async rotaLogin(req, res) {
 
-        const user = req.body.matricula;
+        const user = req.body.identificacao;
         const senha = req.body.senha;
+        const user_tipo = req.body.tipoLogin;
 
-        let msg = "Usuário ou senha inválidos!"
-        let cor = "red";
+        let msg = "Matrícula ou senha inválidos!"
 
         let funcionario = new FuncionarioModel();
         funcionario = await funcionario.validar(user, senha);
@@ -22,7 +22,7 @@ class authController {
             return res.redirect("admin");
         }
 
-        return res.render('login', {'mensagem': msg, 'color': cor});
+        return res.render('auth/login', { 'mensagem': msg, 'tipo_usuario' : user_tipo });
     }
 
     async rotaCadastroView(req, res) {
@@ -34,11 +34,6 @@ class authController {
 
     }
 
-    async rotaSignInView(req, res) {
-
-
-        res.render("auth/sign-in");
-    }
 }
 
 module.exports = authController;

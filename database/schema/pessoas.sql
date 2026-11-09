@@ -37,7 +37,8 @@ CREATE TABLE FUNCIONARIO (
     STATUS_FUNC ENUM('Ativo', 'Inativo', 'Afastado', 'Férias') NOT NULL,
     NOME_FUN VARCHAR(150) NOT NULL,
     MATRICULA_FUN VARCHAR(4) NOT NULL UNIQUE,
-    CARGO_FUN VARCHAR(30) NOT NULL
+    CARGO_FUN VARCHAR(30) NOT NULL,
+    SENHA_FUN VARCHAR(255) NOT NULL,
 );
 
 -- ==========================================

@@ -78,6 +78,10 @@
 
           <i class="bi bi-chevron-right"></i>
 
+          <a href="/admin/produto/"> Gerenciamento </a>
+
+          <i class="bi bi-chevron-right"></i>
+
           <a href="/admin/produto/gerenciamento-produto"> Produtos </a>
 
           <i class="bi bi-chevron-right"></i>
@@ -124,13 +128,8 @@
         </div>
 
         <form id="formProduto">
-          <!-- =====================================
 
-DADOS CADASTRAIS DO PRODUTO
-
-====================================== -->
-
-          <div class="secao-edicao secao-ativa" id="secaoDados">
+          <div class="secao-edicao secao-ativa m-5" id="secaoDados">
             <div class="secao-titulo">
               <h4>Dados do Produto</h4>
 
@@ -275,11 +274,23 @@ DADOS CADASTRAIS DO PRODUTO
                 />
               </div>
             </div>
+
+            <div class="form-group">
+              <label>Imagem do Produto:</label>
+              <input class="form-control" type="file" id="inputImagem">
+            </div>
+            <div class="form-group" id="divPrevia" style="display: <%= produto.IMAGEM_PROD ? 'block' : 'none' %>;">
+              <label>Prévia da Imagem</label>
+              <div>
+                <img src="<%= produto.IMAGEM_PROD %>" width="250" id="previaImagem">
+              </div>
+            </div>
+
           </div>
 
           <!-- BOTÕES -->
 
-          <div class="editar-footer">
+          <div class="editar-footer m-4">
             <a href="/admin/produto/gerenciamento-produto" class="btn-cancelar-edicao">
               <i class="bi bi-x-circle"></i>
 

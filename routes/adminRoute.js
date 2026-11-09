@@ -1,8 +1,10 @@
 const express = require("express");
 const adminController = require("../controllers/adminController");
 const AuthMiddleware = require("../middleware/authMiddleware");
+const multer = require("multer");
 
 const router = express.Router()
+const upload = multer({});
 
 let controller = new adminController;
 let auth = new AuthMiddleware();
@@ -22,7 +24,7 @@ router.post("/admin/excluir-fornecedor", auth.autenticarFuncionario, controller.
 router.get("/admin/produto", auth.autenticarFuncionario, controller.rotaGerenciarProdutoView);
 
 router.get("/admin/produto/gerenciamento-produto", auth.autenticarFuncionario, controller.rotaGerenciarProduto);
-router.post("/admin/produto/cadastrar-produto", auth.autenticarFuncionario, controller.rotaCadastrarProduto);
+router.post("/admin/produto/cadastrar-produto", auth.autenticarFuncionario, upload.single("imagem"), controller.rotaCadastrarProduto);
 router.post("/admin/produto/excluir-produto", auth.autenticarFuncionario, controller.rotaExcluirProduto);
 router.get("/admin/produto/gerenciamento-produto/alterar-produto/:id", auth.autenticarFuncionario, controller.rotaAtualizarProduto);
 

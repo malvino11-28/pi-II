@@ -105,6 +105,20 @@
               <i class="bi bi-person"></i> Nome do Produto *
             </label>
             <input type="text" class="form-control" id="nomeProd" placeholder="Digite o nome do produto">
+
+            <div class="invalid-feedback">
+                O nome do produto deve conter entre 2 e 100 caracteres.
+            </div>
+          </div>
+           <div class="col-md-6 mb-3">
+              <label for="nomeCli" class="form-label">                <i class="bi bi-person"></i> Descrição Reduzida do Produto *
+            </label>
+            <input type="text" class="form-control" id="descRed" placeholder="Digite a descrição reduzida do produto que será exibida na página">
+
+            <div class="invalid-feedback">
+              O nome da categoria deve conter entre 20 e 255 caracteres.
+            </div>
+
           </div>
         </div>
 
@@ -120,10 +134,12 @@
                   <option value="<%=marcas[i].COD_MAR%>"><%= marcas[i].NOME_MAR %></option>
               <% } %>
             </select>
-          </div>
 
-          <!-- LINHA 3 -->
-        <div class="row">
+            <div class="invalid-feedback">
+                Selecione uma marca.
+            </div>
+
+          </div>
           <div class="col-md-6 mb-3">
             <label for="categoria" class="form-label">
               <i class="bi bi-telephone"></i> Categoria *
@@ -134,24 +150,33 @@
                   <option value="<%=categorias[i].COD_CAT%>"><%= categorias[i].NOME_CAT %></option>
               <% } %>
             </select>
-          </div>
 
-          <div class="col-md-4 mb-3">
+            <div class="invalid-feedback">
+                Selecione uma categoria.
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
             <label for="desc" class="form-label">
               <i class="bi bi-person-vcard"></i> Descrição do Produto *
             </label>
-            <textarea class="form-control" id="desc" rows="3" placeholder="Digite a descrição que será exibida na página"></textarea>
-          </div>
+            <textarea
+                  class="form-control"
+                  id="desc"
+                  rows="3"
+                  placeholder="Digite a descrição que será exibida na página"
+                  
+                ></textarea>
 
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="nomeCli" class="form-label">
-                <i class="bi bi-person"></i> Descrição Reduzida do Produto *
-              </label>
-              <input type="text" class="form-control" id="descRed" placeholder="Digite a descrição reduzida do produto que será exibida na página">
+            <div class="invalid-feedback">
+                A descrição deve conter entre 50 e 500 caracteres.
             </div>
+
           </div>
+        </div>
 
         <!-- LINHA 3 -->
         <div class="row">
@@ -167,6 +192,11 @@
               <option value="L">L (litro)</option>
               <option value="ML">ML (mililitro)</option>
             </select>
+
+              <div class="invalid-feedback">
+                Selecione uma medida.
+              </div>
+            
           </div>
 
           <div class="col-md-6 mb-3">
@@ -174,9 +204,30 @@
               <i class="bi bi-lock"></i> Valor Unitário do Produto *
             </label>
             <input type="number" class="form-control" id="valor" placeholder="0,00">
+
+             <div class="invalid-feedback">
+                Informe o valor do produto.
+            </div>
+
           </div>
         </div>
 
+        <div class="cold-md-6 mb-3">
+          <label for="imagem" class="form-control">
+            Imagem do Produto: <input id="inputImagem" class="form-control" type="file">
+          </label>
+        </div>
+        <div class="form-group" id="divPrevia" style="display:none;">
+          <label for="previaImagem">Prévia da Imagem</label>
+          <div>
+            <img width="250" id="previaImagem">
+          </div>
+
+            <div class="invalid-feedback">
+                Adicione uma imagem ao produto.
+            </div>
+
+        </div>
         <!-- BOTÕES -->
         <div class="row mt-3">
           <div class="col-12 text-end">
@@ -214,6 +265,7 @@
               <th>Descrição Reduzida</th>
               <th>Medida</th>
               <th>Valor</th>
+              <th>Imagem</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -238,6 +290,13 @@
                   <td><%= produtos[i].DESC_RED_PROD%></td>
                   <td><%= produtos[i].UNI_MEDIDA_PROD %></td>
                   <td><%= produtos[i].VALOR_UNI_PROD %></td>
+                  <td class="text-center">
+                  <% if (produtos[i].IMAGEM_PROD) { %>
+                    <i class="bi bi-check-circle-fill text-success"></i>  
+                  <% } else { %>
+                    <i class="bi bi-x-circle-fill text-danger"></i>
+                  <% } %>
+                </td>
                   <td>
                     <div class="acoes-cliente">
                       <a href="/admin/produto/gerenciamento-produto/alterar-produto/<%= produtos[i].COD_PROD %>">

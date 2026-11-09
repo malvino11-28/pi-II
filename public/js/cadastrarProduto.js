@@ -23,9 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function carregarPrevia() {
         console.log(this.files);
         if (this.files.length > 0) {
+            const arquivo = this.files[0];
+            if (!arquivo.type.startsWith("image/")) {
+                alert("Selecione um arquivo de imagem válido.");
+                this.value = "";
+                return;
+            }
             let img = document.getElementById("previaImagem");
-            let urlImg = URL.createObjectURL(this.files[0]);
-            img.src = urlImg;
+            img.removeAttribute("src");
             document.getElementById("divPrevia").style.display = "block";
         }
     }

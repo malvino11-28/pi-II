@@ -1,18 +1,15 @@
 const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const server = express();
 const PORT = 5138;
 
 const routes = require("./routes/routes");
 
-const {
-    formatarCPF,
-    formatarTelefone,
-    formatarData,
-    formatarCNPJ
-} = require("./utils/formatadores");
+const { formatarCPF, formatarTelefone, formatarData, formatarCNPJ } = require("./utils/formatadores");
 
-server.use(express.static("public"));
+server.use(express.static(path.join(__dirname, "public")));
 server.set("view engine", "ejs");
 
 server.locals.formatarCPF = formatarCPF;
@@ -22,6 +19,7 @@ server.locals.formatarCNPJ = formatarCNPJ;
 
 server.use(express.urlencoded());
 server.use(express.json());
+server.use(cookieParser());
 
 server.use("/", routes);
 

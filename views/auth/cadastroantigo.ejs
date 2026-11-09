@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="Cadastro de cliente da loja Corte Imperial" />
+    <meta name="author" content="Equipe Corte Imperial" />
+    <meta name="keywords" content="Corte Imperial, cadastro, açougue, cliente" />
+    <title>Cadastro - Corte Imperial</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+    />
+
+    <!-- Main CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link href="../../style/form_colorlib.css" rel="stylesheet" media="all" />
+    <link rel="stylesheet" href="../../style/header.css" />
+    <link rel="stylesheet" href="../../style/footer.css">
+  </head>
+
+  <body>
+  <header class="main-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-12 text-center text-lg-start mb-3 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                        <a href="../../index.html"><img src="../../imgs/logo.png" alt="Corte Imperial" class="logo-img me-3"></a>
+                        <div>
+                            <h1 class="brand-name">Corte Imperial</h1>
+                            <p class="brand-subtitle">Açougue Premium</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-8 col-12 mb-3 mb-lg-0">
+                    <div class="search-box">
+                        <input type="text" class="form-control search-input" placeholder="Buscar carnes, utensílios e mais...">
+                        <button class="search-btn">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-12 text-center text-lg-end">
+                    <a href="../../pages/forms/login.html" class="header-icon" title="Minha Conta">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                    <a href="../../pages/admin/inicio.html" class="header-icon" title="Admin">
+                        <i class="bi bi-person-badge"></i>
+                    </a>
+                    <a href="../../pages/forms/carrinhoFinal.html" class="header-icon" title="Carrinho">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+      <div class="wrapper wrapper--w790">
+        <div class="card card-5">
+          <div class="card-heading">
+            <h2 class="title">CRIAR CONTA</h2>
+          </div>
+
+          <div class="card-body">
+            <form method="POST" id="formCad" novalidate>
+              <p class="form-intro">
+                Preencha seus dados para criar sua conta, acompanhar pedidos e agilizar suas compras na Corte Imperial.
+              </p>
+
+              <div class="form-section">
+                <h3 class="form-section-title">
+                  <i class="bi bi-person-lines-fill"></i> Dados pessoais
+                </h3>
+
+                <div class="form-row">
+                  <div class="name">Nome</div>
+                  <div class="value">
+                    <div class="input-group">
+                      <input
+                        class="input--style-5"
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        placeholder="Nome completo"
+                        autocomplete="name"
+                      />
+                      <div class="invalid-feedback">
+                        Por favor, insira um nome completo (nome e sobrenome).
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="name">Email</div>
+                  <div class="value">
+                    <div class="input-group">
+                      <input
+                        class="input--style-5"
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="exemplo@email.com"
+                        autocomplete="email"
+                      />
+                      <div class="invalid-feedback">
+                        Por favor, insira um E-mail válido.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row m-b-55">
+                  <div class="name">Documento</div>
+                  <div class="value">
+                    <div class="row row-space">
+                      <div class="col-2">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="cpf"
+                            name="cpf"
+                            maxlength="14"
+                            placeholder="000.000.000-00"
+                            autocomplete="off"
+                          />
+                          <div class="invalid-feedback">CPF inválido.</div>
+                          <label class="label--desc" for="cpf">CPF obrigatório</label>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="cnpj"
+                            name="cnpj"
+                            maxlength="18"
+                            placeholder="00.000.000/0000-00"
+                            autocomplete="off"
+                          />
+                          <div class="invalid-feedback">CNPJ inválido.</div>
+                          <label class="label--desc" for="cnpj">CNPJ opcional</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="name">Nascimento</div>
+                  <div class="value">
+                    <div class="input-group">
+                      <input
+                        class="input--style-5"
+                        type="text"
+                        id="data_nasc"
+                        name="data_nasc"
+                        maxlength="10"
+                        placeholder="dd/mm/aaaa"
+                        autocomplete="bday"
+                      />
+                      <div class="invalid-feedback">
+                        Informe uma data de nascimento válida no formato dd/mm/aaaa.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">
+                  <i class="bi bi-truck"></i> Contato e entrega
+                </h3>
+
+                <div class="form-row">
+                  <div class="name">Telefone</div>
+                  <div class="value">
+                    <div class="input-group">
+                      <input
+                        class="input--style-5"
+                        type="text"
+                        id="telefone"
+                        name="telefone"
+                        maxlength="15"
+                        placeholder="(18) 99999-8888"
+                        autocomplete="tel"
+                      />
+                      <div class="invalid-feedback">
+                        Informe um telefone válido com DDD, exemplo: (18) 99999-8888.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row m-b-55">
+                  <div class="name">Endereço</div>
+                  <div class="value">
+                    <div class="row row-space">
+                      <div class="col-3">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="cep"
+                            name="cep"
+                            maxlength="9"
+                            placeholder="00000-000"
+                            autocomplete="postal-code"
+                          />
+                          <div class="invalid-feedback">CEP inválido.</div>
+                          <label class="label--desc" for="cep">CEP</label>
+                        </div>
+                      </div>
+                      <div class="col-9">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="endereco"
+                            name="endereco"
+                            placeholder="Rua, avenida ou travessa"
+                            autocomplete="address-line1"
+                          />
+                          <div class="invalid-feedback">Informe o endereço.</div>
+                          <label class="label--desc" for="endereco">Endereço</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row row-space form-subrow">
+                      <div class="col-3">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="number"
+                            id="numero"
+                            name="numero"
+                            min="1"
+                            placeholder="123"
+                            autocomplete="address-line2"
+                          />
+                          <div class="invalid-feedback">Informe o número.</div>
+                          <label class="label--desc" for="numero">Número</label>
+                        </div>
+                      </div>
+                      <div class="col-9">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="complemento"
+                            name="complemento"
+                            placeholder="Apto, bloco ou referência"
+                            autocomplete="address-line3"
+                          />
+                          <label class="label--desc" for="complemento">Complemento opcional</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row row-space form-subrow">
+                      <div class="col-2">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="bairro"
+                            name="bairro"
+                            placeholder="Centro"
+                          />
+                          <div class="invalid-feedback">Informe o bairro.</div>
+                          <label class="label--desc" for="bairro">Bairro</label>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="cidade"
+                            name="cidade"
+                            placeholder="Presidente Prudente"
+                            autocomplete="address-level2"
+                          />
+                          <div class="invalid-feedback">Informe a cidade.</div>
+                          <label class="label--desc" for="cidade">Cidade</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row row-space form-subrow">
+                      <div class="col-3">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="text"
+                            id="uf"
+                            name="uf"
+                            maxlength="2"
+                            placeholder="SP"
+                            autocomplete="address-level1"
+                          />
+                          <div class="invalid-feedback">UF inválida.</div>
+                          <label class="label--desc" for="uf">UF</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">
+                  <i class="bi bi-shield-lock"></i> Dados de acesso
+                </h3>
+
+                <div class="form-row m-b-55">
+                  <div class="name">Senha</div>
+                  <div class="value">
+                    <div class="row row-space">
+                      <div class="col-2">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Mínimo 8 caracteres"
+                            autocomplete="new-password"
+                          />
+                          <div class="invalid-feedback">A senha deve ter no mínimo 8 caracteres.</div>
+                          <label class="label--desc" for="senha">Senha</label>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="input-group-desc">
+                          <input
+                            class="input--style-5"
+                            type="password"
+                            id="confirmarSenha"
+                            name="confirmarSenha"
+                            placeholder="Repita sua senha"
+                            autocomplete="new-password"
+                          />
+                          <div class="invalid-feedback">As senhas precisam ser iguais.</div>
+                          <label class="label--desc" for="confirmarSenha">Confirmar senha</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="texto-termos">
+                Usaremos seus dados apenas para identificação da conta, contato sobre pedidos e entrega dos produtos.
+              </p>
+
+              <p class="texto-termos texto-termos-espaco">
+                Ao clicar em Cadastrar-se, você concorda com os
+                <a href="#">Termos de Uso</a>, a
+                <a href="#">Política de Privacidade</a> e a
+                <a href="#">Política de Entrega</a> da Corte Imperial.
+              </p>
+
+              <div class="form-actions">
+                <button class="btn btn--radius-2 btn--red" type="submit">
+                  Cadastrar-se
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-12 mb-4">
+                    <div class="text-center text-md-start">
+                        <img src="../../imgs/logo.png" alt="Corte Imperial" class="footer-logo">
+                        <h3 class="brand-name" style="font-size: 22px;">Corte Imperial</h3>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            Qualidade premium em carnes selecionadas e utensílios para churrasco. 
+                            Tradição e excelência há mais de 15 anos.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12 mb-4">
+                    <h4 class="footer-title">Links Úteis</h4>
+                    <a href="#" class="footer-link">
+                        <i class="bi bi-chevron-right footer-icon"></i>Sobre Nós
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="bi bi-chevron-right footer-icon"></i>Nossas Lojas
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="bi bi-chevron-right footer-icon"></i>Política de Privacidade
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="bi bi-chevron-right footer-icon"></i>Termos de Uso
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="bi bi-chevron-right footer-icon"></i>Perguntas Frequentes
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12 mb-4">
+                    <h4 class="footer-title">Contato</h4>
+                    <p style="font-size: 14px; margin-bottom: 10px;">
+                        <i class="bi bi-geo-alt-fill footer-icon"></i>
+                        Rua das Carnes, 123<br>
+                        <span style="margin-left: 28px;">Presidente Prudente - SP</span>
+                    </p>
+                    <p style="font-size: 14px; margin-bottom: 10px;">
+                        <i class="bi bi-telephone-fill footer-icon"></i>
+                        (18) 3221-5544
+                    </p>
+                    <p style="font-size: 14px; margin-bottom: 10px;">
+                        <i class="bi bi-whatsapp footer-icon"></i>
+                        (18) 99999-8888
+                    </p>
+                    <p style="font-size: 14px; margin-bottom: 10px;">
+                        <i class="bi bi-envelope-fill footer-icon"></i>
+                        contato@corteimperial.com.br
+                    </p>
+                    <p style="font-size: 14px; margin-bottom: 0;">
+                        <i class="bi bi-clock-fill footer-icon"></i>
+                        Seg-Sex: 7h-19h | Sáb: 7h-13h
+                    </p>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12 mb-4">
+                    <h4 class="footer-title">Redes Sociais</h4>
+                    <div class="mb-4">
+                        <a href="#" class="social-icon" title="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="YouTube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    </div>
+
+                    <h4 class="footer-title">Formas de Pagamento</h4>
+                    <div>
+                        <i class="bi bi-credit-card payment-icon" title="Cartão de Crédito"></i>
+                        <i class="bi bi-cash-coin payment-icon" title="Dinheiro"></i>
+                        <i class="bi bi-wallet2 payment-icon" title="PIX"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p style="margin: 0;">
+                    &copy; 2026 Corte Imperial - Açougue Premium. Todos os direitos reservados.
+                </p>
+                <p style="margin: 5px 0 0 0; font-size: 12px;">
+                    Desenvolvido com <i class="bi bi-heart-fill" style="color: rgb(238, 123, 48);"></i> por Equipe Corte Imperial
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- Scripts -->
+    <script src="../../validacoes.js"></script>
+  </body>
+</html>
+
+<!--https://colorlib.com/wp/template/colorlib-regform-5/-->

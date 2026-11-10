@@ -39,6 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let valor = document.querySelector("#valor");// valor
     let imagem = document.querySelector("#inputImagem");
 
+    // info nutricionais
+    let idProd = document.querySelector("#");
+    let nomeNutri = document.querySelector("#");
+    let qtd100gNutri = document.querySelector("#");
+    let uniNutri = document.querySelector("#");
+    let percVDNutri = document.querySelector("#");
+
     function validarNomeProduto() {
         const tamanho = nome.value.trim().length;
         let validar;
@@ -183,42 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } 
     }
 
-        // function validarImagemProduto(obrigatoria) {
-    //     const arquivo = imagem.files[0];
-    //     let validar;
-
-    //     if (arquivo) {
-    //         const tamanhoBytes = arquivo.size;
-    //         const limiteBytes = 16 * 1024 * 1024;
-
-    //         if (tamanhoBytes > limiteBytes) {
-    //             alert("Limite de tamanho de imagem de 16MB excedido.");
-
-    //             imagem.classList.remove("is-valid");
-    //             imagem.classList.add("is-invalid");
-    //             validar = false;
-    //         } else {
-    //             imagem.classList.remove("is-invalid");
-    //             imagem.classList.add("is-valid");
-    //             validar = true;
-    //         }
-
-    //     } else {
-    //         if (obrigatoria) {
-    //             imagem.classList.remove("is-valid");
-    //             imagem.classList.add("is-invalid");
-    //             validar = false;
-    //         } else {
-    //             // Na alteração, mantém a imagem do banco.
-    //             imagem.classList.remove("is-valid");
-    //             imagem.classList.remove("is-invalid");
-    //             validar = true;
-    //         }
-    //     }
-
-    //     return validar;
-    // }
-
     imagem.addEventListener("blur", validarImagemProduto);
 
     function cadastrarProduto() {
@@ -262,6 +233,31 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then((resBody) => {
                 if (resBody.ok) {
+
+                    if (idProd && nomeNutri && qtd100gNutri && uniNutri && percVDNutri) {
+                        let obj = {idProd: idProd, 
+                            nomeNutri: nomeNutri, 
+                            qtd100gNutri: qtd100gNutri, 
+                            percVDNutri: percVDNutri
+                        };
+
+                        if (idProd != 0 ) {
+                        fetch("/admin/produto/cadastrar-produto-info-nutri", {
+                            body: JSON.stringify(obj),
+                            method: "POST",
+                            headers: {"Content-Type": "appliccation/json"}
+                        }).then(res => {
+                            return res.json();
+                        }).then(resBody => {
+                            if (resBody.ok) {
+                            } else {
+                                alert("Erro ao cadastrar as informações nutricionais do produto.");
+                            }
+                        }); 
+                    } else {
+                        }
+                    }
+
                     alert("Produto cadastrado com sucesso!");
                     window.location.reload();
                 } else {
@@ -369,3 +365,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+function verificarInfoNutri() {
+    const opInfoNutri = document.querySelector("#infoNutri");
+    const blocoInfo = document.querySelector("#blocoInfo");
+
+    if (opInfoNutri.checked) {
+        blocoInfo.style.display = 'block';
+    } else {
+        blocoInfo.style.display = 'none';
+    }
+}

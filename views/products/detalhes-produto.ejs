@@ -43,8 +43,8 @@
                     </div>
                 <% } %>
 
-                <div class="indisponivel">
-                    <%= estoque > 0 ? 'O produto está disponível.' : 'Produto indisponível no momento.' %>
+                <div class=" <%= estoque > 0 ? 'disponivel' : 'indisponivel'%>">
+                    <%= estoque > 0 ? 'Produto disponível.' : 'Produto indisponível no momento.' %>
                 </div>
 
                 <div class="qty-wrap">
@@ -62,11 +62,9 @@
                         <button type="button" onclick="altQty(1)">+</button>
                     </div>
 
-                    <div class="ultimas">
-                        <%= estoque < 10 ? 'Restam poucas unidades disponíveis.' : '' %>
-                    </div>
-                    <!-- TODO: integrar o botão à lógica do carrinho. -->
+                    <!-- integrar o botão à lógica do carrinho. -->
                     <button
+                        data-nome
                         type="button"
                         class="btn-carrinho"
                         id="btnAdicionarCarrinho"
@@ -110,7 +108,7 @@
         </li>
 
         <!-- Informações nutricionais aparecem somente se existirem. -->
-        <% if (informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
+        <% if (typeof informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
             <li class="nav-item">
                 <button
                     class="nav-link"
@@ -132,7 +130,7 @@
         </div>
 
         <!-- TODO: implementar a model INF_NUTRICIONAIS e buscar os dados pelo COD_PROD. -->
-        <% if (informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
+        <% if (typeof informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
             <div class="tab-pane fade" id="nutricional">
                 <p class="mb-3" style="font-size:13px;color:var(--cinza)">
                     Valores por porção de 100g

@@ -23,6 +23,9 @@ router.get("/admin/produto", controller.rotaGerenciarProdutoView);
 
 router.get("/admin/produto/gerenciamento-produto", controller.rotaGerenciarProduto);
 router.post("/admin/produto/cadastrar-produto", upload.single("imagem"), controller.rotaCadastrarProduto);
+router.post("/admin/produto/cadastrar-produto-info-nutri", controller.rotaCadastrarInfoNutri);
+router.post("/admin/produto/atualizar-info-nutri", controller.rotaAtualizarInfoNutri);
+router.post("/admin/produto/excluir-info-nutri", controller.rotaExcluirInfoNutri);
 router.post("/admin/produto/excluir-produto", controller.rotaExcluirProduto);
 router.get("/admin/produto/gerenciamento-produto/alterar-produto/:id", controller.rotaAtualizarProduto);
 

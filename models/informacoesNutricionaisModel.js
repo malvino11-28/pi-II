@@ -3,7 +3,7 @@ const Database = require("../database/database.js");
 class InformacoesNutricionaisModel {
     #COD_NUTRI;
     #COD_PROD;
-    #NOME_NUTRI;
+    #NUTRIENTE;
     #QTD_100G_NUTRI;
     #UNI_NUTRI;
     #PERC_VD_NUTRI;
@@ -11,7 +11,7 @@ class InformacoesNutricionaisModel {
     constructor(id, idProd, nomeNutri, qtd100gNutri, uniNutri, percVDNutri) {
         this.#COD_NUTRI = id;
         this.#COD_PROD = idProd;
-        this.#NOME_NUTRI = nomeNutri;
+        this.#NUTRIENTE = nomeNutri;
         this.#QTD_100G_NUTRI = qtd100gNutri;
         this.#UNI_NUTRI = uniNutri;
         this.#PERC_VD_NUTRI = percVDNutri;
@@ -23,8 +23,8 @@ class InformacoesNutricionaisModel {
     get COD_PROD() { return this.#COD_PROD; }
     set COD_PROD(v) { this.#COD_PROD = v; }
 
-    get NOME_NUTRI() { return this.#NOME_NUTRI; }
-    set NOME_NUTRI(v) { this.#NOME_NUTRI = v; }
+    get NUTRIENTE() { return this.#NUTRIENTE; }
+    set NUTRIENTE(v) { this.#NUTRIENTE = v; }
 
     get QTD_100G_NUTRI() { return this.#QTD_100G_NUTRI; }
     set QTD_100G_NUTRI(v) { this.#QTD_100G_NUTRI = v; }
@@ -36,7 +36,7 @@ class InformacoesNutricionaisModel {
     set PERC_VD_NUTRI(v) { this.#PERC_VD_NUTRI = v; }
 
     async listarInfoNutri(idProd) {
-        let sql = "SELECT * FROM INF_NUTRICIONAIS WHERE COD_PROD = ?";
+        let sql = "SELECT * FROM INF_NUTRICIONAIS WHERE COD_PROD = ? ORDER BY COD_NUTRI ASC";
         let values = [idProd];
         let db = new Database();
 
@@ -45,15 +45,36 @@ class InformacoesNutricionaisModel {
 
     async cadastrarInfoNutri() {
         let sql = "INSERT INTO INF_NUTRICIONAIS (COD_PROD, NUTRIENTE, QTD_100G_NUTRI, UNI_NUTRI, PERC_VD_NUTRI) VALUES (?, ?, ?, ?, ?)";
-        let values = [this.#COD_PROD, this.#NOME_NUTRI, this.#QTD_100G_NUTRI, this.#UNI_NUTRI, this.#PERC_VD_NUTRI];
+        let values = [this.#COD_PROD, this.#NUTRIENTE, this.#QTD_100G_NUTRI, this.#UNI_NUTRI, this.#PERC_VD_NUTRI];
 
         let db = new Database();
         let result = await db.ExecutaComandoNonQuery(sql, values);
         return result;
     }
 
-    async excluirInfoNutri() {
-        
+    async atualizarNutri() {
+        let sql = "UPDATE INF_NUTRICIONAIS SET NUTRIENTE = ?, QTD_100G_NUTRI = ?, UNI_NUTRI = ?, PERC_VD_NUTRI = ? WHERE COD_NUTRI = ?";
+
+        let values = [
+            this.#NUTRIENTE,
+            this.#QTD_100G_NUTRI,
+            this.#UNI_NUTRI,
+            this.#PERC_VD_NUTRI,
+            this.#COD_NUTRI
+        ];
+
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+        return result;
+    }
+
+    async excluirInfoNutri(id) {
+        let sql = "DELETE FROM INF_NUTRICIONAIS WHERE COD_NUTRI = ?";
+        let values = [id];
+
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+        return result;
     }
 }
 

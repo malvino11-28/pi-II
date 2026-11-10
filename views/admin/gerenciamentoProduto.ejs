@@ -248,7 +248,7 @@
                 <label for="nome100gNutri" class="form-label">                
                 <i class="bi bi-calculator"></i> Calorias em 100g do Produto *
               </label>
-              <input type="number" class="form-control" id="qtd100gNutri" placeholder="Digite a quantidade de calorias em 100g do produto">
+              <input type="number" class="form-control" id="qtd100gNutri" placeholder="Digite a quantidade de calorias em 100g do produto" min="0" step="0.01">
 
               <div class="invalid-feedback">
                 A caloria deve ser numérica.
@@ -272,7 +272,7 @@
                 <label for="percVDNutri" class="form-label">                
                 <i class="bi bi-percent"></i> Percentual de Valor Diário *
               </label>
-              <input type="number" class="form-control" id="percVDNutri" placeholder="Digite o percentual de valor diário" max="100">
+              <input type="number" class="form-control" id="percVDNutri" placeholder="Digite o percentual de valor diário" min="0" max="100" step="0.01">
 
               <div class="invalid-feedback">
                 A porcentagem de valor diário deve ser numérica.
@@ -280,6 +280,23 @@
 
             </div>
           </div>
+           <button type="button" class="btn btn-primary" id="btnAddNutri">
+              <i class="bi bi-check-circle"></i> Adicionar Nutriente
+            </button>
+            <table class="table mt-3 clientes-table">
+              <thead>
+                  <tr>
+                      <th>Nutriente</th>
+                      <th>Unidade</th>
+                      <th>Qtd (100g)</th>
+                      <th>% VD</th>
+                      <th>Ações</th>
+                  </tr>
+              </thead>
+              <tbody id="tabelaNutri">
+                  
+              </tbody>
+          </table>
         </div>
         <!-- BOTÕES -->
         <div class="row mt-3">

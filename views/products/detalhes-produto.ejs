@@ -108,7 +108,7 @@
         </li>
 
         <!-- Informações nutricionais aparecem somente se existirem. -->
-        <% if (typeof informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
+        <% if (typeof iN !== 'undefined' && Array.isArray(iN) && iN.length > 0) { %>
             <li class="nav-item">
                 <button
                     class="nav-link"
@@ -130,7 +130,7 @@
         </div>
 
         <!-- TODO: implementar a model INF_NUTRICIONAIS e buscar os dados pelo COD_PROD. -->
-        <% if (typeof informacoesNutricionais !== 'undefined' && Array.isArray(informacoesNutricionais) && informacoesNutricionais.length > 0) { %>
+        <% if (typeof iN !== 'undefined' && Array.isArray(iN) && iN.length > 0) { %>
             <div class="tab-pane fade" id="nutricional">
                 <p class="mb-3" style="font-size:13px;color:var(--cinza)">
                     Valores por porção de 100g
@@ -149,21 +149,21 @@
                     </thead>
 
                     <tbody>
-                        <% for (let i = 0; i < informacoesNutricionais.length; i++) { %>
+                        <% for (let i = 0; i < iN.length; i++) { %>
                             <tr>
                                 <td>
-                                    <%= informacoesNutricionais[i].NUTRIENTE %>
+                                    <%= iN[i].NUTRIENTE %>
                                 </td>
 
                                 <td>
-                                    <%= formatarValor(informacoesNutricionais[i].QTD_100G_NUTRI) %>
-                                    <%= informacoesNutricionais[i].UNI_NUTRI %>
+                                    <%= formatarValor(iN[i].QTD_100G_NUTRI) %>
+                                    <%= iN[i].UNI_NUTRI %>
                                 </td>
 
                                 <td>
-                                    <%= informacoesNutricionais[i].PERC_VD_NUTRI == null
+                                    <%= iN[i].PERC_VD_NUTRI == null
                                         ? "—"
-                                        : formatarValor(informacoesNutricionais[i].PERC_VD_NUTRI) + "%" %>
+                                        : formatarValor(iN[i].PERC_VD_NUTRI) + "%" %>
                                 </td>
                             </tr>
                         <% } %>

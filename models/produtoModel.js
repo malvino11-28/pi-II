@@ -113,7 +113,7 @@ class ProdutoModel {
     let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD, this.#IMAGEM_PROD];
     let db = new Database();
 
-    let result = await db.ExecutaComandoNonQuery(sql, values);
+    let result = await db.ExecutaComandoLastInserted(sql, values);
 
     return result;
   }

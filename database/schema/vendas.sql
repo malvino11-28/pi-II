@@ -96,5 +96,20 @@ CREATE TABLE ITEM_PEDIDO_LOTE (
 );
 
 -- ==========================================
--- VENDA
+-- ITENS COM PROMOÇÃO DE UM RESPECTIVO LOTE
 -- ==========================================
+
+CREATE TABLE ITEM_PROMOCAO_LOTE (
+    COD_PROMO INT NOT NULL,
+    COD_LOTE INT NOT NULL,
+
+    PRIMARY KEY (COD_PROMO, COD_LOTE),
+
+    CONSTRAINT fk_ipl_promocao
+        FOREIGN KEY (COD_PROMO)
+        REFERENCES PROMOCAO (COD_PROMO),
+
+    CONSTRAINT fk_ipl_lote
+        FOREIGN KEY (COD_LOTE)
+        REFERENCES LOTE (COD_LOTE)
+);

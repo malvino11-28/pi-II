@@ -24,6 +24,8 @@ CREATE TABLE PEDIDO (
     COD_PED INT PRIMARY KEY AUTO_INCREMENT,
     COD_STATUS INT NOT NULL,
     COD_CLI INT NOT NULL,
+    COD_PROMO INT,
+    COD_PAG INT NOT NULL,
 
     DATA_PED DATE NOT NULL,
     TOTAL_PED NUMERIC(10, 2) NOT NULL,
@@ -34,7 +36,15 @@ CREATE TABLE PEDIDO (
 
     CONSTRAINT fk_pedido_cli
         FOREIGN KEY (COD_CLI)
-        REFERENCES CLIENTE (COD_CLI)
+        REFERENCES CLIENTE (COD_CLI),
+
+	CONSTRAINT fk_ped_pro 
+        FOREIGN KEY (COD_PROMO) 
+        REFERENCES PROMOCAO (COD_PROMO),
+
+    CONSTRAINT fk_ped_pag 
+        FOREIGN KEY (COD_PAG) 
+        REFERENCES FORMA_PAGAMENTO (COD_PAG)
 );
 
 -- ==========================================
@@ -88,25 +98,3 @@ CREATE TABLE ITEM_PEDIDO_LOTE (
 -- ==========================================
 -- VENDA
 -- ==========================================
-
-CREATE TABLE VENDA (
-    COD_VENDA INT PRIMARY KEY AUTO_INCREMENT,
-    COD_PAG INT NOT NULL,
-    COD_PED INT,
-    COD_PROMO INT,
-
-    DATA_VENDA DATE NOT NULL,
-    VALOR_VENDA NUMERIC(10, 2) NOT NULL,
-
-    CONSTRAINT fk_venda_pag
-        FOREIGN KEY (COD_PAG)
-        REFERENCES FORMA_PAGAMENTO (COD_PAG),
-
-    CONSTRAINT fk_venda_ped
-        FOREIGN KEY (COD_PED)
-        REFERENCES PEDIDO (COD_PED),
-
-    CONSTRAINT fk_venda_pro
-        FOREIGN KEY (COD_PROMO)
-        REFERENCES PROMOCAO (COD_PROMO)
-);

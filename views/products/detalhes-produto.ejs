@@ -108,7 +108,7 @@
         </li>
 
         <!-- Informações nutricionais aparecem somente se existirem. -->
-        <% if (typeof iN !== 'undefined' && Array.isArray(iN) && iN.length > 0) { %>
+        <% if (iN.length > 0) { %>
             <li class="nav-item">
                 <button
                     class="nav-link"
@@ -129,8 +129,7 @@
             </p>
         </div>
 
-        <!-- TODO: implementar a model INF_NUTRICIONAIS e buscar os dados pelo COD_PROD. -->
-        <% if (typeof iN !== 'undefined' && Array.isArray(iN) && iN.length > 0) { %>
+        <% if (iN.length > 0) { %>
             <div class="tab-pane fade" id="nutricional">
                 <p class="mb-3" style="font-size:13px;color:var(--cinza)">
                     Valores por porção de 100g

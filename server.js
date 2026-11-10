@@ -1,5 +1,7 @@
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
+const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const server = express();
 const PORT = 5138;
@@ -14,7 +16,7 @@ const {
     formatarValor
 } = require("./utils/formatadores");
 
-server.use(express.static("public"));
+server.use(express.static(path.join(__dirname, "public")));
 server.set("view engine", "ejs");
 
 server.locals.formatarCPF = formatarCPF;
@@ -28,6 +30,7 @@ server.use(express.json());
 server.use(expressLayouts);
 
 server.set("layout", false);
+server.use(cookieParser());
 
 server.use("/", routes);
 

@@ -35,7 +35,7 @@ body{
 
 .carousel-caption p {
     font-size: 18px;
-    color: rgb(238, 123, 48);
+    color: #ee7b30;
 }
 
 .carousel-control-prev-icon,
@@ -53,7 +53,7 @@ body{
 }
 
 .carousel-indicators button.active {
-    background-color: rgb(238, 123, 48);
+    background-color: #ee7b30;
 }
 
 /* Benefits Section */

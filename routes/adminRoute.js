@@ -27,6 +27,9 @@ router.get("/admin/produto/gerenciamento-produto", auth.autenticarFuncionario, c
 router.post("/admin/produto/cadastrar-produto", auth.autenticarFuncionario, upload.single("imagem"), controller.rotaCadastrarProduto);
 router.post("/admin/produto/excluir-produto", auth.autenticarFuncionario, controller.rotaExcluirProduto);
 router.get("/admin/produto/gerenciamento-produto/alterar-produto/:id", auth.autenticarFuncionario, controller.rotaAtualizarProduto);
+router.post("/admin/produto/cadastrar-produto-info-nutri", auth.autenticarFuncionario, controller.rotaCadastrarInfoNutri);
+router.post("/admin/produto/atualizar-info-nutri", auth.autenticarFuncionario, controller.rotaAtualizarInfoNutri);
+router.post("/admin/produto/excluir-info-nutri", auth.autenticarFuncionario, controller.rotaExcluirInfoNutri);
 
 router.get("/admin/produto/gerenciamento-marca", auth.autenticarFuncionario, controller.rotaGerenciarMarca);
 router.post("/admin/produto/cadastrar-marca", auth.autenticarFuncionario, controller.rotaCadastrarMarca);

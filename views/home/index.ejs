@@ -247,121 +247,23 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="row">
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="./imgs/tilapia.png" alt="Produto" class="product-image">
+                            <% for (let i = 0; i<lista.length; i++) { %>
+                                <div class="col-lg-3 col-md-6 col-12">
+                                    
+                                    <div class="product-card">
+                                        <span class="product-badge">DESTAQUE</span>
+                                        <div class="image-container">
+                                        <img src="<%= lista[i].IMAGEM_PROD %>" alt="<%= lista[i].NOME_PROD %>" class="product-image">
+                                        </div>
+                                        <div class="product-name"><%= lista[i].NOME_PROD %></div>
+                                        <div class="product-price">R$ <%= formatarValor(lista[i].VALOR_UNI_PROD) %></div>
+                                        <div class="product-installment">ou 2x de R$ <%= formatarValor(lista[i].VALOR_UNI_PROD / 2) %></div>
+                                        <a href="/produtos/<%= lista[i].COD_PROD %>" class="product-btn">
+                                            <i class="bi bi-cart-plus"></i> Ver Mais
+                                        </a>
                                     </div>
-                                    <div class="product-name">Filé de Tilápia 1,2kg</div>
-                                    <div class="product-price">R$ 24,99</div>
-                                    <div class="product-installment">ou 2x de R$ 12.50</div>
-                                    <a href="./pages/main/detalhe-produtos-tilapia.html" class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </a>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="./imgs/kitpremium.jpg" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Kit Premium Completo</div>
-                                    <div class="product-price">R$ 224,99</div>
-                                    <div class="product-installment">ou 2x de R$ 112,49</div>
-                                    <a href="./pages/main/detalhe-produtos-kitpremium.html" class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="https://http2.mlstatic.com/D_NQ_NP_730479-MLA106241803600_022026-O.webp" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Tempero Para Carnes 500g</div>
-                                    <div class="product-price">R$ 24,90</div>
-                                    <div class="product-installment">à vista</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="./imgs/maminha.webp" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Maminha Corte Nobre 1,2kg</div>
-                                    <div class="product-price">R$ 49,90</div>
-                                    <div class="product-installment">ou 2x de R$ 25,00</div>
-                                    <a href="./pages/main/detalhe-produtos-maminha.html" class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8y3n72ZKV4IzMKSimWCXYNvjFT-PxxQ87HQ&s" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Carvão Vegetal Premium 5kg</div>
-                                    <div class="product-price">R$ 34,90</div>
-                                    <div class="product-installment">à vista</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="https://d9a2b0af1mfg9.cloudfront.net/Custom/Content/Products/19/92/19920_57985-jogo-6-tacas-para-vinho-tinto-ardea-em-cristal-ecologico-540ml-23-5-cm-transparente-pr-12196-999771_m1_638072122584043240.webp" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Jogo de Taças Vinho 6 Peças</div>
-                                    <div class="product-price">R$ 89,90</div>
-                                    <div class="product-installment">ou 3x de R$ 29,97</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lzszd8nfv1glfb" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Espeto Giratório Inox</div>
-                                    <div class="product-price">R$ 129,90</div>
-                                    <div class="product-installment">ou 5x de R$ 25,98</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge">DESTAQUE</span>
-                                    <div class="image-container">
-                                        <img src="https://images.tcdn.com.br/img/img_prod/1365358/dama_stout_355ml_93929119_2_bbb1573058fa2052e7b539a1c8d0548f.jpg" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Cerveja Artesanal Pack 6un</div>
-                                    <div class="product-price">R$ 54,90</div>
-                                    <div class="product-installment">à vista</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -385,62 +287,22 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="row">
+                            <% for (let i = 0; i<lista.length; i++) { %>
                             <div class="col-lg-3 col-md-6 col-12">
                                 <div class="product-card">
                                     <span class="product-badge" style="background-color: #440a0a;">NOVO</span>
                                     <div class="image-container">
-                                        <img src="./imgs/picanha.png" alt="Produto" class="product-image">
+                                        <img src="<%= lista[i].IMAGEM_PROD %>" alt="<%= lista[i].NOME_PROD %>" class="product-image">
                                     </div>
-                                    <div class="product-name">Picanha Angus Premium</div>
-                                    <div class="product-price">R$ 89,99</div>
-                                    <div class="product-installment">ou 5x de R$ 17.99</div>
-                                    <a href="./pages/main/detalhe-produtos-picanha.html" class="product-btn">
+                                    <div class="product-name"><%= lista[i].NOME_PROD %></div>
+                                    <div class="product-price">R$ <%= formatarValor(lista[i].VALOR_UNI_PROD) %></div>
+                                    <div class="product-installment">ou 5x de R$ <%= formatarValor(lista[i].VALOR_UNI_PROD / 5) %></div>
+                                    <a href="./produtos/<%= lista[i].COD_PROD %>" class="product-btn">
                                         <i class="bi bi-cart-plus"></i> Ver Mais
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge" style="background-color: #440a0a;">NOVO</span>
-                                    <div class="image-container">
-                                        <img src="./imgs/peitodefrango.jpg" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Filé de Peito de Frango</div>
-                                    <div class="product-price">R$ 24,99</div>
-                                    <div class="product-installment">à vista</div>
-                                    <a href="./pages/main/detalhe-produtos-peitodefrango.html" class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge" style="background-color: #440a0a;">NOVO</span>
-                                    <div class="image-container">
-                                        <img src="https://http2.mlstatic.com/D_NQ_NP_904272-MLB95967654327_102025-O-acendedor-eletrico-de-churrasqueira-carvo-promoco-110v.webp" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Acendedor Elétrico Pro</div>
-                                    <div class="product-price">R$ 119,90</div>
-                                    <div class="product-installment">ou 4x de R$ 29,98</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge" style="background-color: #440a0a;">NOVO</span>
-                                    <div class="image-container">
-                                        <img src="https://http2.mlstatic.com/D_NQ_NP_705082-MLB91814997792_092025-O.webp" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Mix Temperos Gourmet</div>
-                                    <div class="product-price">R$ 39,90</div>
-                                    <div class="product-installment">à vista</div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -463,62 +325,22 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="row">
+                            <% for (let i = 0; i<lista.length;i++) { %>
                             <div class="col-lg-3 col-md-6 col-12">
                                 <div class="product-card">
                                     <span class="product-badge" style="background-color: #dc3545;">-30%</span>
                                     <div class="image-container">
-                                        <img src="https://img.fazendinha.me/production/produtor/113/produtos/1119/resized_linguica-tradicional-1kg-linguicas-do-leao-1626023493.jpg" alt="Produto" class="product-image">
+                                        <img src="<%= lista[i].IMAGEM_PROD %>" alt="<%= lista[i].NOME_PROD %>" class="product-image">
                                     </div>
-                                    <div class="product-name">Linguiça Artesanal 1kg</div>
-                                    <div class="product-price">R$ 27,90</div>
-                                    <div class="product-installment"><s>R$ 39,90</s></div>
-                                    <button class="product-btn">
+                                    <div class="product-name"><%= lista[i].NOME_PROD %></div>
+                                    <div class="product-price"> R$ <%= formatarValor((lista[i].VALOR_UNI_PROD / 100) * 30) %></div>
+                                    <div class="product-installment"><s> R$ <%= formatarValor(lista[i].VALOR_UNI_PROD) %> </s></div>
+                                    <a href="./produtos/<%= lista[i].COD_PROD %>" class="product-btn">
                                         <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge" style="background-color: #dc3545;">-25%</span>
-                                    <div class="image-container">
-                                        <img src="https://zaffari.vtexassets.com/arquivos/ids/294102/1007403-00.jpg?v=638990026534500000" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Alcatra Premium 1kg</div>
-                                    <div class="product-price">R$ 52,90</div>
-                                    <div class="product-installment"><s>R$ 69,90</s></div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge" style="background-color: #dc3545;">-40%</span>
-                                    <div class="image-container">
-                                        <img src="https://acdn-us.mitiendanube.com/stores/001/434/354/products/9a248732ea55246169866e3c997b5e0f-4942c6e2152291189417779018224089-480-0.webp" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Kit Espetos 12 Peças</div>
-                                    <div class="product-price">R$ 35,90</div>
-                                    <div class="product-installment"><s>R$ 59,90</s></div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12">
-                                <div class="product-card">
-                                    <span class="product-badge" style="background-color: #dc3545;">-20%</span>
-                                    <div class="image-container">
-                                        <img src="https://storetheme.vtexassets.com/unsafe/800x800/center/middle/https%3A%2F%2Fsantaluzia.vtexassets.com%2Farquivos%2Fids%2F1004600%2F791024.png%3Fv%3D638999218125300000" alt="Produto" class="product-image">
-                                    </div>
-                                    <div class="product-name">Vinho Tinto Reserva 750ml</div>
-                                    <div class="product-price">R$ 63,90</div>
-                                    <div class="product-installment"><s>R$ 79,90</s></div>
-                                    <button class="product-btn">
-                                        <i class="bi bi-cart-plus"></i> Ver Mais
-                                    </button>
-                                </div>
-                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -629,6 +451,7 @@
         </div>
     </footer>
 
+    <script src="./js/carrinho.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

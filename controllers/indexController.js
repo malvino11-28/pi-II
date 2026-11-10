@@ -1,7 +1,11 @@
+const ProdutoModel = require("../models/produtoModel");
+
 class indexController {
 
-    rotaRaiz(req, res) {
-        res.render("home/index");
+    async rotaRaiz(req, res) {
+        let produtos = new ProdutoModel();
+        let listarProdutos = await produtos.listarProdutos();
+        res.render("home/index", {lista: listarProdutos});
     }
 }
 

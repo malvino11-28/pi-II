@@ -228,6 +228,76 @@
             </div>
 
         </div>
+
+        <input type="checkbox" id="infoNutri" onchange="verificarInfoNutri()">
+        <label for="infoNutri" class="mb-3">Informações Nutricionais do Produto</label>
+
+        <div id="blocoInfo" style="display: none;">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nomeNutri" class="form-label">
+                <i class="bi bi-droplet"></i> Nome do nutriente *
+              </label>
+              <input type="text" class="form-control" id="nomeNutri" placeholder="Digite o nome do nutriente">
+
+              <div class="invalid-feedback">
+                  O nome do nutriente deve conter entre 2 e 100 caracteres.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nome100gNutri" class="form-label">                
+                <i class="bi bi-calculator"></i> Calorias em 100g do Produto *
+              </label>
+              <input type="number" class="form-control" id="qtd100gNutri" placeholder="Digite a quantidade de calorias em 100g do produto" min="0" step="0.01">
+
+              <div class="invalid-feedback">
+                A caloria deve ser numérica.
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="uniNutri" class="form-label">
+                <i class="bi bi-capsule"></i> Unidade do Nutriente *
+              </label>
+              <input type="text" class="form-control" id="uniNutri" placeholder="Digite a unidade do nutriente">
+
+              <div class="invalid-feedback">
+                  Unidade nutri.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="percVDNutri" class="form-label">                
+                <i class="bi bi-percent"></i> Percentual de Valor Diário *
+              </label>
+              <input type="number" class="form-control" id="percVDNutri" placeholder="Digite o percentual de valor diário" min="0" max="100" step="0.01">
+
+              <div class="invalid-feedback">
+                A porcentagem de valor diário deve ser numérica.
+              </div>
+
+            </div>
+          </div>
+           <button type="button" class="btn btn-primary" id="btnAddNutri">
+              <i class="bi bi-check-circle"></i> Adicionar Nutriente
+            </button>
+            <table class="table mt-3 clientes-table">
+              <thead>
+                  <tr>
+                      <th>Nutriente</th>
+                      <th>Unidade</th>
+                      <th>Qtd (100g)</th>
+                      <th>% VD</th>
+                      <th>Ações</th>
+                  </tr>
+              </thead>
+              <tbody id="tabelaNutri">
+                  
+              </tbody>
+          </table>
+        </div>
         <!-- BOTÕES -->
         <div class="row mt-3">
           <div class="col-12 text-end">

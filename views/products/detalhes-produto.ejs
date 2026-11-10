@@ -1,0 +1,179 @@
+
+<!-- Página específica do produto, renderizada dentro de layout/produtoLayout.ejs. -->
+
+<div class="produto-wrap">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="galeria-main" id="zoom-container">
+                <span class="badge-estoque">
+                    <%= estoque > 0 ? 'Em Estoque' : 'Indisponível' %>
+                </span>
+                <img
+                    id="imgPrincipal"
+                    src="<%= produto.IMAGEM_PROD || '/imgs/sem-foto.png' %>"
+                    alt="<%= produto.NOME_PROD %>"
+                />
+                <div id="zoom-lens"></div>
+                <div id="zoom-result"></div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="produto-info">
+                <h1 class="produto-titulo">
+                    <%= produto.NOME_PROD %>
+                </h1>
+                <div class="preco-wrap">
+                    <!-- TODO: PRECO_ANTIGO_PROD ainda não existe na model. -->
+                    <% if (produto.PRECO_ANTIGO_PROD != null && Number(produto.PRECO_ANTIGO_PROD) > Number(produto.VALOR_UNI_PROD)) { %>
+                        <div class="preco-antigo">
+                            R$ <%= formatarValor(produto.PRECO_ANTIGO_PROD) %>
+                        </div>
+                    <% } %>
+                    <div class="preco-atual">
+                        R$ <%= formatarValor(produto.VALOR_UNI_PROD) %>
+                    </div>
+                    <div class="preco-parcelado">
+                        em até 2x de R$ <%= formatarValor(Number(produto.VALOR_UNI_PROD) / 2) %> sem juros
+                    </div>
+                </div>
+
+                <% if (produto.DESC_RED_PROD) { %>
+                    <div class="desc-curta">
+                        <%= produto.DESC_RED_PROD %>
+                    </div>
+                <% } %>
+
+                <div class=" <%= estoque > 0 ? 'disponivel' : 'indisponivel'%>">
+                    <%= estoque > 0 ? 'Produto disponível.' : 'Produto indisponível no momento.' %>
+                </div>
+
+                <div class="qty-wrap">
+                    <div class="qty-input">
+                        <button type="button" onclick="altQty(-1)">−</button>
+
+                        <input
+                            type="number"
+                            id="qty"
+                            value="<%= estoque > 0 ? 1 : 0 %>"
+                            min="<%= estoque > 0 ? 1 : 0 %>"
+                            max="<%= estoque %>"
+                        />
+
+                        <button type="button" onclick="altQty(1)">+</button>
+                    </div>
+
+                    <!-- integrar o botão à lógica do carrinho. -->
+                    <button
+                        data-nome
+                        type="button"
+                        class="btn-carrinho"
+                        id="btnAdicionarCarrinho"
+                        <% if (estoque <= 0) { %>disabled<% } %>
+                    >
+                        <i class="bi bi-cart3"></i>
+                        ADICIONAR AO CARRINHO
+                    </button>
+                </div>
+
+                <div class="meta-produto">
+                    Unidade de medida:
+                    <span><%= produto.UNI_MEDIDA_PROD %></span>
+                    <br>
+
+                    <% if (categoriaNome !== 'undefined' && categoriaNome) { %>
+                        Categoria: <span><%= categoriaNome %></span>
+                        <br>
+                    <% } %>
+
+                    <% if (marcaNome !== 'undefined' && marcaNome) { %>
+                        Marca: <span><%= marcaNome %></span>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="abas-wrap">
+    <ul class="nav nav-abas" id="abasProduto">
+        <li class="nav-item">
+            <button
+                class="nav-link active"
+                data-bs-toggle="tab"
+                data-bs-target="#descricao"
+                type="button"
+            >
+                Descrição
+            </button>
+        </li>
+
+        <!-- Informações nutricionais aparecem somente se existirem. -->
+        <% if (typeof iN !== 'undefined' && Array.isArray(iN) && iN.length > 0) { %>
+            <li class="nav-item">
+                <button
+                    class="nav-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nutricional"
+                    type="button"
+                >
+                    Informações Nutricionais
+                </button>
+            </li>
+        <% } %>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active aba-descricao" id="descricao">
+            <p>
+                <%= produto.DESC_PROD || 'Descrição não disponível.' %>
+            </p>
+        </div>
+
+        <!-- TODO: implementar a model INF_NUTRICIONAIS e buscar os dados pelo COD_PROD. -->
+        <% if (typeof iN !== 'undefined' && Array.isArray(iN) && iN.length > 0) { %>
+            <div class="tab-pane fade" id="nutricional">
+                <p class="mb-3" style="font-size:13px;color:var(--cinza)">
+                    Valores por porção de 100g
+                </p>
+
+                <table
+                    class="table tabela-nut table-bordered table-striped"
+                    style="max-width:500px"
+                >
+                    <thead>
+                        <tr>
+                            <th>Informação</th>
+                            <th>Por 100g</th>
+                            <th>% VD*</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% for (let i = 0; i < iN.length; i++) { %>
+                            <tr>
+                                <td>
+                                    <%= iN[i].NUTRIENTE %>
+                                </td>
+
+                                <td>
+                                    <%= formatarValor(iN[i].QTD_100G_NUTRI) %>
+                                    <%= iN[i].UNI_NUTRI %>
+                                </td>
+
+                                <td>
+                                    <%= iN[i].PERC_VD_NUTRI == null
+                                        ? "—"
+                                        : formatarValor(iN[i].PERC_VD_NUTRI) + "%" %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+
+                <p style="font-size:11px;color:#999">
+                    * % Valores Diários com base em uma dieta de 2.000 kcal.
+                </p>
+            </div>
+        <% } %>
+    </div>
+</div>

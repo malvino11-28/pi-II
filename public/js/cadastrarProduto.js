@@ -1,7 +1,15 @@
+let listaNutri = [];
+
 document.addEventListener("DOMContentLoaded", () => {
     let btnCadastrar = document.querySelector("#btnSalvar");
     let btnExcluir = document.querySelectorAll(".btn-excluir");
     let btnAlterar = document.querySelector("#btnSalvarAlteracao");
+
+    let btnAddNutri = document.querySelector("#btnAddNutri");
+
+    if (btnAddNutri) {
+        btnAddNutri.addEventListener("click", adicionarNutriente);
+    }
 
     if (btnExcluir.length > 0) {
         for(let i = 0; i < btnExcluir.length; i++) {
@@ -43,6 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let uniMedida = document.querySelector("#uniMedida");// uniMedida
     let valor = document.querySelector("#valor");// valor
     let imagem = document.querySelector("#inputImagem");
+
+    // info nutricionais
+    let idProd = document.querySelector("#idProd");
+    let nomeNutri = document.querySelector("#nomeNutri");
+    let qtd100gNutri = document.querySelector("#qtd100gNutri");
+    let uniNutri = document.querySelector("#uniNutri");
+    let percVDNutri = document.querySelector("#percVDNutri");
 
     function validarNomeProduto() {
         const tamanho = nome.value.trim().length;
@@ -109,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             desc.classList.add("is-invalid");
             validar = false;
         }
+        return validar;
     }
 
     desc.addEventListener("blur", validarDescricao);
@@ -125,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descRed.classList.add("is-invalid");
             validar = false;
         }
+        return validar;
     }
 
     descRed.addEventListener("blur", validarDescricaoReduzida);
@@ -183,99 +200,87 @@ document.addEventListener("DOMContentLoaded", () => {
             imagem.classList.remove("is-valid");
             imagem.classList.add("is-invalid");
             return false;
-        }
+        } 
     }
-
-        // function validarImagemProduto(obrigatoria) {
-    //     const arquivo = imagem.files[0];
-    //     let validar;
-
-    //     if (arquivo) {
-    //         const tamanhoBytes = arquivo.size;
-    //         const limiteBytes = 16 * 1024 * 1024;
-
-    //         if (tamanhoBytes > limiteBytes) {
-    //             alert("Limite de tamanho de imagem de 16MB excedido.");
-
-    //             imagem.classList.remove("is-valid");
-    //             imagem.classList.add("is-invalid");
-    //             validar = false;
-    //         } else {
-    //             imagem.classList.remove("is-invalid");
-    //             imagem.classList.add("is-valid");
-    //             validar = true;
-    //         }
-
-    //     } else {
-    //         if (obrigatoria) {
-    //             imagem.classList.remove("is-valid");
-    //             imagem.classList.add("is-invalid");
-    //             validar = false;
-    //         } else {
-    //             // Na alteração, mantém a imagem do banco.
-    //             imagem.classList.remove("is-valid");
-    //             imagem.classList.remove("is-invalid");
-    //             validar = true;
-    //         }
-    //     }
-
-    //     return validar;
-    // }
 
     imagem.addEventListener("blur", validarImagemProduto);
 
-    function cadastrarProduto() {
-        let nomeValido = validarNomeProduto();
-        let marcaValida = validarMarcaSelecionada();
-        let categoriaValida = validarCategoriaSelecionada();
-        let descValida = validarDescricao();
-        let descRedValida = validarDescricaoReduzida();
-        let medidaValida = validarMedidaSelecionada();
-        let valorValido = validarValorProduto();
-        let imagemValida = validarImagemProduto(true);
 
-        if (
-            nomeValido &&
-            marcaValida &&
-            categoriaValida &&
-            descValida &&
-            descRedValida &&
-            medidaValida &&
-            valorValido &&
-            imagemValida
-        ) {
+async function cadastrarProduto() {
+    let nomeValido = validarNomeProduto();
+    let marcaValida = validarMarcaSelecionada();
+    let categoriaValida = validarCategoriaSelecionada();
+    let descValida = validarDescricao();
+    let descRedValida = validarDescricaoReduzida();
+    let medidaValida = validarMedidaSelecionada();
+    let valorValido = validarValorProduto();
+    let imagemValida = validarImagemProduto(true);
 
-            let formData = new FormData();
+    if (
+        nomeValido &&
+        marcaValida &&
+        categoriaValida &&
+        descValida &&
+        descRedValida &&
+        medidaValida &&
+        valorValido &&
+        imagemValida
+    ) {
+        let formData = new FormData();
 
-            formData.append("nome", nome.value);
-            formData.append("marca", marca.value);
-            formData.append("categoria", categoria.value);
-            formData.append("desc", desc.value);
-            formData.append("desc_red", descRed.value);
-            formData.append("uni", uniMedida.value);
-            formData.append("valor", valor.value);
-            formData.append("imagem", imagem.files[0]);
+        formData.append("nome", nome.value);
+        formData.append("marca", marca.value);
+        formData.append("categoria", categoria.value);
+        formData.append("desc", desc.value);
+        formData.append("desc_red", descRed.value);
+        formData.append("uni", uniMedida.value);
+        formData.append("valor", valor.value);
+        formData.append("imagem", imagem.files[0]);
 
-            fetch("/admin/produto/cadastrar-produto", {
+        let respostaProduto = await fetch(
+            "/admin/produto/cadastrar-produto",
+            {
                 method: "POST",
-                body: formData,
-            })
-            .then((res) => {
-                return res.json();
-            })
-            .then((resBody) => {
-                if (resBody.ok) {
-                    alert("Produto cadastrado com sucesso!");
+                body: formData
+            }
+        );
+        let resultadoProduto = await respostaProduto.json();
+
+        if (resultadoProduto.ok) {
+            if (listaNutri.length > 0) {
+                let obj = {
+                    idProd: resultadoProduto.idProd,
+                    listaNutri: listaNutri
+                };
+                let respostaNutri = await fetch(
+                    "/admin/produto/cadastrar-produto-info-nutri",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(obj)
+                    }
+                );
+                let resultadoNutri = await respostaNutri.json();
+                if (resultadoNutri.ok) {
+                    alert("Produto e informações nutricionais cadastrados com sucesso!");
                     window.location.reload();
                 } else {
-                    alert("Erro ao cadastrar produto.");
+                    alert("Produto cadastrado, mas houve um erro nas informações nutricionais.");
                 }
-            })
+            } else {
+                alert("Produto cadastrado com sucesso!");
+                window.location.reload();
+            }
         } else {
-            alert("Revise os campos em vermelho antes de salvar.");
-            return;
+            alert("Erro ao cadastrar produto.");
         }
+    } else {
+        alert("Revise os campos em vermelho antes de salvar.");
     }
+}
+
 
 
     function excluirProduto() {
@@ -308,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function alterarProduto() {
+    function alterarProduto() { // corrigir problema imagem
         let idAlteracao = document.querySelector("#idProd");
 
         let nomeValido = validarNomeProduto();
@@ -372,3 +377,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+function verificarInfoNutri() {
+    const opInfoNutri = document.querySelector("#infoNutri");
+    const blocoInfo = document.querySelector("#blocoInfo");
+
+    if (opInfoNutri.checked) {
+        blocoInfo.style.display = 'block';
+    } else {
+        blocoInfo.style.display = 'none';
+    }
+}
+
+function removerNutriente(i) {
+    listaNutri.splice(i, 1);
+    atualizarTabela();
+}
+
+    function adicionarNutriente() {
+        const nomeNutri = document.querySelector("#nomeNutri");
+        const qtd100gNutri = document.querySelector("#qtd100gNutri");
+        const uniNutri = document.querySelector("#uniNutri");
+        const percVDNutri = document.querySelector("#percVDNutri");
+
+        if (!nomeNutri.value || !qtd100gNutri.value) {
+            alert("Preencha ao menos o nome e a quantidade do nutriente!");
+            return;
+        }
+
+        const nutriente = { 
+            nome: nomeNutri.value, 
+            uni: uniNutri.value,
+            qtd: qtd100gNutri.value, 
+            percVD: percVDNutri.value };
+
+        listaNutri.push(nutriente);
+
+        atualizarTabela();
+
+        nomeNutri.value = "";
+        qtd100gNutri.value = "";
+        uniNutri.value = "";
+        percVDNutri.value = "";
+    }
+
+    function atualizarTabela() {
+        const tabela = document.querySelector("#tabelaNutri");
+
+        let html = "";
+
+        for (let i = 0; i < listaNutri.length; i++) {
+            html += `
+                <tr>
+                    <td>${listaNutri[i].nome}</td>
+                    <td> ${listaNutri[i].qtd}</td>
+                    <td>${listaNutri[i].uni}</td>
+                    <td>${listaNutri[i].percVD}%</td>
+                    <td><button type="button" class="btn-acao btn-excluir" onclick="removerNutriente(${i})"><i class="bi bi-trash"></i></button></td>
+                </tr>
+            `
+        }
+
+        tabela.innerHTML = html;
+    }

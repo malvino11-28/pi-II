@@ -199,6 +199,19 @@
      font-weight: 600;
  }
 
+ .indisponivel {
+    font-size: 16px;
+    color:	#FF8080;
+    margin-bottom: 22px;
+    font-weight: 600;
+ }
+
+ .ultimas {
+    font-size: 16px;
+    margin-bottom: 22px;
+    font-weight: 600;
+ }
+
  /* =========================
    ÁREA QUANTIDADE + CARRINHO + FRETE
 ========================= */
@@ -239,7 +252,7 @@
      transition: background .2s ease;
  }
 
- .qty-input button:hover {
+ .qty-input buttodisponiveln:hover {
      background: #efe8df;
  }
 

@@ -14,6 +14,7 @@ const {
     validarSenha,
     validarDataNascimento
 } = require("../utils/validacoes");
+const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisModel");
 
 class adminController {
 
@@ -296,50 +297,152 @@ async rotaGerenciarProduto(req, res) {
   });
 }
 
+
 async rotaCadastrarProduto(req, res) {
-  let result;
-  if (
-    req.body.marca != "0" &&
-    req.body.categoria != "0" &&
-    req.body.nome != "" &&
-    req.body.desc != "" &&
-    req.body.desc_red != "" &&
-    req.body.uni != "0" &&
-    req.body.valor != "" &&
-    (req.body.id > 0 || req.file != null)
-  ) {
-    if (req.body.id > 0) {
-      let produto = new ProdutoModel(
-        req.body.id,
-        req.body.marca,
-        req.body.categoria,
-        req.body.nome,
-        req.body.desc,
-        req.body.desc_red,
-        req.body.uni,
-        req.body.valor,
-        req.file ? req.file.buffer : null,
-      );
-      result = await produto.atualizarProduto();
+    let result;
+    if (
+        req.body.marca != "0" &&
+        req.body.categoria != "0" &&
+        req.body.nome != "" &&
+        req.body.desc != "" &&
+        req.body.desc_red != "" &&
+        req.body.uni != "0" &&
+        req.body.valor != "" &&
+        (req.body.id > 0 || req.file != null)
+    ) {
+        if (req.body.id > 0) {
+            let produto = new ProdutoModel(
+                req.body.id,
+                req.body.marca,
+                req.body.categoria,
+                req.body.nome,
+                req.body.desc,
+                req.body.desc_red,
+                req.body.uni,
+                req.body.valor,
+                req.file ? req.file.buffer : null
+            );
+
+            result = await produto.atualizarProduto();
+
+            res.send({ ok: result });
+
+        } else {
+            let produto = new ProdutoModel(
+                0,
+                req.body.marca,
+                req.body.categoria,
+                req.body.nome,
+                req.body.desc,
+                req.body.desc_red,
+                req.body.uni,
+                req.body.valor,
+                req.file.buffer
+            );
+            result = await produto.cadastrarProduto();
+            res.send({
+                ok: result,
+                idProd: result
+            });
+        }
     } else {
-      let produto = new ProdutoModel(
-        0,
-        req.body.marca,
-        req.body.categoria,
-        req.body.nome,
-        req.body.desc,
-        req.body.desc_red,
-        req.body.uni,
-        req.body.valor,
-        req.file ? req.file.buffer : null,
-      );
-      result = await produto.cadastrarProduto();
+        res.send({ ok: false });
     }
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
 }
+
+async rotaCadastrarInfoNutri(req, res) {
+    let idProd = req.body.idProd;
+    let listaNutri = req.body.listaNutri;
+
+    if (idProd > 0 && listaNutri.length > 0) {
+        let nomes = [];
+        for (let i = 0; i < listaNutri.length; i++) {
+            let item = listaNutri[i];
+            let nome = item.nome.trim();
+            let qtd = item.qtd;
+            let uni = item.uni.trim();
+            if (nome.length < 2 ||
+                nome.length > 50 ||
+                qtd < 0 ||
+                uni.length < 1 ||
+                uni.length > 10 
+            ) {
+                return res.send({ ok: false });
+            }
+            if (nomes.includes(nome.toLowerCase())) {
+              return res.send({ ok: false });
+            }
+            
+            nomes.push(nome.toLowerCase());
+        }
+        for (let i = 0; i < listaNutri.length; i++) {
+            let item = listaNutri[i];
+            let infoNutri = new InformacoesNutricionaisModel(
+                0,
+                idProd,
+                item.nome.trim(),
+                item.qtd,
+                item.uni.trim(),
+                item.percVD
+            );
+            let result = await infoNutri.cadastrarInfoNutri();
+            if (!result) {
+                return res.send({ ok: false });
+            }
+        }
+        res.send({ ok: true });
+    } else {
+        res.send({ ok: false });
+    }
+}
+
+async rotaAtualizarInfoNutri(req, res) {
+    let id = req.body.id;
+    let nome = req.body.nome.trim();
+    let qtd = req.body.qtd;
+    let uni = req.body.uni.trim();
+    let percVD = req.body.percVD;
+    if (
+        id > 0 &&
+        nome.length >= 2 &&
+        nome.length <= 50 &&
+        req.body.qtd !== "" &&
+        uni.length > 0 &&
+        uni.length <= 10 
+    ) {
+        let infoNutri = new InformacoesNutricionaisModel(
+            id,
+            null,
+            nome,
+            qtd,
+            uni,
+            percVD
+        );
+
+        let result = await infoNutri.atualizarNutri();
+
+        res.send({ ok: result });
+
+    } else {
+        res.send({ ok: false });
+    }
+}
+
+async rotaExcluirInfoNutri(req, res) {
+    let id = Number(req.body.id);
+
+    if (Number.isInteger(id) && id > 0) {
+        let infoNutri = new InformacoesNutricionaisModel();
+
+        let result = await infoNutri.excluirInfoNutri(id);
+
+        res.send({ ok: result });
+
+    } else {
+        res.send({ ok: false });
+    }
+}
+
 
 async rotaExcluirProduto(req, res) {
   let id = req.body.id;

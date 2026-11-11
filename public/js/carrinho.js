@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (indice >= 0) {
-            const novaQtd = Number((listaCarrinho[indice].quantidade + qtd).toFixed(2));
+            const novaQtd = Number((Number(listaCarrinho[indice].quantidade) + Number(qtd)).toFixed(2));
 
             if (novaQtd > estoque) {
                 alert("Quantidade inválida.");

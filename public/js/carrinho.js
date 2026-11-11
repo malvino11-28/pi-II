@@ -17,12 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // function formatarMoeda(valor) {
-    //     return Number(valor).toLocaleString("pt-BR", {
-    //         style: "currency",
-    //         currency: "BRL"
-    //     });
-    // }
+    function formatarValor(valor) {
+        return Number(valor).toFixed(2).replace('.', ',');
+    }
 
     // function formatarQuantidade(valor) {
     //     return Number(valor).toLocaleString("pt-BR", {
@@ -74,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (indice >= 0) {
-            const novaQtd = Number((listaCarrinho[indice].quantidade + quantidade).toFixed(2));
+            const novaQtd = Number((listaCarrinho[indice].quantidade + qtd).toFixed(2));
 
             if (novaQtd > estoque) {
                 alert("Quantidade inválida.");
@@ -91,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 preco: produto.preco,
                 imagem: produto.imagem,
                 unidade: produto.unidade,
-                quantidade: produto.quantidade,
+                quantidade: qtd,
                 estoque: estoque
             })
         }
@@ -136,6 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 0; i < listaCarrinho.length; i++) {
                 const item = listaCarrinho[i];
 
+                const passo = obterPasso(item);
+
                 html += `
                     <div class="cart-item" data-id="${item.id}">
                         <div class="row align-items-center">
@@ -179,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         value="${item.quantidade}"
                                         min="${passo}"
                                         max="${item.estoque}"
-                                        step="1"
+                                        step="${passo}"
                                     >
                                     <button
                                         type="button"
@@ -236,11 +235,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (campoSubtotal) {
-            campoSubtotal.textContent = formatarMoeda(subtotal);
+            campoSubtotal.textContent = formatarValor(subtotal);
         }
 
         if (campoTotal) {
-            campoTotal.textContent = formatarMoeda(subtotal);
+            campoTotal.textContent = formatarValor(subtotal);
         }
 
         atualizarContador();
@@ -278,6 +277,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             else if (acao === "aumentar" || acao === "diminuir") {
+                let item;
+
+                for (let i = 0; i < listaCarrinho.length; i++) {
+                    if (listaCarrinho[i].id == id) {
+                        item = listaCarrinho[i];
+                    }
+                }
+
                 const passo = obterPasso(item);
 
                 let novaQtd = item.quantidade;
@@ -306,6 +313,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         containerCarrinho.addEventListener("change", function (e) {
+            let item;
+
+            for (let i = 0; i < listaCarrinho.length; i++) {
+                if (listaCarrinho[i].id == id) {
+                    item = listaCarrinho[i];
+                }
+            }
 
             const input = e.target;
 
@@ -317,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!quantidade || quantidade > Number(item.estoque)) {
                 alert("Quantidade inválida ou estoque insuficiente.");
-                abrirCarrinho();
+                exibirCarrinho();
                 return;
             }
             item.quantidade = Number(quantidade.toFixed(2));
@@ -327,5 +341,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
+    exibirCarrinho();
+    atualizarContador();
 });

@@ -202,9 +202,21 @@
     <script>
       function altQty(delta) {
         const input = document.getElementById("qty");
-        const val = parseInt(input.value) + delta;
-        if (val >= 1 && (!input.max || val <= Number(input.max))) input.value = val;
-      }
+        const passo = Number(input.step) || 1;
+        const quantidadeAtual = Number(input.value);
+
+        const novaQuantidade = Number(
+            (quantidadeAtual + (delta * passo)).toFixed(2)
+        );
+
+        const minimo = Number(input.min);
+        const maximo = input.max;
+
+        if (novaQuantidade >= minimo && novaQuantidade <= maximo) {
+         input.value = novaQuantidade;  
+        }
+
+        }
       function trocarImg(thumb, src) {
         document.getElementById("imgPrincipal").src = src;
         document

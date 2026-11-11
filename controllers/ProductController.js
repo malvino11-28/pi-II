@@ -58,7 +58,7 @@ class productController {
     const id = req.params.id;
     const produto = new ProdutoModel();
 
-    const p = produto.obterProdutoId(id);
+    const p = await produto.obterProdutoId(id);
 
     if (!p) {
       return res.send({ok: false, msg: "Produto não encontrado."});

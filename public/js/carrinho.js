@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAdicionar = document.querySelector("#btnAdicionarCarrinho");
 
     if (btnAdicionar) {
-        btnAdicionar.addEventListener("click", )
+        btnAdicionar.addEventListener("click", adicionarItem);
     }
 
     async function adicionarItem() {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // buscando dados do produto no banco
 
-        let res = await fetch(`/produto/obter/${produtoId}`);
+        let res = await fetch(`/produtos/obter/${produtoId}`);
         let dados = await res.json();
 
         let produto = dados.produto;
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 preco: produto.preco,
                 imagem: produto.imagem,
                 unidade: produto.unidade,
-                quantidade: quantidade,
+                quantidade: produto.quantidade,
                 estoque: estoque
             })
         }
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (acao === "remover") {
                 let novaLista = [];
-                
+
                 for (let i = 0; i < listaCarrinho.length; i++) {
                     if (listaCarrinho[i].id != id) {
                         novaLista.push(listaCarrinho[i]);

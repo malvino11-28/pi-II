@@ -8,7 +8,7 @@ class ClienteModel {
     #RG_CLI
     #DATA_NASC_CLI;
     #EMAIL_CLI;
-    #CELULAR_CLI;
+    #TELEFONE_CLI;
     #SENHA_CLI;
     #STATUS_PLANO;
 
@@ -60,12 +60,12 @@ class ClienteModel {
         this.#EMAIL_CLI = value;
     }
 
-    get CELULAR_CLI() {
-        return this.#CELULAR_CLI;
+    get TELEFONE_CLI() {
+        return this.#TELEFONE_CLI;
     }
 
-    set CELULAR_CLI(value) {
-        this.#CELULAR_CLI = value;
+    set TELEFONE_CLI(value) {
+        this.#TELEFONE_CLI = value;
     }
 
     get SENHA_CLI() {
@@ -84,7 +84,7 @@ class ClienteModel {
         this.#STATUS_PLANO = value;
     }
 
-    constructor(cod, nome, cpf, rg, dt_nasc, email, celular, senha, status) {
+    constructor(cod, nome, cpf, rg, dt_nasc, email, telefone, senha, status) {
 
         this.#COD_CLI = cod;
         this.#NOME_CLI = nome;
@@ -92,7 +92,7 @@ class ClienteModel {
         this.#RG_CLI = rg;
         this.#DATA_NASC_CLI = dt_nasc;
         this.#EMAIL_CLI = email;
-        this.#CELULAR_CLI = celular;
+        this.#TELEFONE_CLI = telefone;
         this.#SENHA_CLI = senha;
         this.#STATUS_PLANO = status;
     }
@@ -100,7 +100,7 @@ class ClienteModel {
     async cadastrarCliente() {
 
         let sql = "INSERT INTO CLIENTE (NOME_CLI, CPF_CLI, RG_CLI, DATA_NASC_CLI, EMAIL_CLI, TELEFONE_CLI, SENHA_CLI) VALUES (?,?,?,?,?,?,?)";
-        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#CELULAR_CLI, this.#SENHA_CLI];
+        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#TELEFONE_CLI, this.#SENHA_CLI];
         let banco = new Database();
         let result = await banco.ExecutaComandoNonQuery(sql, values);
 
@@ -110,7 +110,7 @@ class ClienteModel {
     async atualizarCliente() {
 
         let sql = "UPDATE CLIENTE SET NOME_CLI = ?, CPF_CLI = ?, RG_CLI = ?, DATA_NASC_CLI = ?, EMAIL_CLI = ?, TELEFONE_CLI = ?";
-        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#CELULAR_CLI];
+        let values = [this.#NOME_CLI, this.#CPF_CLI, this.#RG_CLI, this.#DATA_NASC_CLI, this.#EMAIL_CLI, this.#TELEFONE_CLI];
 
         if (this.#SENHA_CLI) {
             sql += ", SENHA_CLI = ?";

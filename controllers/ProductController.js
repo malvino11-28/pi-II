@@ -53,6 +53,25 @@ class productController {
       iN
     });
   }
+
+  async obterProdutoCarrinho(req, res) {
+    const id = req.params.id;
+    const produto = new ProdutoModel();
+
+    const p = produto.obterProdutoId(id);
+
+    if (!p) {
+      return res.send({ok: false, msg: "Produto não encontrado."});
+    }
+
+    return res.send({ok: true, produto: {
+      id: p.COD_PROD,
+      nome: p.NOME_PROD,
+      preco: p.VALOR_UNI_PROD,
+      imagem: p.IMAGEM_PROD || "/imgs/sem-foto.jpg",
+      unidade: p.UNI_MEDIDA_PROD
+    }});
+  }
 }
 
 module.exports = productController;

@@ -10,7 +10,7 @@
                 </span>
                 <img
                     id="imgPrincipal"
-                    src="<%= produto.IMAGEM_PROD || '/imgs/sem-foto.png' %>"
+                    src="<%= produto.IMAGEM_PROD || '/imgs/sem-foto.jpg' %>"
                     alt="<%= produto.NOME_PROD %>"
                 />
                 <div id="zoom-lens"></div>
@@ -47,6 +47,8 @@
                     <%= estoque > 0 ? 'Produto disponível.' : 'Produto indisponível no momento.' %>
                 </div>
 
+                <% const passoQuantidade = (produto.UNI_MEDIDA_PROD === "KG" || produto.UNI_MEDIDA_PROD === "L") ? 0.01 : 1; %>
+
                 <div class="qty-wrap">
                     <div class="qty-input">
                         <button type="button" onclick="altQty(-1)">−</button>
@@ -54,9 +56,10 @@
                         <input
                             type="number"
                             id="qty"
-                            value="<%= estoque > 0 ? 1 : 0 %>"
-                            min="<%= estoque > 0 ? 1 : 0 %>"
+                            value="<%= estoque > 0 ? passoQuantidade : 0 %>"
+                            min="<%= estoque > 0 ? passoQuantidade : 0 %>"
                             max="<%= estoque %>"
+                            step="<%= passoQuantidade %>"
                         />
 
                         <button type="button" onclick="altQty(1)">+</button>
@@ -64,7 +67,8 @@
 
                     <!-- integrar o botão à lógica do carrinho. -->
                     <button
-                        data-nome
+                        data-produto="<%= produto.COD_PROD %>"
+                        data-estoque="<%= estoque %>"
                         type="button"
                         class="btn-carrinho"
                         id="btnAdicionarCarrinho"

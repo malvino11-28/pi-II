@@ -40,6 +40,62 @@ class LoteModel {
     get EST_LOTE() { return this.#EST_LOTE; }
     set EST_LOTE(v) { this.#EST_LOTE = v; }
 
+    async listarLoteProduto(idProduto) {
+        let sql = "SELECT * FROM LOTE WHERE COD_PROD = ? ";
+        let values = [idProduto];
+        let db = new Database();
+        let result = await db.ExecutaComando(sql, values);
+
+        return result;
+    }
+
+    async listarLotesDisponiveis(idProduto) {
+        let sql = "SELECT * FROM LOTE WHERE COD_PROD = ? AND EST_LOTE > 0 AND DATA_VENC_LOTE >= CURDATE() ORDER BY DATA_VENC_LOTE ASC";
+        let values = [idProduto];
+        let db = new Database();
+
+        let linhas = await db.ExecutaComando(sql, values);
+        return linhas;
+    }
+
+    async baixarEstoque(idLote, quantidade) {
+        let sql = "UPDATE LOTE SET EST_LOTE = EST_LOTE - ? WHERE COD_LOTE = ? AND EST_LOTE >= ?";
+        let values = [
+            quantidade,
+            idLote,
+            quantidade
+        ];
+
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+
+        return result;
+
+    }
+
+    async obterLoteId(id) {
+        let sql = "SELECT * FROM LOTE WHERE COD_LOTE = ? ";
+        let values = [id];
+        let db = new Database();
+        let linhas = await db.ExecutaComando(sql, values);
+
+        if (linhas.length > 0) {
+            let linha = linhas[0];
+            let lote = new LoteModel(
+                linha["COD_LOTE"],
+                linha["COD_PROD"],
+                linha["COD_PROMO"],
+                linha["NUM_LOTE"],
+                linha["DATA_FAB_LOTE"],
+                linha["DATA_VENC_LOTE"],
+                linha["EST_LOTE"]
+            );
+
+            return lote;
+        }
+        return null;
+    }
+
     async cadastrarLote() {
         let sql = "INSERT INTO LOTE (COD_PROD, COD_PROMO, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE) VALUES (?, ?, ?, ?, ?, ?)";
         let values = [

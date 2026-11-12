@@ -41,9 +41,9 @@
                     <a href="../../pages/admin/inicio.html" class="header-icon" title="Admin">
                         <i class="bi bi-person-badge"></i>
                     </a>
-                    <a href="../../pages/forms/carrinhoFinal.html" class="header-icon" title="Carrinho">
+                    <a href="/carrinho" class="header-icon" title="Carrinho">
                         <i class="bi bi-cart3"></i>
-                        <span class="cart-badge">3</span>
+                        <span class="cart-badge" id="contadorCarrinho">0</span>
                     </a>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                             <li><a class="dropdown-item" href="#">Aves</a></li>
                             <li><a class="dropdown-item" href="#">Peixes</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../../pages/main/produtos.html">Todos os Produtos</a></li>
+                            <li><a class="dropdown-item" href="/produtos.html">Todos os Produtos</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -118,144 +118,62 @@
                 <div class="cart-card">
                     <div class="cart-header">
                         <h3 class="cart-title">
-                            <i class="bi bi-bag-check"></i> Itens do Carrinho (<span id="totalItems">3</span>)
+                            <i class="bi bi-bag-check"></i> Itens do Carrinho (<span id="totalItems">0</span>)
                         </h3>
                     </div>
-                    <div id="cartItems">
-                        <div class="cart-item" data-id="1">
-                            <div class="row align-items-center">
-                                <div class="col-md-2 col-12 mb-3 mb-md-0">
-                                    <img src="../../imgs/picanha.png" alt="Produto" class="product-img">
-                                </div>
-                                <div class="col-md-4 col-12 mb-3 mb-md-0">
-                                    <div class="product-info">
-                                        <h5>Picanha Premium Angus</h5>
-                                        <p>Peso: 1kg</p>
-                                        <p>Código: #12345</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 mb-3 mb-md-0">
-                                    <div class="quantity-controls">
-                                        <button class="qty-btn" onclick="diminuirQuantidade(1)">-</button>
-                                        <input type="text" class="qty-input" id="qty-1" value="1" readonly>
-                                        <button class="qty-btn" onclick="aumentarQuantidade(1)">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 mb-3 mb-md-0 text-center">
-                                    <div class="product-price" id="price-1">R$ 89,90</div>
-                                </div>
-                                <div class="col-md-2 col-12 text-center">
-                                    <button class="btn-remove" onclick="removerItem(1)">
-                                        <i class="bi bi-trash"></i> Remover
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="cart-item" data-id="2">
-                            <div class="row align-items-center">
-                                <div class="col-md-2 col-12 mb-3 mb-md-0">
-                                    <img src="../../imgs/kitpremium.jpg" alt="Produto" class="product-img">
-                                </div>
-                                <div class="col-md-4 col-12 mb-3 mb-md-0">
-                                    <div class="product-info">
-                                        <h5>Kit Churrasco Completo</h5>
-                                        <p>12 peças em aço inox</p>
-                                        <p>Código: #12346</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 mb-3 mb-md-0">
-                                    <div class="quantity-controls">
-                                        <button class="qty-btn" onclick="diminuirQuantidade(2)">-</button>
-                                        <input type="text" class="qty-input" id="qty-2" value="1" readonly>
-                                        <button class="qty-btn" onclick="aumentarQuantidade(2)">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 mb-3 mb-md-0 text-center">
-                                    <div class="product-price" id="price-2">R$ 149,90</div>
-                                </div>
-                                <div class="col-md-2 col-12 text-center">
-                                    <button class="btn-remove" onclick="removerItem(2)">
-                                        <i class="bi bi-trash"></i> Remover
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="cart-item" data-id="3">
-                            <div class="row align-items-center">
-                                <div class="col-md-2 col-12 mb-3 mb-md-0">
-                                    <img src="https://http2.mlstatic.com/D_NQ_NP_730479-MLA106241803600_022026-O.webp" alt="Produto" class="product-img">
-                                </div>
-                                <div class="col-md-4 col-12 mb-3 mb-md-0">
-                                    <div class="product-info">
-                                        <h5>Tempero Para Carnes 500g</h5>
-                                        <p>Especiarias selecionadas</p>
-                                        <p>Código: #12347</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 mb-3 mb-md-0">
-                                    <div class="quantity-controls">
-                                        <button class="qty-btn" onclick="diminuirQuantidade(3)">-</button>
-                                        <input type="text" class="qty-input" id="qty-3" value="2" readonly>
-                                        <button class="qty-btn" onclick="aumentarQuantidade(3)">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 mb-3 mb-md-0 text-center">
-                                    <div class="product-price" id="price-3">R$ 49,80</div>
-                                </div>
-                                <div class="col-md-2 col-12 text-center">
-                                    <button class="btn-remove" onclick="removerItem(3)">
-                                        <i class="bi bi-trash"></i> Remover
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="cartItems"> <!-- itens do carrinho vão aparecer dinamicamente aqui --></div>
                 </div>
-                <a href="../../index.html" class="btn-continue">
+                <a href="/" class="btn-continue">
                     <i class="bi bi-arrow-left"></i> Continuar Comprando
                 </a>
             </div>
             <div class="col-lg-4">
                 <div class="summary-card">
                     <h3 class="summary-title">Resumo do Pedido</h3>
-                    <div class="coupon-section">
-                        <label style="font-weight: bold; margin-bottom: 10px; display: block;">
-                            <i class="bi bi-ticket-perforated"></i> Cupom de Desconto
-                        </label>
-                        <div class="d-flex gap-2">
-                            <input type="text" class="coupon-input" id="couponInput" placeholder="Digite o cupom">
-                            <button class="btn-apply" onclick="aplicarCupom()">Aplicar</button>
-                        </div>
+                    <div class="summary-row">
+                        <span>
+                            Produtos:
+                            <span id="itemCount">0</span>
+                        </span>
                     </div>
                     <div class="summary-row">
-                        <span>Subtotal (<span id="itemCount">4</span> itens):</span>
-                        <span id="subtotal">R$ 289,60</span>
+                        <span>Subtotal:</span>
+                        <span id="subtotal">R$ 0,00</span>
                     </div>
-                    <div class="summary-row">
-                        <span>Frete:</span>
-                        <span id="frete">R$ 15,00</span>
-                    </div>
-                    <div class="summary-row" id="discountRow" style="display: none; color: #27ae60;">
-                        <span>Desconto:</span>
-                        <span id="discount">- R$ 0,00</span>
-                    </div>
+
                     <div class="summary-row total">
                         <span>Total:</span>
-                        <span id="total">R$ 304,60</span>
+                        <span id="total">R$ 0,00</span>
                     </div>
-                    <button class="btn-checkout" onclick="finalizarCompra()">
-                        <i class="bi bi-check-circle"></i> Finalizar Compra
+
+                    <div class="mb-3">
+                        <label for="formaPagamento" class="form-label">
+                            Forma de pagamento
+                        </label>
+
+                        <select
+                            id="formaPagamento"
+                            class="form-select"
+                            required
+                        >
+                            <option value="">Selecione uma forma de pagamento</option>
+                            <% for (let i = 0; i < formasPagamento.length; i++) { %>
+                                <option value="<%= formasPagamento[i].COD_PAG %>">
+                                    <%= formasPagamento[i].NOME_PAG %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-checkout"
+                        id="btnFinalizarCompra"
+                        disabled
+                    >
+                        <i class="bi bi-check-circle"></i>
+                        Finalizar Compra
                     </button>
-                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
-                        <p style="font-size: 14px; color: #666; margin: 0;">
-                            <i class="bi bi-shield-check" style="color: #27ae60;"></i> 
-                            Compra 100% segura
-                        </p>
-                        <p style="font-size: 14px; color: #666; margin-top: 10px;">
-                            <i class="bi bi-truck" style="color: rgb(238, 123, 48);"></i> 
-                            Entrega em até 2 dias úteis
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -357,5 +275,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/carrinho.js"></script>
 </body>
 </html>

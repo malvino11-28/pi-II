@@ -146,6 +146,25 @@
                         <span id="total">R$ 0,00</span>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="formaPagamento" class="form-label">
+                            Forma de pagamento
+                        </label>
+
+                        <select
+                            id="formaPagamento"
+                            class="form-select"
+                            required
+                        >
+                            <option value="">Selecione uma forma de pagamento</option>
+                            <% for (let i = 0; i < formasPagamento.length; i++) { %>
+                                <option value="<%= formasPagamento[i].COD_PAG %>">
+                                    <%= formasPagamento[i].NOME_PAG %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+
                     <button
                         type="button"
                         class="btn-checkout"

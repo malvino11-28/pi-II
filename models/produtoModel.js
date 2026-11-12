@@ -86,6 +86,16 @@ class ProdutoModel {
     this.#IMAGEM_PROD = img;
   }
 
+  async cadastrarProduto() {
+    let sql = "INSERT INTO PRODUTO (COD_MAR, COD_CAT, NOME_PROD, DESC_PROD, DESC_RED_PROD, UNI_MEDIDA_PROD, VALOR_UNI_PROD, IMAGEM_PROD) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD, this.#IMAGEM_PROD];
+    let db = new Database();
+
+    let result = await db.ExecutaComandoLastInserted(sql, values);
+
+    return result;
+  }
+
   async listarProdutos() {
     let sql = "SELECT * FROM PRODUTO"
     let db = new Database();
@@ -108,26 +118,6 @@ class ProdutoModel {
     return lista;
   }
 
-  async cadastrarProduto() {
-    let sql = "INSERT INTO PRODUTO (COD_MAR, COD_CAT, NOME_PROD, DESC_PROD, DESC_RED_PROD, UNI_MEDIDA_PROD, VALOR_UNI_PROD, IMAGEM_PROD) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD, this.#IMAGEM_PROD];
-    let db = new Database();
-
-    let result = await db.ExecutaComandoLastInserted(sql, values);
-
-    return result;
-  }
-  
-  async excluirProduto(id) {
-    let sql = "DELETE FROM PRODUTO WHERE COD_PROD = ?";
-    let value = [id];
-    let db = new Database();
-
-    let result = await db.ExecutaComandoNonQuery(sql, value);
-
-    return result;
-  }
-
   async atualizarProduto() {
     let sql = "UPDATE PRODUTO SET COD_MAR = ?, COD_CAT = ?, NOME_PROD = ?, DESC_PROD = ?, DESC_RED_PROD = ?, UNI_MEDIDA_PROD = ?, VALOR_UNI_PROD = ?";
     let values = [this.#COD_MAR, this.#COD_CAT, this.#NOME_PROD, this.#DESC_PROD, this.#DESC_RED_PROD, this.#UNI_MEDIDA_PROD, this.#VALOR_UNI_PROD];
@@ -145,37 +135,47 @@ class ProdutoModel {
 
     return result;
   }
-
-    async obterProdutoId(id) {
-    let sql = "SELECT * FROM PRODUTO WHERE COD_PROD = ?"
+  
+  async excluirProduto(id) {
+    let sql = "DELETE FROM PRODUTO WHERE COD_PROD = ?";
     let value = [id];
-    
     let db = new Database();
-    let linhas = await db.ExecutaComando(sql, value);
 
-    if (linhas.length > 0) {
-        let linha = linhas[0];
+    let result = await db.ExecutaComandoNonQuery(sql, value);
 
-        // convertendo binário para base64
-        let imagemBase64 = "";
-        if (linha["IMAGEM_PROD"] != null) {
-          imagemBase64 = "data:image/png;base64," + linha["IMAGEM_PROD"].toString("base64");
-        }
+    return result;
+  }
 
-        let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD'], imagemBase64);
+  async obterProdutoId(id) {
+  let sql = "SELECT * FROM PRODUTO WHERE COD_PROD = ?"
+  let value = [id];
+  
+  let db = new Database();
+  let linhas = await db.ExecutaComando(sql, value);
 
-        if (linha['IMAGEM_PROD'] != null) {
-          produto.imagemBase64 = global.CAMINHO_IMG_BROWSER + linha["IMAGEM_PROD"];
-          produto.possuiImagem = true;
-        } else {
-          produto.imagemBase64 = global.CAMINHO_IMG_BROWSER + "sem-foto.png";
-          produto.possuiImagem = false;
-        }
+  if (linhas.length > 0) {
+      let linha = linhas[0];
 
-        return produto;
-    }
+      // convertendo binário para base64
+      let imagemBase64 = "";
+      if (linha["IMAGEM_PROD"] != null) {
+        imagemBase64 = "data:image/png;base64," + linha["IMAGEM_PROD"].toString("base64");
+      }
 
-    return null;
+      let produto = new ProdutoModel(linha['COD_PROD'], linha['COD_MAR'], linha['COD_CAT'], linha['NOME_PROD'], linha['DESC_PROD'], linha['DESC_RED_PROD'], linha['UNI_MEDIDA_PROD'], linha['VALOR_UNI_PROD'], imagemBase64);
+
+      if (linha['IMAGEM_PROD'] != null) {
+        produto.imagemBase64 = global.CAMINHO_IMG_BROWSER + linha["IMAGEM_PROD"];
+        produto.possuiImagem = true;
+      } else {
+        produto.imagemBase64 = global.CAMINHO_IMG_BROWSER + "sem-foto.png";
+        produto.possuiImagem = false;
+      }
+
+      return produto;
+  }
+
+  return null;
   }
 }
 

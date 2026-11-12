@@ -100,7 +100,7 @@ class PessoaFisicaModel extends PessoaModel {
         this.#STATUS_FUN = statusFuncionario;
     }
 
-    async cadastrarPessoaFisica() {
+    async cadastrarPF() {
 
         let sql = "INSERT INTO PESSOA_FISICA (NOME_PF, CPF_PF, RG_PF, DATA_NASC_PF, EMAIL_PESSOA, TELEFONE_PESSOA, SENHA_PF, MATRICULA_FUN, CARGO_FUN, STATUS_FUN) VALUES (?,?,?,?,?,?,?,?,?,?)";
         let values = [this.#NOME_PF, this.#CPF_PF, this.#RG_PF, this.#DATA_NASC_PF, this.EMAIL_PESSOA, this.TELEFONE_PESSOA, this.#SENHA_PF, this.#MATRICULA_FUN, this.#CARGO_FUN, this.#STATUS_FUN];
@@ -111,7 +111,7 @@ class PessoaFisicaModel extends PessoaModel {
         return result;
     }
 
-    async atualizarPessoaFisica() {
+    async atualizarPF() {
 
         let sql = "UPDATE PESSOA_FISICA SET NOME_PF = ?, CPF_PF = ?, RG_PF = ?, DATA_NASC_PF = ?, EMAIL_PESSOA = ?, TELEFONE_PESSOA = ?";
         let values = [this.#NOME_PF, this.#CPF_PF, this.#RG_PF, this.#DATA_NASC_PF, this.EMAIL_PESSOA, this.TELEFONE_PESSOA];
@@ -130,7 +130,7 @@ class PessoaFisicaModel extends PessoaModel {
         return result;
     }
 
-    async atualizarDadosFuncionario() {
+    async atualizarDadosFun() {
 
         let sql = "UPDATE PESSOA_FISICA SET MATRICULA_FUN = ?, CARGO_FUN = ?, STATUS_FUN = ? WHERE COD_PESSOA = ?";
         let values = [this.#MATRICULA_FUN, this.#CARGO_FUN, this.#STATUS_FUN, this.COD_PESSOA];
@@ -141,7 +141,7 @@ class PessoaFisicaModel extends PessoaModel {
         return result;
     }
 
-    async listarPessoasFisicas() {
+    async listarPF() {
 
         let sql = "SELECT PF.*, CASE WHEN A.COD_PESSOA IS NULL THEN 'Pendente de plano' WHEN A.STATUS_ASS = 'Ativa' THEN 'Ativo' WHEN A.STATUS_ASS = 'Vencida' THEN 'Vencido' WHEN A.STATUS_ASS = 'Inativa' THEN 'Inativo' END AS STATUS_PLANO FROM PESSOA_FISICA PF LEFT JOIN ASSINATURA A ON PF.COD_PESSOA = A.COD_PESSOA";
 
@@ -160,7 +160,7 @@ class PessoaFisicaModel extends PessoaModel {
         return lista;
     }
 
-    async listarFuncionarios() {
+    async listarFun() {
 
         let sql = "SELECT PF.*, CASE WHEN A.COD_PESSOA IS NULL THEN 'Pendente de plano' WHEN A.STATUS_ASS = 'Ativa' THEN 'Ativo' WHEN A.STATUS_ASS = 'Vencida' THEN 'Vencido' WHEN A.STATUS_ASS = 'Inativa' THEN 'Inativo' END AS STATUS_PLANO FROM PESSOA_FISICA PF LEFT JOIN ASSINATURA A ON PF.COD_PESSOA = A.COD_PESSOA WHERE PF.MATRICULA_FUN IS NOT NULL";
 
@@ -179,7 +179,7 @@ class PessoaFisicaModel extends PessoaModel {
         return lista;
     }
 
-    async excluirPessoaFisica(id) {
+    async excluirPF(id) {
 
         let sql = "DELETE FROM PESSOA_FISICA WHERE COD_PESSOA = ?";
         let value = [id];

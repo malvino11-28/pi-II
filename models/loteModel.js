@@ -40,11 +40,52 @@ class LoteModel {
     get EST_LOTE() { return this.#EST_LOTE; }
     set EST_LOTE(v) { this.#EST_LOTE = v; }
 
+    async cadastrarLote() {
+        let sql = "INSERT INTO LOTE (COD_PROD, COD_PROMO, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE) VALUES (?, ?, ?, ?, ?, ?)";
+        let values = [
+            this.#COD_PROD,
+            this.#COD_PROMO,
+            this.#NUM_LOTE,
+            this.#DATA_FAB_LOTE,
+            this.#DATA_VENC_LOTE,
+            this.#EST_LOTE
+        ];
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+
+        return result;
+    }
+
     async listarLoteProduto(idProduto) {
         let sql = "SELECT * FROM LOTE WHERE COD_PROD = ? ";
         let values = [idProduto];
         let db = new Database();
         let result = await db.ExecutaComando(sql, values);
+
+        return result;
+    }
+
+    async atualizarLote() {
+        let sql = "UPDATE LOTE SET NUM_LOTE = ?, DATA_FAB_LOTE = ?, DATA_VENC_LOTE = ?, EST_LOTE = ? WHERE COD_LOTE = ? AND COD_PROD = ?";
+        let values = [
+            this.#NUM_LOTE,
+            this.#DATA_FAB_LOTE,
+            this.#DATA_VENC_LOTE,
+            this.#EST_LOTE,
+            this.#COD_LOTE,
+            this.#COD_PROD
+        ];
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+
+        return result;
+    }
+
+    async excluirLote(id) {
+        let sql = "DELETE FROM LOTE WHERE COD_LOTE = ?";
+        let values = [id];
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
@@ -70,46 +111,6 @@ class LoteModel {
             return lote;
         }
         return null;
-    }
-
-    async cadastrarLote() {
-        let sql = "INSERT INTO LOTE (COD_PROD, COD_PROMO, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE) VALUES (?, ?, ?, ?, ?, ?)";
-        let values = [
-            this.#COD_PROD,
-            this.#COD_PROMO,
-            this.#NUM_LOTE,
-            this.#DATA_FAB_LOTE,
-            this.#DATA_VENC_LOTE,
-            this.#EST_LOTE
-        ];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
-
-        return result;
-    }
-    async atualizarLote() {
-        let sql = "UPDATE LOTE SET NUM_LOTE = ?, DATA_FAB_LOTE = ?, DATA_VENC_LOTE = ?, EST_LOTE = ? WHERE COD_LOTE = ? AND COD_PROD = ?";
-        let values = [
-            this.#NUM_LOTE,
-            this.#DATA_FAB_LOTE,
-            this.#DATA_VENC_LOTE,
-            this.#EST_LOTE,
-            this.#COD_LOTE,
-            this.#COD_PROD
-        ];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
-
-        return result;
-    }
-
-    async excluirLote(id) {
-        let sql = "DELETE FROM LOTE WHERE COD_LOTE = ?";
-        let values = [id];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
-
-        return result;
     }
 }
 

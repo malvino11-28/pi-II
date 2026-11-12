@@ -1,5 +1,5 @@
-const ClienteModel = require("../models/clienteModel");
-const FornecedorModel = require("../models/fornecedorModel");
+const PessoaFisicaModel = require("../models/pessoaFisicaModel");
+const PessoaJuridicaModel = require("../models/pessoaJuridicaModel");
 const CategoriaModel = require("../models/categoriaModel");
 const ProdutoModel = require("../models/produtoModel");
 const MarcaModel = require("../models/marcaModel");
@@ -14,39 +14,40 @@ const {
     validarSenha,
     validarDataNascimento
 } = require("../utils/validacoes");
+
 const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisModel");
 
 class adminController {
 
     async rotaDashboardView(req, res) {
-
-        let cliente = new ClienteModel();
-        let listaClientes = await cliente.listarClientes();
+        let cliente = new PessoaFisicaModel();
+        let pessoasFisicas = await cliente.listarPF();
+        let listaClientes = pessoasFisicas.filter(pessoa => pessoa.EMAIL_PESSOA);
 
         let produtos = new ProdutoModel();
         let listarProdutos = await produtos.listarProdutos();
 
-        let fornecedor = new FornecedorModel();
-        let listarFornecedores = await fornecedor.listarFornecedores()
+        let fornecedor = new PessoaJuridicaModel();
+        let listarFornecedores = await fornecedor.listarPJ();
 
         res.render("admin/dashboard", {
             clientes: listaClientes,
             fornecedores: listarFornecedores,
-            produtos: listarProdutos,
+            produtos: listarProdutos
         });
     }
 
     async rotaCadastrarClientesView(req, res) {
-        let cliente = new ClienteModel();
-        let listaClientes = await cliente.listarClientes();
+        let cliente = new PessoaFisicaModel();
+        let pessoasFisicas = await cliente.listarPF();
+        let listaClientes = pessoasFisicas.filter(pessoa => pessoa.EMAIL_PESSOA);
 
-        res.render("admin/cadastrarCliente", {
+        res.render("admin/cadastrarPessoaF", {
             clientes: listaClientes
         });
     }
 
     async rotaCadastrarClientes(req, res) {
-        
         try {
             let erros = [];
 
@@ -88,30 +89,19 @@ class adminController {
                 });
             }
 
-            let cliente = new ClienteModel(
-                0,
-                req.body.nome.trim(),
-                somenteNumeros(req.body.cpf),
-                req.body.rg.trim(),
-                req.body.dt_nasc,
-                req.body.email.trim().toLowerCase(),
-                somenteNumeros(req.body.cel),
-                req.body.senha
-            );
+            let cliente = new PessoaFisicaModel(0, req.body.nome.trim(), somenteNumeros(req.body.cpf), req.body.rg.trim(), req.body.dt_nasc, req.body.email.trim().toLowerCase(), somenteNumeros(req.body.cel), req.body.senha);
 
             let retornoBan = false;
 
-            if(req.body.id) {
-                cliente.COD_CLI = req.body.id;
-                retornoBan = await cliente.atualizarCliente();
-
+            if (req.body.id) {
+                cliente.COD_PESSOA = req.body.id;
+                retornoBan = await cliente.atualizarPF();
             } else {
-
-                retornoBan = await cliente.cadastrarCliente();
+                retornoBan = await cliente.cadastrarPF();
             }
 
             res.send({ ok: retornoBan });
-            
+
         } catch (erro) {
             console.log(erro);
 
@@ -123,42 +113,36 @@ class adminController {
     }
 
     async alterarClienteView(req, res) {
-
         let idCliente = req.params.id;
-        let cliente = new ClienteModel();
+        let cliente = new PessoaFisicaModel();
         cliente = await cliente.obterPorId(idCliente);
 
         res.render("admin/alterarCliente", { cliAlter: cliente });
     }
 
     async rotaExcluirCliente(req, res) {
-
         let idExclusao = req.body.id;
-        if(idExclusao && idExclusao > 0) {
 
-            let cliente = new ClienteModel();
-            let result = await cliente.excluirCliente(idExclusao);
+        if (idExclusao && idExclusao > 0) {
+            let cliente = new PessoaFisicaModel();
+            let result = await cliente.excluirPF(idExclusao);
 
             res.send({ ok: result });
-
         } else {
-
             res.send({ ok: false });
         }
     }
 
     async rotaCadastrarFornecedorView(req, res) {
+        let fornecedor = new PessoaJuridicaModel();
+        let listaFornecedores = await fornecedor.listarPJ();
 
-        let fornecedor = new FornecedorModel();
-        let listaFornecedores = await fornecedor.listarFornecedores();
-
-        res.render("admin/fornecedor", {
+        res.render("admin/cadastrarPessoaJ", {
             fornecedores: listaFornecedores
         });
     }
 
     async rotaCadastrarFornecedor(req, res) {
-
         if (
             req.body.razao != "" &&
             req.body.nomeFan != "" &&
@@ -166,39 +150,26 @@ class adminController {
             req.body.email != "" &&
             req.body.telefone != ""
         ) {
-
-            let fornecedor = new FornecedorModel(
-                0,
-                somenteNumeros(req.body.cnpj),
-                req.body.razao.trim(),
-                req.body.nomeFan.trim(),
-                req.body.email.trim().toLowerCase(),
-                somenteNumeros(req.body.telefone)
-            );
+            let fornecedor = new PessoaJuridicaModel(0, somenteNumeros(req.body.cnpj), req.body.razao.trim(), req.body.nomeFan.trim(), req.body.email.trim().toLowerCase(), somenteNumeros(req.body.telefone));
 
             let retornoBan = false;
 
-            if(req.body.id) {
-                fornecedor.COD_FOR = req.body.id;
-                retornoBan = await fornecedor.atualizarFornecedor();
-
+            if (req.body.id) {
+                fornecedor.COD_PESSOA = req.body.id;
+                retornoBan = await fornecedor.atualizarPJ();
             } else {
-
-                retornoBan = await fornecedor.cadastrarFornecedor();
+                retornoBan = await fornecedor.cadastrarPJ();
             }
 
             res.send({ ok: retornoBan });
-
         } else {
-            
             res.send({ ok: false });
         }
     }
 
     async rotaAlterarFornecedorView(req, res) {
-        
         let idFornecedor = req.params.id;
-        let fornecedor = new FornecedorModel();
+        let fornecedor = new PessoaJuridicaModel();
         fornecedor = await fornecedor.obterPorId(idFornecedor);
 
         res.render("admin/alterarFornecedor", {
@@ -207,406 +178,322 @@ class adminController {
     }
 
     async rotaExcluirFornecedor(req, res) {
-
         let idExclusao = req.body.id;
-        if(idExclusao && idExclusao > 0) {
 
-            let fornecedor = new FornecedorModel();
-            let result = await fornecedor.excluirFornecedor(idExclusao);
+        if (idExclusao && idExclusao > 0) {
+            let fornecedor = new PessoaJuridicaModel();
+            let result = await fornecedor.excluirPJ(idExclusao);
 
             res.send({ ok: result });
-        
         } else {
+            res.send({ ok: false });
+        }
+    }
+      /////////////////
 
+    async rotaGerenciarCategoria(req, res) {
+        let categoria = new CategoriaModel();
+        let listaCategoria = await categoria.listarCategoria();
+        res.render("admin/gerenciamentoCategoria", { categorias: listaCategoria });
+    }
+
+    async rotaCadastrarCategoria(req, res) {
+        let result;
+        if (req.body.nome != "") {
+            if (req.body.id > 0) {
+                let categoria = new CategoriaModel(req.body.id, req.body.nome);
+                result = await categoria.atualizarCategoria();
+            } else {
+                let categoria = new CategoriaModel(0, req.body.nome);
+                result = await categoria.cadastrarCategoria();
+            }
+            res.send({ ok: result });
+        } else {
             res.send({ ok: false });
         }
     }
 
-    /////////////////
-
-    async rotaGerenciarCategoria(req, res) {
-  let categoria = new CategoriaModel();
-  let listaCategoria = await categoria.listarCategoria();
-  res.render("admin/gerenciamentoCategoria", { categorias: listaCategoria });
-}
-
-async rotaCadastrarCategoria(req, res) {
-  let result;
-  if (req.body.nome != "") {
-    if (req.body.id > 0) {
-      let categoria = new CategoriaModel(req.body.id, req.body.nome);
-      result = await categoria.atualizarCategoria();
-    } else {
-      let categoria = new CategoriaModel(0, req.body.nome);
-      result = await categoria.cadastrarCategoria();
-    }
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
-
-async rotaExcluirCategoria(req, res) {
-  let id = req.body.id;
-  if (id && id > 0) {
-    let categoria = new CategoriaModel();
-    let result = await categoria.excluirCategoria(id);
-
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
-
-async rotaAlterarCategoria(req, res) {
-  let id = req.params.id;
-  let categoria = new CategoriaModel();
-
-  categoria = await categoria.obterCategoriaId(id);
-  res.render("admin/alterarCategoria", { categoria }); //
-}
-
-async rotaGerenciarProdutoView(req, res) {
-  let produto = new ProdutoModel();
-  let marca = new MarcaModel();
-  let categoria = new CategoriaModel();
-
-  let listaProduto = await produto.listarProdutos();
-  let listaMarca = await marca.listarMarcas();
-  let listaCategoria = await categoria.listarCategoria();
-  res.render("admin/produto", {
-    produtos: listaProduto,
-    marcas: listaMarca,
-    categorias: listaCategoria,
-  });
-}
-
-async rotaGerenciarProduto(req, res) {
-  let produto = new ProdutoModel();
-  let marca = new MarcaModel();
-  let categoria = new CategoriaModel();
-
-  let listaProduto = await produto.listarProdutos();
-  let listaMarca = await marca.listarMarcas();
-  let listaCategoria = await categoria.listarCategoria();
-
-  res.render("admin/gerenciamentoProduto", {
-    produtos: listaProduto,
-    marcas: listaMarca,
-    categorias: listaCategoria,
-  });
-}
-
-
-async rotaCadastrarProduto(req, res) {
-    let result;
-    if (
-        req.body.marca != "0" &&
-        req.body.categoria != "0" &&
-        req.body.nome != "" &&
-        req.body.desc != "" &&
-        req.body.desc_red != "" &&
-        req.body.uni != "0" &&
-        req.body.valor != "" &&
-        (req.body.id > 0 || req.file != null)
-    ) {
-        if (req.body.id > 0) {
-            let produto = new ProdutoModel(
-                req.body.id,
-                req.body.marca,
-                req.body.categoria,
-                req.body.nome,
-                req.body.desc,
-                req.body.desc_red,
-                req.body.uni,
-                req.body.valor,
-                req.file ? req.file.buffer : null
-            );
-
-            result = await produto.atualizarProduto();
-
+    async rotaExcluirCategoria(req, res) {
+        let id = req.body.id;
+        if (id && id > 0) {
+            let categoria = new CategoriaModel();
+            let result = await categoria.excluirCategoria(id);
             res.send({ ok: result });
-
         } else {
-            let produto = new ProdutoModel(
-                0,
-                req.body.marca,
-                req.body.categoria,
-                req.body.nome,
-                req.body.desc,
-                req.body.desc_red,
-                req.body.uni,
-                req.body.valor,
-                req.file.buffer
-            );
-            result = await produto.cadastrarProduto();
-            res.send({
-                ok: result,
-                idProd: result
-            });
+            res.send({ ok: false });
         }
-    } else {
-        res.send({ ok: false });
     }
-}
 
-async rotaCadastrarInfoNutri(req, res) {
-    let idProd = req.body.idProd;
-    let listaNutri = req.body.listaNutri;
+    async rotaAlterarCategoria(req, res) {
+        let id = req.params.id;
+        let categoria = new CategoriaModel();
+        categoria = await categoria.obterCategoriaId(id);
+        res.render("admin/alterarCategoria", { categoria });
+    }
 
-    if (idProd > 0 && listaNutri.length > 0) {
-        let nomes = [];
-        for (let i = 0; i < listaNutri.length; i++) {
-            let item = listaNutri[i];
-            let nome = item.nome.trim();
-            let qtd = item.qtd;
-            let uni = item.uni.trim();
-            if (nome.length < 2 ||
-                nome.length > 50 ||
-                qtd < 0 ||
-                uni.length < 1 ||
-                uni.length > 10 
-            ) {
-                return res.send({ ok: false });
+    async rotaGerenciarProdutoView(req, res) {
+        let produto = new ProdutoModel();
+        let marca = new MarcaModel();
+        let categoria = new CategoriaModel();
+
+        let listaProduto = await produto.listarProdutos();
+        let listaMarca = await marca.listarMarcas();
+        let listaCategoria = await categoria.listarCategoria();
+
+        res.render("admin/produto", {
+            produtos: listaProduto,
+            marcas: listaMarca,
+            categorias: listaCategoria
+        });
+    }
+
+    async rotaGerenciarProduto(req, res) {
+        let produto = new ProdutoModel();
+        let marca = new MarcaModel();
+        let categoria = new CategoriaModel();
+
+        let listaProduto = await produto.listarProdutos();
+        let listaMarca = await marca.listarMarcas();
+        let listaCategoria = await categoria.listarCategoria();
+
+        res.render("admin/gerenciamentoProduto", {
+            produtos: listaProduto,
+            marcas: listaMarca,
+            categorias: listaCategoria
+        });
+    }
+
+    async rotaCadastrarProduto(req, res) {
+        let result;
+        if (
+            req.body.marca != "0" &&
+            req.body.categoria != "0" &&
+            req.body.nome != "" &&
+            req.body.desc != "" &&
+            req.body.desc_red != "" &&
+            req.body.uni != "0" &&
+            req.body.valor != "" &&
+            (req.body.id > 0 || req.file != null)
+        ) {
+            if (req.body.id > 0) {
+                let produto = new ProdutoModel(req.body.id, req.body.marca, req.body.categoria, req.body.nome, req.body.desc, req.body.desc_red, req.body.uni, req.body.valor, req.file ? req.file.buffer : null);
+                result = await produto.atualizarProduto();
+                res.send({ ok: result });
+            } else {
+                let produto = new ProdutoModel(0, req.body.marca, req.body.categoria, req.body.nome, req.body.desc, req.body.desc_red, req.body.uni, req.body.valor, req.file.buffer);
+                result = await produto.cadastrarProduto();
+                res.send({ ok: result, idProd: result });
             }
-            if (nomes.includes(nome.toLowerCase())) {
-              return res.send({ ok: false });
-            }
-            
-            nomes.push(nome.toLowerCase());
+        } else {
+            res.send({ ok: false });
         }
-        for (let i = 0; i < listaNutri.length; i++) {
-            let item = listaNutri[i];
-            let infoNutri = new InformacoesNutricionaisModel(
-                0,
-                idProd,
-                item.nome.trim(),
-                item.qtd,
-                item.uni.trim(),
-                item.percVD
-            );
-            let result = await infoNutri.cadastrarInfoNutri();
-            if (!result) {
-                return res.send({ ok: false });
+    }
+
+    async rotaCadastrarInfoNutri(req, res) {
+        let idProd = req.body.idProd;
+        let listaNutri = req.body.listaNutri;
+
+        if (idProd > 0 && listaNutri.length > 0) {
+            let nomes = [];
+            for (let i = 0; i < listaNutri.length; i++) {
+                let item = listaNutri[i];
+                let nome = item.nome.trim();
+                let qtd = item.qtd;
+                let uni = item.uni.trim();
+
+                if (nome.length < 2 || nome.length > 50 || qtd < 0 || uni.length < 1 || uni.length > 10) {
+                    return res.send({ ok: false });
+                }
+
+                if (nomes.includes(nome.toLowerCase())) {
+                    return res.send({ ok: false });
+                }
+
+                nomes.push(nome.toLowerCase());
             }
+
+            for (let i = 0; i < listaNutri.length; i++) {
+                let item = listaNutri[i];
+                let infoNutri = new InformacoesNutricionaisModel(0, idProd, item.nome.trim(), item.qtd, item.uni.trim(), item.percVD);
+                let result = await infoNutri.cadastrarInfoNutri();
+
+                if (!result) {
+                    return res.send({ ok: false });
+                }
+            }
+
+            res.send({ ok: true });
+        } else {
+            res.send({ ok: false });
         }
-        res.send({ ok: true });
-    } else {
-        res.send({ ok: false });
-    }
-}
-
-async rotaAtualizarInfoNutri(req, res) {
-    let id = req.body.id;
-    let nome = req.body.nome.trim();
-    let qtd = req.body.qtd;
-    let uni = req.body.uni.trim();
-    let percVD = req.body.percVD;
-    if (
-        id > 0 &&
-        nome.length >= 2 &&
-        nome.length <= 50 &&
-        req.body.qtd !== "" &&
-        uni.length > 0 &&
-        uni.length <= 10 
-    ) {
-        let infoNutri = new InformacoesNutricionaisModel(
-            id,
-            null,
-            nome,
-            qtd,
-            uni,
-            percVD
-        );
-
-        let result = await infoNutri.atualizarNutri();
-
-        res.send({ ok: result });
-
-    } else {
-        res.send({ ok: false });
-    }
-}
-
-async rotaExcluirInfoNutri(req, res) {
-    let id = Number(req.body.id);
-
-    if (Number.isInteger(id) && id > 0) {
-        let infoNutri = new InformacoesNutricionaisModel();
-
-        let result = await infoNutri.excluirInfoNutri(id);
-
-        res.send({ ok: result });
-
-    } else {
-        res.send({ ok: false });
-    }
-}
-
-
-async rotaExcluirProduto(req, res) {
-  let id = req.body.id;
-  if (id && id > 0) {
-    let produto = new ProdutoModel();
-    let result = await produto.excluirProduto(id);
-
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
-
-async rotaAtualizarProduto(req, res) {
-  let id = req.params.id;
-  let produto = new ProdutoModel();
-  let marca = new MarcaModel();
-  let categoria = new CategoriaModel();
-
-  let produtoId;
-  if (req.params.id != undefined && req.params.id != "") {
-    produtoId = await produto.obterProdutoId(id);
-  }
-  let listaMarcas = await marca.listarMarcas();
-  let listaCategorias = await categoria.listarCategoria();
-
-  res.render("admin/alterarProduto", {
-    marcas: listaMarcas,
-    categorias: listaCategorias,
-    produto: produtoId,
-  });
-}
-
-async rotaGerenciarMarca(req, res) {
-  let marca = new MarcaModel();
-  let listaMarcas = await marca.listarMarcas();
-  res.render("admin/gerenciamentoMarca", {
-    marcas: listaMarcas,
-  });
-}
-
-async rotaCadastrarMarca(req, res) {
-  let result;
-  if (req.body.nome != "") {
-    if (req.body.id > 0) {
-      let marca = new MarcaModel(req.body.id, req.body.nome);
-      result = await marca.atualizarMarca();
-    } else {
-      let marca = new MarcaModel(0, req.body.nome);
-      result = await marca.cadastrarMarca();
     }
 
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
+    async rotaAtualizarInfoNutri(req, res) {
+        let id = req.body.id;
+        let nome = req.body.nome.trim();
+        let qtd = req.body.qtd;
+        let uni = req.body.uni.trim();
+        let percVD = req.body.percVD;
 
-async rotaExcluirMarca(req, res) {
-  let idExclusao = req.body.id;
-  if (idExclusao && idExclusao > 0) {
-    let marca = new MarcaModel();
-    let result = await marca.excluirMarca(idExclusao);
-
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
-
-async rotaAlterarMarca(req, res) {
-  let id = req.params.id;
-  let marca = new MarcaModel();
-
-  marca = await marca.obterMarcaId(id);
-  res.render("admin/alterarMarca", { marca });
-}
-
-async rotaGerenciamentoLote(req, res) {
-  let idProduto = req.params.id;
-
-  let produtoModel = new ProdutoModel();
-  let loteModel = new LoteModel();
-
-  let produto = await produtoModel.obterProdutoId(idProduto);
-  let lotes = await loteModel.listarLoteProduto(idProduto);
-
-  res.render("admin/gerenciamentoLote", {
-    produto: produto,
-    lotes: lotes,
-  });
-}
-
-async rotaCadastrarLote(req, res) {
-  let result;
-
-  let id = req.body.id;
-  let idProduto = req.body.produto;
-  let numeroLote = req.body.numeroLote;
-  let dataFabricacao = req.body.dataFabricacao || null;
-  let dataVencimento = req.body.dataVencimento;
-  let estoque = req.body.estoque;
-
-  if (
-    idProduto > 0 &&
-    numeroLote.trim() != "" &&
-    dataVencimento != "" &&
-    estoque != "" &&
-    estoque > 0 &&
-    dataFabricacao != "" &&
-    dataVencimento > dataFabricacao
-  ) {
-    if (id > 0) {
-      let lote = new LoteModel(
-        id,
-        idProduto,
-        null,
-        numeroLote.trim(),
-        dataFabricacao,
-        dataVencimento,
-        estoque,
-      );
-      result = await lote.atualizarLote();
-    } else {
-      let lote = new LoteModel(
-        0,
-        idProduto,
-        null,
-        numeroLote.trim(),
-        dataFabricacao,
-        dataVencimento,
-        estoque,
-      );
-      result = await lote.cadastrarLote();
+        if (id > 0 && nome.length >= 2 && nome.length <= 50 && req.body.qtd !== "" && uni.length > 0 && uni.length <= 10) {
+            let infoNutri = new InformacoesNutricionaisModel(id, null, nome, qtd, uni, percVD);
+            let result = await infoNutri.atualizarNutri();
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
     }
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
 
-async rotaAlterarLote(req, res) {
-  let idLote = req.params.id;
-  let loteModel = new LoteModel();
-  let produtoModel = new ProdutoModel();
+    async rotaExcluirInfoNutri(req, res) {
+        let id = Number(req.body.id);
 
-  let lote = await loteModel.obterLoteId(idLote);
-  let produto = await produtoModel.obterProdutoId(lote.COD_PROD);
+        if (Number.isInteger(id) && id > 0) {
+            let infoNutri = new InformacoesNutricionaisModel();
+            let result = await infoNutri.excluirInfoNutri(id);
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
 
-  res.render("admin/alterarLote", { lote: lote, produto: produto });
-}
+    async rotaExcluirProduto(req, res) {
+        let id = req.body.id;
+        if (id && id > 0) {
+            let produto = new ProdutoModel();
+            let result = await produto.excluirProduto(id);
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
 
-async rotaExcluirLote(req, res) {
-  let idLote = req.body.id;
-  if (idLote > 0) {
-    let lote = new LoteModel();
-    let result = await lote.excluirLote(idLote);
+    async rotaAtualizarProduto(req, res) {
+        let id = req.params.id;
+        let produto = new ProdutoModel();
+        let marca = new MarcaModel();
+        let categoria = new CategoriaModel();
 
-    res.send({ ok: result });
-  } else {
-    res.send({ ok: false });
-  }
-}
+        let produtoId;
+        if (req.params.id != undefined && req.params.id != "") {
+            produtoId = await produto.obterProdutoId(id);
+        }
 
+        let listaMarcas = await marca.listarMarcas();
+        let listaCategorias = await categoria.listarCategoria();
+
+        res.render("admin/alterarProduto", {
+            marcas: listaMarcas,
+            categorias: listaCategorias,
+            produto: produtoId
+        });
+    }
+
+    async rotaGerenciarMarca(req, res) {
+        let marca = new MarcaModel();
+        let listaMarcas = await marca.listarMarcas();
+        res.render("admin/gerenciamentoMarca", { marcas: listaMarcas });
+    }
+
+    async rotaCadastrarMarca(req, res) {
+        let result;
+        if (req.body.nome != "") {
+            if (req.body.id > 0) {
+                let marca = new MarcaModel(req.body.id, req.body.nome);
+                result = await marca.atualizarMarca();
+            } else {
+                let marca = new MarcaModel(0, req.body.nome);
+                result = await marca.cadastrarMarca();
+            }
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
+    async rotaExcluirMarca(req, res) {
+        let idExclusao = req.body.id;
+        if (idExclusao && idExclusao > 0) {
+            let marca = new MarcaModel();
+            let result = await marca.excluirMarca(idExclusao);
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
+    async rotaAlterarMarca(req, res) {
+        let id = req.params.id;
+        let marca = new MarcaModel();
+        marca = await marca.obterMarcaId(id);
+        res.render("admin/alterarMarca", { marca });
+    }
+
+    async rotaGerenciamentoLote(req, res) {
+        let idProduto = req.params.id;
+        let produtoModel = new ProdutoModel();
+        let loteModel = new LoteModel();
+
+        let produto = await produtoModel.obterProdutoId(idProduto);
+        let lotes = await loteModel.listarLoteProduto(idProduto);
+
+        res.render("admin/gerenciamentoLote", {
+            produto: produto,
+            lotes: lotes
+        });
+    }
+
+    async rotaCadastrarLote(req, res) {
+        let result;
+        let id = req.body.id;
+        let idProduto = req.body.produto;
+        let numeroLote = req.body.numeroLote;
+        let dataFabricacao = req.body.dataFabricacao || null;
+        let dataVencimento = req.body.dataVencimento;
+        let estoque = req.body.estoque;
+
+        if (
+            idProduto > 0 &&
+            numeroLote.trim() != "" &&
+            dataVencimento != "" &&
+            estoque != "" &&
+            estoque > 0 &&
+            dataFabricacao != "" &&
+            dataVencimento > dataFabricacao
+        ) {
+            if (id > 0) {
+                let lote = new LoteModel(id, idProduto, null, numeroLote.trim(), dataFabricacao, dataVencimento, estoque);
+                result = await lote.atualizarLote();
+            } else {
+                let lote = new LoteModel(0, idProduto, null, numeroLote.trim(), dataFabricacao, dataVencimento, estoque);
+                result = await lote.cadastrarLote();
+            }
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
+
+    async rotaAlterarLote(req, res) {
+        let idLote = req.params.id;
+        let loteModel = new LoteModel();
+        let produtoModel = new ProdutoModel();
+
+        let lote = await loteModel.obterLoteId(idLote);
+        let produto = await produtoModel.obterProdutoId(lote.COD_PROD);
+
+        res.render("admin/alterarLote", { lote: lote, produto: produto });
+    }
+
+    async rotaExcluirLote(req, res) {
+        let idLote = req.body.id;
+        if (idLote > 0) {
+            let lote = new LoteModel();
+            let result = await lote.excluirLote(idLote);
+            res.send({ ok: result });
+        } else {
+            res.send({ ok: false });
+        }
+    }
 }
 
 module.exports = adminController;

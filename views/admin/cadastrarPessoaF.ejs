@@ -239,81 +239,63 @@
                             <% for(let i = 0; i < clientes.length; i++) { %>
 
                                 <tr>
-
-                                    <td>#<%= clientes[i].COD_CLI %></td>
+                                    <td>#<%= clientes[i].COD_PESSOA %></td>
 
                                     <td class="cliente-nome">
-                                        <%= clientes[i].NOME_CLI %>
+                                        <%= clientes[i].NOME_PF %>
                                     </td>
 
                                     <td>
-                                        <%= formatarCPF(clientes[i].CPF_CLI) %>
+                                        <%= formatarCPF(clientes[i].CPF_PF) %>
                                     </td>
 
                                     <td>
-                                        <%= clientes[i].RG_CLI %>
+                                        <%= clientes[i].RG_PF %>
                                     </td>
 
                                     <td>
-                                        <%= formatarData(clientes[i].DATA_NASC_CLI) %>
+                                        <%= formatarData(clientes[i].DATA_NASC_PF) %>
                                     </td>
 
                                     <td class="cliente-email">
-                                        <%= clientes[i].EMAIL_CLI %>
+                                        <%= clientes[i].EMAIL_PESSOA %>
                                     </td>
 
                                     <td>
-                                        <%= formatarTelefone(clientes[i].CELULAR_CLI) %>
+                                        <%= formatarTelefone(clientes[i].TELEFONE_PESSOA) %>
                                     </td>
 
-
                                     <td>
-
                                         <% if(clientes[i].STATUS_PLANO === "Ativo") { %>
-
                                             <span class="status status-ativo">
                                                 <i class="bi bi-check-circle-fill"></i> Ativo
                                             </span>
-
                                         <% } else if(clientes[i].STATUS_PLANO === "Pendente de plano") { %>
-
                                             <span class="status status-pendente">
                                                 <i class="bi bi-clock-fill"></i> Pendente de plano
                                             </span>
-
                                         <% } else if(clientes[i].STATUS_PLANO === "Vencido") { %>
-
                                             <span class="status status-vencido">
                                                 <i class="bi bi-exclamation-circle-fill"></i> Vencido
                                             </span>
-
                                         <% } else { %>
-
                                             <span class="status status-inativo">
                                                 <i class="bi bi-x-circle-fill"></i> Inativo
                                             </span>
-
                                         <% } %>
-
                                     </td>
 
-
                                     <td>
-
                                         <div class="acoes-cliente">
-
-                                            <a href="/admin/alterar-cliente/<%= clientes[i].COD_CLI %>" class="btn-acao btn-editar" data-id="<%= clientes[i].COD_CLI %>" title="Editar">
+                                            <a href="/admin/alterar-cliente/<%= clientes[i].COD_PESSOA %>" class="btn-acao btn-editar" data-id="<%= clientes[i].COD_PESSOA %>" title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
 
-                                            <button type="button" class="btn-acao btn-excluir" data-id="<%= clientes[i].COD_CLI %>" title="Excluir">
+                                            <button type="button" class="btn-acao btn-excluir" data-id="<%= clientes[i].COD_PESSOA %>" title="Excluir">
                                                 <i class="bi bi-trash"></i>
                                             </button>
-
                                         </div>
-
                                     </td>
-
                                 </tr>
 
                             <% } %>

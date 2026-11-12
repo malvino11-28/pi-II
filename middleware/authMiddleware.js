@@ -1,25 +1,19 @@
-const FuncionarioModel = require("../models/funcionarioModel");
+const PessoaFisicaModel = require("../models/pessoaFisicaModel");
 
 class AuthMiddleware {
-    
+
     async autenticarFuncionario(req, res, next) {
-        if(req.cookies.UserLogado) {
-
+        if (req.cookies.UserLogado) {
             let idUser = req.cookies.UserLogado;
-            let funcionario = new FuncionarioModel();
+            let funcionario = new PessoaFisicaModel();
             funcionario = await funcionario.obterPorId(idUser);
-            if(funcionario && funcionario.STATUS_FUN == 'Ativo') {
-                next();
-            
-            } else {
 
-                res.redirect("/login");
+            if (funcionario && funcionario.MATRICULA_FUN && funcionario.STATUS_FUN === "Ativo") {
+                return next();
             }
-
-        } else {
-
-            res.redirect("/login");
         }
+
+        return res.redirect("/login");
     }
 }
 

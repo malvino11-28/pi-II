@@ -73,53 +73,44 @@
                     </div>
 
                     <div class="row">
-
-                        <input id="inputId" type="hidden" value="<%= forAlter.COD_FOR %>">
+                        <input id="inputId" type="hidden" value="<%= forAlter.COD_PESSOA %>">
 
                         <div class="col-md-6 mb-3">
                             <label for="razaoFornecedor" class="form-label">
                                 <i class="bi bi-building"></i> Razão Social *
                             </label>
-
-                            <input value="<%= forAlter.RAZAO_FOR %>" type="text" class="form-control" id="razaoFornecedor" placeholder="Digite a razão social">
+                            <input value="<%= forAlter.RAZAO_PJ %>" type="text" class="form-control" id="razaoFornecedor" placeholder="Digite a razão social">
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="nomeFantasiaFornecedor" class="form-label">
                                 <i class="bi bi-shop"></i> Nome Fantasia
                             </label>
-
-                            <input value="<%= forAlter.NOME_FAN_FOR %>" type="text" class="form-control" id="nomeFantasiaFornecedor" placeholder="Digite o nome fantasia">
+                            <input value="<%= forAlter.NOME_FAN_PJ %>" type="text" class="form-control" id="nomeFantasiaFornecedor" placeholder="Digite o nome fantasia">
                         </div>
-
                     </div>
 
                     <div class="row">
-
                         <div class="col-md-4 mb-3">
                             <label for="cnpjFornecedor" class="form-label">
                                 <i class="bi bi-card-text"></i> CNPJ *
                             </label>
-
-                            <input value="<%= formatarCNPJ(forAlter.CNPJ_FOR) %>" type="text" class="form-control" id="cnpjFornecedor" placeholder="00.000.000/0000-00" maxlength="18">
+                            <input value="<%= formatarCNPJ(forAlter.CNPJ_PJ) %>" type="text" class="form-control" id="cnpjFornecedor" placeholder="00.000.000/0000-00" maxlength="18">
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <label for="telefoneFornecedor" class="form-label">
                                 <i class="bi bi-telephone"></i> Telefone *
                             </label>
-
-                            <input value="<%= formatarTelefone(forAlter.TELEFONE_FOR) %>" type="text" class="form-control" id="telefoneFornecedor" placeholder="(00) 00000-0000" maxlength="15">
+                            <input value="<%= formatarTelefone(forAlter.TELEFONE_PESSOA) %>" type="text" class="form-control" id="telefoneFornecedor" placeholder="(00) 00000-0000" maxlength="15">
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <label for="emailFornecedor" class="form-label">
                                 <i class="bi bi-envelope"></i> E-mail *
                             </label>
-
-                            <input value="<%= forAlter.EMAIL_FOR %>" type="email" class="form-control" id="emailFornecedor" placeholder="fornecedor@email.com">
+                            <input value="<%= forAlter.EMAIL_PESSOA %>" type="email" class="form-control" id="emailFornecedor" placeholder="fornecedor@email.com">
                         </div>
-
                     </div>
 
                 </div>

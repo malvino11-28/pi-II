@@ -49,6 +49,30 @@ class LoteModel {
         return result;
     }
 
+    async listarLotesDisponiveis(idProduto) {
+        let sql = "SELECT * FROM LOTE WHERE COD_PROD = ? AND EST_LOTE > 0 AND DATA_VENC_LOTE >= CURDATE() ORDER BY DATA_VENC_LOTE ASC";
+        let values = [idProduto];
+        let db = new Database();
+
+        let linhas = await db.ExecutaComando(sql, values);
+        return linhas;
+    }
+
+    async baixarEstoque(idLote, quantidade) {
+        let sql = "UPDATE LOTE SET EST_LOTE = EST_LOTE - ? WHERE COD_LOTE = ? AND EST_LOTE >= ?";
+        let values = [
+            quantidade,
+            idLote,
+            quantidade
+        ];
+
+        let db = new Database();
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+
+        return result;
+
+    }
+
     async obterLoteId(id) {
         let sql = "SELECT * FROM LOTE WHERE COD_LOTE = ? ";
         let values = [id];

@@ -4,6 +4,7 @@ const router = express.Router();
 
 const indexRoute = require("./indexRoute");
 const productRoute = require("./productRoute");
+const pedidoRoute = require("./pedidoRoute");
 const deliveryRoute = require("./deliveryRoute");
 const contactRoute = require("./contactRoute");
 const cartRoute = require("./cartRoute");
@@ -15,6 +16,7 @@ router.use("/", productRoute);
 router.use("/", deliveryRoute);
 router.use("/", contactRoute);
 router.use("/", cartRoute);
+router.use("/", pedidoRoute);
 router.use("/", authRoute);
 router.use("/", adminRoute);
 

@@ -78,13 +78,12 @@ class PedidoController {
 
         let codCliente = req.cookies.ClienteLogado; // alterar dependendo do nome do cookie
 
-        // if (!codCliente) { 
-        //     return res.send({
-        //         ok: false,
-        //         msg: "É necessário estar autenticado para realizar um pedido."
-        //     });
-        // }
-        // comentado para testar a criação de pedido
+        if (!codCliente) { 
+            return res.send({
+                ok: false,
+                msg: "É necessário estar autenticado para realizar um pedido."
+            });
+        }
 
         let pedido = new PedidoModel();
 

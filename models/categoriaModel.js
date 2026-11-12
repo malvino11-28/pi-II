@@ -23,6 +23,15 @@ class CategoriaModel {
     this.#NOME_CAT = nome;
   }
 
+  async cadastrarCategoria() {
+    let sql = "INSERT INTO CATEGORIA (COD_CAT, NOME_CAT) VALUES (?, ?)";
+    let values = [this.#COD_CAT, this.#NOME_CAT];
+    let db = new Database();
+    let result = await db.ExecutaComandoNonQuery(sql, values);
+
+    return result;
+  }
+
   async listarCategoria() {
     let sql = "SELECT * FROM CATEGORIA";
     let db = new Database();
@@ -36,10 +45,10 @@ class CategoriaModel {
     return lista;
   }
 
-  async cadastrarCategoria() {
-    let sql = "INSERT INTO CATEGORIA (COD_CAT, NOME_CAT) VALUES (?, ?)";
-    let values = [this.#COD_CAT, this.#NOME_CAT];
+  async atualizarCategoria() {
+    let sql = "UPDATE CATEGORIA SET NOME_CAT = ? WHERE COD_CAT = ?";
     let db = new Database();
+    let values = [this.#NOME_CAT, this.#COD_CAT];
     let result = await db.ExecutaComandoNonQuery(sql, values);
 
     return result;
@@ -50,15 +59,6 @@ class CategoriaModel {
     let value = [id];
     let db = new Database();
     let result = await db.ExecutaComandoNonQuery(sql, value);
-
-    return result;
-  }
-
-  async atualizarCategoria() {
-    let sql = "UPDATE CATEGORIA SET NOME_CAT = ? WHERE COD_CAT = ?";
-    let db = new Database();
-    let values = [this.#NOME_CAT, this.#COD_CAT];
-    let result = await db.ExecutaComandoNonQuery(sql, values);
 
     return result;
   }

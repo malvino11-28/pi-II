@@ -45,20 +45,20 @@ class MarcaModel {
     return lista;
   }
 
-  async excluirMarca(id) {
-    let sql = "DELETE FROM MARCA WHERE COD_MAR = ?";
-    let db = new Database();
-    let value = [id];
-    let result = await db.ExecutaComandoNonQuery(sql, value);
-
-    return result;
-  }
-
   async atualizarMarca() {
     let sql = "UPDATE MARCA SET NOME_MAR = ? WHERE COD_MAR = ?";
     let db = new Database();
     let values = [this.#NOME_MAR, this.#COD_MAR];
     let result = await db.ExecutaComandoNonQuery(sql, values);
+
+    return result;
+  }
+
+  async excluirMarca(id) {
+    let sql = "DELETE FROM MARCA WHERE COD_MAR = ?";
+    let db = new Database();
+    let value = [id];
+    let result = await db.ExecutaComandoNonQuery(sql, value);
 
     return result;
   }

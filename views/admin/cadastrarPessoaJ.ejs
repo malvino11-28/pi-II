@@ -174,46 +174,39 @@
                             <% for(let i = 0; i < fornecedores.length; i++) { %>
 
                                 <tr>
-
-                                    <td>#<%= fornecedores[i].COD_FOR %></td>
+                                    <td>#<%= fornecedores[i].COD_PESSOA %></td>
 
                                     <td>
-                                        <%= fornecedores[i].RAZAO_FOR %>
+                                        <%= fornecedores[i].RAZAO_PJ %>
                                     </td>
 
                                     <td>
-                                        <%= fornecedores[i].NOME_FAN_FOR || "-" %>
+                                        <%= fornecedores[i].NOME_FAN_PJ || "-" %>
                                     </td>
 
                                     <td>
-                                        <%= formatarCNPJ(fornecedores[i].CNPJ_FOR) %>
+                                        <%= formatarCNPJ(fornecedores[i].CNPJ_PJ) %>
                                     </td>
 
                                     <td>
-                                        <%= fornecedores[i].EMAIL_FOR %>
+                                        <%= fornecedores[i].EMAIL_PESSOA %>
                                     </td>
 
                                     <td>
-                                        <%= formatarTelefone(fornecedores[i].TELEFONE_FOR) %>
+                                        <%= formatarTelefone(fornecedores[i].TELEFONE_PESSOA) %>
                                     </td>
 
-
                                     <td>
-
                                         <div class="acoes-cliente">
-
-                                            <a href="/admin/alterar-fornecedores/<%= fornecedores[i].COD_FOR %>" class="btn-acao btn-editar" data-id="<%= fornecedores[i].COD_FOR %>" title="Editar">
+                                            <a href="/admin/alterar-fornecedores/<%= fornecedores[i].COD_PESSOA %>" class="btn-acao btn-editar" data-id="<%= fornecedores[i].COD_PESSOA %>" title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
 
-                                            <button type="button" class="btn-acao btn-excluir" data-id="<%= fornecedores[i].COD_FOR %>" title="Excluir">
+                                            <button type="button" class="btn-acao btn-excluir" data-id="<%= fornecedores[i].COD_PESSOA %>" title="Excluir">
                                                 <i class="bi bi-trash"></i>
                                             </button>
-
                                         </div>
-
                                     </td>
-
                                 </tr>
 
                             <% } %>

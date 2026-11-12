@@ -367,8 +367,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
+        let usuarioId = this.dataset.usuario;
+
         // enviando para o back
-        fetch("/pedido/salvar", {
+        fetch(`/pedido/salvar/${usuarioId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -381,7 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return res.json();
         }).then(resBody => {
             if (resBody.ok) {
-                alert(`Pedido nº ${resBody.codPedido} realizado com sucesso!\nTotal: ${formatarMoeda(resBody.total)}`);
+                alert(`Pedido nº ${resBody.codPedido} realizado com sucesso!\nTotal: ${formatarValor(resBody.total)}`);
 
                 localStorage.removeItem("carrinho");
                 listaCarrinho = [];

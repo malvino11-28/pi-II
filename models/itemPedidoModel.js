@@ -6,7 +6,6 @@ class ItemPedidoModel {
     #COD_PED;
     #COD_PROD;
     #QTD_PROD;
-    #COD_PAG;
     #VALOR_UNI;
 
     get COD_PED() { return this.#COD_PED; }
@@ -21,11 +20,10 @@ class ItemPedidoModel {
     get VALOR_UNI() { return this.#VALOR_UNI; }
     set VALOR_UNI(v) { this.#VALOR_UNI = v; }
 
-    constructor(idPed, idProd, qtdProd, idPag, valorUni) {
+    constructor(idPed, idProd, qtdProd, valorUni) {
         this.#COD_PED = idPed;
         this.#COD_PROD = idProd;
         this.#QTD_PROD = qtdProd;
-        this.#COD_PAG = idPag;
         this.#VALOR_UNI = valorUni;
     }
 

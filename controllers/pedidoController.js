@@ -33,7 +33,7 @@ class PedidoController {
 
         for (let i = 0; i < itens.length; i++) {
             let produtoId = Number(itens[i].id);
-            let qtd = Number(itens[i].qtd);
+            let qtd = Number(itens[i].quantidade);
             
             let produtoModel = new ProdutoModel();
 
@@ -76,7 +76,7 @@ class PedidoController {
 
         valorTotal = Number(valorTotal.toFixed(2));
 
-        let codCliente = req.cookies.ClienteLogado; // alterar dependendo do nome do cookie
+        let codCliente = req.params.id; // alterar dependendo do nome do cookie
 
         if (!codCliente) { 
             return res.send({
@@ -113,7 +113,7 @@ class PedidoController {
                 produto.valorUnitario
             );
 
-            let itemGravado = await itemPedido.gravar();
+            let itemGravado = await itemPedido.salvarItemPedido();
 
             if (!itemGravado) {
                 return res.send({
@@ -126,7 +126,7 @@ class PedidoController {
 
             let loteModel = new LoteModel();
 
-            for (let j = 0; j < produto.lotes.length; j++) {
+            for (let j = 0; j < produto.lotes.length && qtdRestante > 0; j++) {
                 if (qtdRestante <= 0) {
                     return;
                 } else {
@@ -168,12 +168,12 @@ class PedidoController {
                         qtdRestante = Number((qtdRestante - qtdUtilizada).toFixed(2));
                     }
                 }
-                if (qtdRestante > 0) {
+            }
+            if (qtdRestante > 0) {
                     return res.send({
                         ok: false,
                         msg: "Não foi possível separar toda a quantidade solicitada."
                     });
-                }
             }
         }
         return res.send({

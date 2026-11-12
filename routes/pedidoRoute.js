@@ -5,6 +5,6 @@ const router = express.Router();
 
 let controller = new PedidoController();
 
-router.post("/pedido/salvar", controller.gravar);
+router.post("/pedido/salvar", controller.rotaSalvarPedido);
 
 module.exports = router;

@@ -21,12 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return Number(valor).toFixed(2).replace('.', ',');
     }
 
-    // function formatarQuantidade(valor) {
-    //     return Number(valor).toLocaleString("pt-BR", {
-    //         maximumFractionDigits: 2
-    //     });
-    // }
-
     function obterPasso(item) {
          if (["KG", "L"].includes(item.unidade)) {
              return 0.01;
@@ -38,6 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnAdicionar) {
         btnAdicionar.addEventListener("click", adicionarItem);
+    }
+
+    const btnFinalizar = document.querySelector("#btnFinalizarCompra");
+
+    if (btnFinalizar) {
+        btnFinalizar.addEventListener("click", finalizarCompra);
     }
 
     async function adicionarItem() {
@@ -343,4 +343,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     exibirCarrinho();
     atualizarContador();
+
+    async function finalizarCompra() {
+        const formaPagamento = document.querySelector("#formaPagamento");
+
+        if (!formaPagamento.value) {
+            alert("Selecione uma forma de pagamento.");
+            return;
+        }
+
+        if (listaCarrinho.length === 0) {
+            alert("Seu carrinho está vazio.");
+            return;
+        }
+
+        // preparando os produtos para envio
+        let itens = [];
+
+        for (let i = 0; i < listaCarrinho.length; i++) {
+            itens.push({
+                id: listaCarrinho[i].id,
+                quantidade: Number(listaCarrinho[i].quantidade)
+            });
+        }
+
+        // enviando para o back
+        fetch("/pedido/salvar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                itens: itens,
+                codPag: formaPagamento.value
+            })
+        }).then(res => {
+            return res.json();
+        }).then(resBody => {
+            if (resBody.ok) {
+                alert(`Pedido nº ${resBody.codPedido} realizado com sucesso!\nTotal: ${formatarMoeda(resBody.total)}`);
+
+                localStorage.removeItem("carrinho");
+                listaCarrinho = [];
+                atualizarContador();
+                window.location.href = "/";
+            } else {
+                alert(resBody.msg || "Erro ao realizar pedido.");
+            }
+        });
+    }
 });

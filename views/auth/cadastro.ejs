@@ -16,6 +16,7 @@
 
   <!-- CSS Files -->
   <link id="pagestyle" href="/style/argon-dashboard.css?v=2.1.0" rel="stylesheet"/>
+  <script src="/js/cadastro.js"></script>
 
 </head>
 
@@ -49,7 +50,7 @@
               <h5 class="text-white">Cadastre-se aqui</h5>
             </div>
             <div class="card-body px-4 pt-4">
-              <form action="/login" method="POST">
+              <form action="/cadastrar" method="POST">
                 <!-- Nome -->
                 <div class="mb-3">
                   <input type="text" class="form-control" id="nomeCli" placeholder="Digite o nome completo">
@@ -72,7 +73,7 @@
 
                 <!-- E-mail -->
                 <div class="mb-3">
-                  <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                  <input type="email" class="form-control" id="emailCli" placeholder="Email" aria-label="Email">
                 </div>
 
                 <!-- Telefone -->
@@ -87,7 +88,7 @@
 
                 <!-- Confirmação -->
                 <div class="mb-3">
-                  <input type="password" class="form-control" id="senhaCli" placeholder="Digite a senha novamente">
+                  <input type="password" class="form-control" id="senhaConfirmacaoCli" placeholder="Digite a senha novamente">
                 </div>
 
                 <div class="form-check form-check-info text-start">
@@ -97,7 +98,7 @@
                   </label>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-lg btn-primary w-100 mt-4 mb-0">Cadastrar</button>
+                  <button type="submit" id="btnCadastrar" class="btn btn-lg btn-primary w-100 mt-4 mb-0">Cadastrar</button>
                 </div>
                 <p class="text-sm mt-3 mb-0">Já possui uma conta? <a href="/login" style="color: #440a0a;" class="font-weight-bolder">Faça Login</a></p>
               </form>

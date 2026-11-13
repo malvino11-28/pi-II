@@ -15,6 +15,21 @@ class AuthMiddleware {
 
         return res.redirect("/login");
     }
+
+    async autenticarCliente(req, res, next) {
+        if (req.cookies.UserLogado) {
+            let idUser = req.cookies.UserLogado;
+            let cliente = new PessoaFisicaModel();
+            cliente = await cliente.obterPorId(idUser);
+
+            if (cliente && !cliente.MATRICULA_FUN) {
+                return next();
+            }
+        }
+
+        return res.redirect("/login");
+    }
+    
 }
 
 module.exports = AuthMiddleware;

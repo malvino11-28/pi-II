@@ -72,7 +72,7 @@ class ItemPedidoModel {
         let sql = "DELETE FROM ITEM_PEDIDO WHERE COD_PED = ?";
         let value = [id];
 
-        let result = await db.ExecutaComando(sql, value);
+        let result = await db.ExecutaComandoNonQuery(sql, value);
         return result;
     }
 }

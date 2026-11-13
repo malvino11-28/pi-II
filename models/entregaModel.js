@@ -44,10 +44,9 @@ class EntregaModel {
     }
 
     async listarEntregas() {
-        let sql = "SELECT * FROM ENTREGA WHERE COD_END = ?";
-        let values = [this.#COD_END];
+        let sql = "SELECT * FROM ENTREGA";
 
-        let rows = await db.ExecutaComando(sql, values);
+        let rows = await db.ExecutaComando(sql);
         let lista = [];
         for (let i = 0; i<rows.length;i++) {
             let row = rows[i];

@@ -24,10 +24,9 @@ class ItemPromoModel {
     }
 
     async listarItemPromo() {
-        let sql = "SELECT * FROM ITEM_PROMO WHERE COD_LOTE = ?";
-        let value = [this.#COD_LOTE];
+        let sql = "SELECT * FROM ITEM_PROMO";
 
-        let rows = await db.ExecutaComando(sql, value);
+        let rows = await db.ExecutaComando(sql);
         let lista = [];
 
         for (let i = 0;i<rows.length;i++) {

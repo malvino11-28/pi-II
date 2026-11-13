@@ -40,15 +40,6 @@ class LoteModel {
     get EST_LOTE() { return this.#EST_LOTE; }
     set EST_LOTE(v) { this.#EST_LOTE = v; }
 
-    async listarLoteProduto(idProduto) {
-        let sql = "SELECT * FROM LOTE WHERE COD_PROD = ? ";
-        let values = [idProduto];
-        let db = new Database();
-        let result = await db.ExecutaComando(sql, values);
-
-        return result;
-    }
-
     async listarLotesDisponiveis(idProduto) {
         let sql = "SELECT * FROM LOTE WHERE COD_PROD = ? AND EST_LOTE > 0 AND DATA_VENC_LOTE >= CURDATE() ORDER BY DATA_VENC_LOTE ASC";
         let values = [idProduto];

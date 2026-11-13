@@ -1,6 +1,6 @@
 const Database = require("../database/database");
 
-class DescarteModel {
+class DescarteModel { //
     #COD_DESC;
     #COD_LOTE;
     #DATA_DESC;

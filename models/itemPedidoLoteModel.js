@@ -24,11 +24,11 @@ class ItemPedidoLoteModel {
         this.#COD_PED = idPed;
         this.#COD_PROD = idProd;
         this.#COD_LOTE = idLote;
-        this.#QTD_LOTE = qtdProd;
+        this.#QTD_LOTE = qtdLote;
     }
 
     async salvarItemPedidoLote() {
-        let sql = "INSERT INTO ITEM_PEDIDO (COD_PED, COD_PROD, QTD_LOTE, COD_LOTE) VALUES (?, ?, ?, ?)";
+        let sql = "INSERT INTO ITEM_PEDIDO_LOTE (COD_PED, COD_PROD, QTD_LOTE, COD_LOTE) VALUES (?, ?, ?, ?)";
 
         let values = [
             this.#COD_PED,

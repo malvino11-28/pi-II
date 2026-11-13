@@ -34,8 +34,8 @@ class PedidoModel {
 
     async salvarPedido() {
         let sql = `INSERT INTO PEDIDO (COD_STATUS, COD_CLI, COD_PROMO, COD_PAG, DATA_PED, TOTAL_PED) 
-            VALUES ((SELECT COD_STATUS FROM STATUS_PEDIDO WHERE NOME_STATUS = ?), ?, ?, ?, CURDATE(), ?)
-            `;
+            VALUES ((SELECT COD_STATUS FROM STATUS_PEDIDO WHERE NOME_STATUS = ?), ?, ?, ?, CURDATE(), ?) 
+            `; // tabela status será removida, COD_STATUS vai virar STATUS_PED do tipo enum
         
         let values = ["Pendente", 
             this.#COD_CLI,

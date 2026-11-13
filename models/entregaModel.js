@@ -20,6 +20,13 @@ class EntregaModel {
     get STATUS_ENT() { return this.#STATUS_ENT; }
     set STATUS_ENT(v) { this.#STATUS_ENT = v; }
 
+    constructor(codEnt, codEnd, data, status) {
+        this.#COD_ENT = codEnt;
+        this.#COD_END = codEnd;
+        this.#DATA_ENT = data;
+        this.#STATUS_ENT = status;
+    }
+
     async cadastrarEntrega() {
         let sql = "INSERT INTO ENTREGA (COD_END, DATA_ENT, STATUS_ENT) VALUES (?, ?, ?)";
         let values = [this.#COD_END, this.#DATA_ENT, this.#STATUS_ENT];
@@ -36,7 +43,7 @@ class EntregaModel {
         return result;
     }
 
-    async listarEntrega() {
+    async listarEntregas() {
         let sql = "SELECT * FROM ENTREGA WHERE COD_END = ?";
         let values = [this.#COD_END];
 

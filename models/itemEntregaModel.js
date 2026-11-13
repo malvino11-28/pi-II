@@ -15,6 +15,12 @@ class ItemEntregaModel {
 
     get COD_ENT() { return this.#COD_ENT; }
     set COD_ENT(v) { this.#COD_ENT = v; }
+
+    constructor(codProd, codLote, codEnt) {
+        this.#COD_PROD = codProd;
+        this.#COD_LOTE = codLote;
+        this.#COD_ENT = codEnt;
+    }
 }
 
 module.exports = ItemEntregaModel;

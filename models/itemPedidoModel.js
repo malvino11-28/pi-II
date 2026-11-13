@@ -45,15 +45,35 @@ class ItemPedidoModel {
     }
 
     async listarItemPedido() {
+        let sql = "SELECT * FROM ITEM_PEDIDO WHERE = ?";
+        let value = [this.#COD_PED];
 
+        let rows = await db.ExecutaComando(sql, value);
+        let lista = [];
+
+        for (let i = 0; i<rows.length;i++) {
+            let row = rows[i];
+            let itemPedido = new ItemPedidoModel(row[""], row[""], row[""], row[""]);
+            lista.push(itemPedido);
+        }
+        
+        return lista;
     }
 
     async atualizarItemPedido() {
+        let sql = "UPDATE ITEM_PEDIDO SET COD_PROD = ?, QTD_PROD = ? WHERE COD_PED = ?";
+        let values = [this.#COD_PROD, this.#QTD_PROD, this.#COD_PED];
 
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+        return result;
     }
 
-    async excluirItemPedido() {
+    async excluirItemPedido(id) {
+        let sql = "DELETE FROM ITEM_PEDIDO WHERE COD_PED = ?";
+        let value = [id];
 
+        let result = await db.ExecutaComando(sql, value);
+        return result;
     }
 }
 

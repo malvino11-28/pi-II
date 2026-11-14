@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     confirmacaoCampo.addEventListener("input", function () {
-        if (validarSenha(confirmacaoCampo.value)) {
+        if (validarSenha(confirmacaoCampo.value) && senhaCampo.value === confirmacaoCampo.value) {
             confirmacaoCampo.classList.remove("is-invalid");
             confirmacaoCampo.classList.add("is-valid");
         } else {
@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let emailValido = validarEmail(email.value);
         let celularValido = validarTelefone(cel.value);
         let senhaValida = validarSenha(senha.value);
-        let confirmacaoValida = validarSenha(confirmacao.value);
+        let confirmacaoValida = senhaValida && senha.value === confirmacao.value;
 
         nome.classList.toggle("is-valid", nomeValido);
         nome.classList.toggle("is-invalid", !nomeValido);
@@ -333,11 +333,15 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(function (corpoResp) {
             if (corpoResp.ok) {
-                alert("Cadastro realizado com Sucesso!");
+                alert("Cadastro realizado com sucesso!");
                 window.location.href = "/login";
             } else {
-                alert("Erro ao cadastrar.");
+                if (corpoResp.erros && corpoResp.erros.length > 0) {
+                    alert(corpoResp.erros.join("\n"));
+                } else {
+                    alert("Erro ao cadastrar.");
+                }
             }
-        });
+        })
     }
-})
+});    

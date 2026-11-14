@@ -1,9 +1,21 @@
 const PessoaFisicaModel = require("../models/pessoaFisicaModel");
+const {
+    somenteNumeros,
+    validarCPF,
+    validarNomeCompleto,
+    validarEmail,
+    validarTelefone,
+    validarSenha,
+    validarDataNascimento
+} = require("../utils/validacoes");
 
 class authController {
 
     async rotaLoginView(req, res) {
-        res.render("auth/login");
+        res.render("auth/login", {
+            mensagem: "",
+            tipo_usuario: "cliente"
+        });
     }
 
     async rotaLogin(req, res) {
@@ -28,11 +40,11 @@ class authController {
 
             let msg = "E-mail ou senha inválidos!";
             let cliente = new PessoaFisicaModel();
-            cliente = await cliente.validar(user, senha, user_tipo);
+            cliente = await cliente.validar(user.trim().toLowerCase(), senha, user_tipo);
 
             if (cliente) {
                 res.cookie("UserLogado", cliente.COD_PESSOA);
-                return res.redirect("home");
+                return res.redirect("/carrinho");
             }
 
             return res.render("auth/login", { mensagem: msg, tipo_usuario: user_tipo });
@@ -74,16 +86,14 @@ class authController {
             if (!validarTelefone(req.body.cel)) {
                 erros.push("Celular inválido.");
             }
-
-            if (!req.body.id || req.body.senha) {
-                if (!validarSenha(req.body.senha)) {
-                    erros.push("A senha deve ter ao menos 8 caracteres.");
-                }
-                if (req.body.senha !== req.body.confirmacao) {
-                    erros.push("O campo de senha e confirmação de senha estão diferentes.");
-                }
+            
+            if (!validarSenha(req.body.senha)) {
+                erros.push("A senha deve ter ao menos 8 caracteres.");
             }
-
+            if (req.body.senha !== req.body.confirmacao) {
+                erros.push("O campo de senha e confirmação de senha estão diferentes.");
+            }
+            
             if (erros.length > 0) {
                 return res.status(400).send({
                     ok: false,

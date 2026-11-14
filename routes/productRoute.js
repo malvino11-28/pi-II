@@ -13,4 +13,5 @@ router.get("/produtos/churrasqueira", controller.rotaChurrasqueira);
 router.get("/produtos/utensilios", controller.rotaUtensilios);
 router.get("/produtos/ofertas", controller.rotaOfertas);
 
+
 module.exports = router;

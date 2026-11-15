@@ -49,7 +49,7 @@ class PedidoModel {
         let values = [
             this.#COD_CLI,
             this.#COD_PROMO,
-            this.#STATUS_PED,
+            "Pendente",
             this.#COD_RECEB,
             this.#DATA_PED,
             this.#TOTAL_PED

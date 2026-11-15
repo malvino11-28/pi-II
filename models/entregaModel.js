@@ -12,6 +12,9 @@ class EntregaModel {
     get COD_ENT() { return this.#COD_ENT; }
     set COD_ENT(v) { this.#COD_ENT = v; }
 
+    get COD_PED() { return this.#COD_PED; }
+    set COD_PED(v) { this.#COD_PED = v; }
+
     get COD_END() { return this.#COD_END; }
     set COD_END(v) { this.#COD_END = v; }
 
@@ -21,16 +24,17 @@ class EntregaModel {
     get STATUS_ENT() { return this.#STATUS_ENT; }
     set STATUS_ENT(v) { this.#STATUS_ENT = v; }
 
-    constructor(codEnt, codEnd, data, status) {
+    constructor(codEnt, codPed, codEnd, data, status) {
         this.#COD_ENT = codEnt;
+        this.#COD_PED = codPed;
         this.#COD_END = codEnd;
         this.#DATA_ENT = data;
         this.#STATUS_ENT = status;
     }
 
     async cadastrarEntrega() {
-        let sql = "INSERT INTO ENTREGA (COD_END, DATA_ENT, STATUS_ENT) VALUES (?, ?, ?)";
-        let values = [this.#COD_END, this.#DATA_ENT, this.#STATUS_ENT];
+        let sql = "INSERT INTO ENTREGA (COD_PED, COD_END, DATA_ENT, STATUS_ENT) VALUES (?, ?, ?, ?)";
+        let values = [this.#COD_PED, this.#COD_END, this.#DATA_ENT, this.#STATUS_ENT];
 
         let result = await db.ExecutaComandoNonQuery(sql, values);
         return result;
@@ -51,7 +55,7 @@ class EntregaModel {
         let lista = [];
         for (let i = 0; i<rows.length;i++) {
             let row = rows[i];
-            let entrega = new EntregaModel(row["COD_ENT"], row["COD_END"], row["DATA_ENT"], row["STATUS_ENT"])
+            let entrega = new EntregaModel(row["COD_ENT"], row["COD_PED"], row["COD_END"], row["DATA_ENT"], row["STATUS_ENT"])
             lista.push(entrega);
         }
 

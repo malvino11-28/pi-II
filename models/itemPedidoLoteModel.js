@@ -2,7 +2,7 @@ const Database = require("../database/database");
 
 const db = new Database();
 
-class ItemPedidoLoteModel {
+class ItemPedidoLoteModel { 
     #COD_PED;
     #COD_PROD;
     #COD_LOTE;

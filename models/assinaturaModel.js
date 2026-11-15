@@ -1,6 +1,6 @@
 const Database = require("../database/database");
 
-class AssinaturaModel {
+class AssinaturaModel { // cod_ass
     #COD_PESSOA;
     #COD_PLANO;
     #STATUS_ASS;

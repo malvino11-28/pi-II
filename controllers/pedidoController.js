@@ -3,7 +3,7 @@ const ItemPedidoModel = require("../models/itemPedidoModel");
 const ItemPedidoLoteModel = require("../models/itemPedidoLoteModel");
 const ProdutoModel = require("../models/produtoModel");
 const LoteModel = require("../models/loteModel");
-const FormaPagamentoModel = require("../models/formaPagamentoModel");
+const FormaRecebimentoModel = require("../models/FormaRecebimentoModel");
 
 class PedidoController {
 
@@ -18,8 +18,8 @@ class PedidoController {
             });
         }
 
-        let formaPagamento = new FormaPagamentoModel();
-        let pagamento = await formaPagamento.obterPorId(codPag);
+        let FormaRecebimento = new FormaRecebimentoModel();
+        let pagamento = await FormaRecebimento.obterPorId(codPag);
 
         if (!pagamento) {
             return res.send({
@@ -89,7 +89,7 @@ class PedidoController {
 
         pedido.COD_CLI = codCliente;
         pedido.COD_PROMO = null;
-        pedido.COD_PAG = codPag;
+        pedido.COD_RECEB = codPag;
         pedido.TOTAL_PED = valorTotal;
 
         let resultadoPedido = await pedido.salvarPedido();

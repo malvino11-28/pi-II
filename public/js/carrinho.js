@@ -345,9 +345,9 @@ document.addEventListener("DOMContentLoaded", () => {
     atualizarContador();
 
     async function finalizarCompra() {
-        const formaPagamento = document.querySelector("#formaPagamento");
+        const FormaRecebimento = document.querySelector("#FormaRecebimento");
 
-        if (!formaPagamento.value) {
+        if (!FormaRecebimento.value) {
             alert("Selecione uma forma de pagamento.");
             return;
         }
@@ -375,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({
                 itens: itens,
-                codPag: formaPagamento.value
+                codPag: FormaRecebimento.value
             })
         }).then(res => {
             return res.json();

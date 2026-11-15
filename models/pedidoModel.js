@@ -9,7 +9,7 @@ class PedidoModel {
     #COD_PROMO;
     #STATUS_PED;
     #DATA_PED;
-    #COD_PAG;
+    #COD_RECEB;
     #TOTAL_PED;
 
     get COD_PED() { return this.#COD_PED; }
@@ -27,8 +27,8 @@ class PedidoModel {
     get DATA_PED() { return this.#DATA_PED; }
     set DATA_PED(v) { this.#DATA_PED = v; }
 
-    get COD_PAG() { return this.#COD_PAG; }
-    set COD_PAG(v) { this.#COD_PAG = v; }
+    get COD_RECEB() { return this.#COD_RECEB; }
+    set COD_RECEB(v) { this.#COD_RECEB = v; }
 
     get TOTAL_PED() { return this.#TOTAL_PED; }
     set TOTAL_PED(v) { this.#TOTAL_PED = v; }
@@ -39,18 +39,18 @@ class PedidoModel {
         this.#COD_PROMO = idPromo;
         this.#STATUS_PED = status;
         this.#DATA_PED = data;
-        this.#COD_PAG = idPag;
+        this.#COD_RECEB = idPag;
         this.#TOTAL_PED = total;
     }
 
     async salvarPedido() {
-        let sql = "INSERT INTO PEDIDO (COD_CLI, COD_PROMO, STATUS_PED, COD_PAG, DATA_PED, TOTAL_PED) VALUES (?, ?, ?, ?, ?, ?)";
+        let sql = "INSERT INTO PEDIDO (COD_CLI, COD_PROMO, STATUS_PED, COD_RECEB, DATA_PED, TOTAL_PED) VALUES (?, ?, ?, ?, ?, ?)";
 
         let values = [
             this.#COD_CLI,
             this.#COD_PROMO,
             this.#STATUS_PED,
-            this.#COD_PAG,
+            this.#COD_RECEB,
             this.#DATA_PED,
             this.#TOTAL_PED
         ];
@@ -75,7 +75,7 @@ class PedidoModel {
                 row["COD_PROMO"],
                 row["STATUS_PED"],
                 row["DATA_PED"],
-                row["COD_PAG"],
+                row["COD_RECEB"],
                 row["TOTAL_PED"]
             );
 
@@ -101,7 +101,7 @@ class PedidoModel {
                 row["COD_PROMO"],
                 row["STATUS_PED"],
                 row["DATA_PED"],
-                row["COD_PAG"],
+                row["COD_RECEB"],
                 row["TOTAL_PED"]
             );
             lista.push(pedido);
@@ -115,7 +115,7 @@ class PedidoModel {
             COD_CLI = ?,
             COD_PROMO = ?,
             STATUS_PED = ?,
-            COD_PAG = ?,
+            COD_RECEB = ?,
             DATA_PED = ?,
             TOTAL_PED = ?
             WHERE COD_PED = ?`;
@@ -124,7 +124,7 @@ class PedidoModel {
             this.#COD_CLI,
             this.#COD_PROMO,
             this.#STATUS_PED,
-            this.#COD_PAG,
+            this.#COD_RECEB,
             this.#DATA_PED,
             this.#TOTAL_PED,
             this.#COD_PED
@@ -140,6 +140,10 @@ class PedidoModel {
 
         let result = await db.ExecutaComandoNonQuery(sql, values);
         return result;
+    }
+
+    async obterPorId(id) {
+
     }
 }
 

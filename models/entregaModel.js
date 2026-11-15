@@ -4,6 +4,7 @@ const db = new Database();
 
 class EntregaModel {
     #COD_ENT;
+    #COD_PED; 
     #COD_END;
     #DATA_ENT;
     #STATUS_ENT;

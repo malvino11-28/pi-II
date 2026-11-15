@@ -147,19 +147,19 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="formaPagamento" class="form-label">
+                        <label for="FormaRecebimento" class="form-label">
                             Forma de pagamento
                         </label>
 
                         <select
-                            id="formaPagamento"
+                            id="FormaRecebimento"
                             class="form-select"
                             required
                         >
                             <option value="">Selecione uma forma de pagamento</option>
                             <% for (let i = 0; i < formasPagamento.length; i++) { %>
-                                <option value="<%= formasPagamento[i].COD_PAG %>">
-                                    <%= formasPagamento[i].NOME_PAG %>
+                                <option value="<%= formasPagamento[i].COD_RECEB %>">
+                                    <%= formasPagamento[i].NOME_RECEB %>
                                 </option>
                             <% } %>
                         </select>

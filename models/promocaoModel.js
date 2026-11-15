@@ -2,6 +2,7 @@ const Database = require("../database/database");
 
 class PromocaoModel {
     #COD_PROMO;
+    #COD_PESSOA; // pessoa fisica, saber o funcionario responsável pelo cadastro da promossão
     #NOME_PROMO;
     #TIPO_PROMO;
     #DESCONT_MON_PROMO;

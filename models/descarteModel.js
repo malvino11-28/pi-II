@@ -2,6 +2,7 @@ const Database = require("../database/database");
 
 class DescarteModel { //
     #COD_DESC;
+    #COD_PESSOA; // saber o funcionário responsável pelo descarte
     #COD_LOTE;
     #DATA_DESC;
     #QTD_DESC;

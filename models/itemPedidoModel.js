@@ -6,7 +6,7 @@ class ItemPedidoModel {
     #COD_PED;
     #COD_PROD;
     #QTD_PROD;
-    #COD_PAG;
+    #COD_RECEB;
     #VALOR_UNI_PROD;
     // #SUBTOTAL_PED 
 
@@ -26,7 +26,7 @@ class ItemPedidoModel {
         this.#COD_PED = idPed;
         this.#COD_PROD = idProd;
         this.#QTD_PROD = qtdProd;
-        this.#COD_PAG = idPag; // remover
+        this.#COD_RECEB = idPag; // remover
         this.#VALOR_UNI_PROD = valorUni;
     }
 

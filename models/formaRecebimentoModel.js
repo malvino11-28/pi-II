@@ -2,24 +2,24 @@ const Database = require("../database/database");
 
 const db = new Database;
 
-class FormaPagamentoModel {
-    #COD_PAG;
-    #NOME_PAG;
+class FormaRecebimentoModel {
+    #COD_RECEB;
+    #NOME_RECEB;
 
     constructor(idPag, nomePag) {
-        this.#COD_PAG = idPag;
-        this.#NOME_PAG = nomePag;
+        this.#COD_RECEB = idPag;
+        this.#NOME_RECEB = nomePag;
     }
 
-    async listarFormasPagamento() {
-        let sql = "SELECT * FROM FORMA_PAGAMENTO ORDER BY COD_PAG";
+    async listarFormas() {
+        let sql = "SELECT * FROM FORMA_PAGAMENTO ORDER BY COD_RECEB";
 
         let linhas = await db.ExecutaComando(sql);
         return linhas;
     }
 
     async obterPorId(id) {
-        let sql = "SELECT * FROM FORMA_PAGAMENTO WHERE COD_PAG = ?";
+        let sql = "SELECT * FROM FORMA_PAGAMENTO WHERE COD_RECEB = ?";
         let values = [id];
 
         let linhas = await db.ExecutaComando(sql, values);
@@ -30,4 +30,4 @@ class FormaPagamentoModel {
     }
 }
 
-module.exports = FormaPagamentoModel;
+module.exports = FormaRecebimentoModel;

@@ -1,4 +1,4 @@
-const FormaPagamentoModel = require("../models/formaPagamentoModel");
+const FormaRecebimentoModel = require("../models/FormaRecebimentoModel");
 
 class cartController {
 
@@ -6,7 +6,7 @@ class cartController {
         let formaPagamento = new FormaPagamentoModel();
         let codCliente = req.cookies.UserLogado;
 
-        let formas = await formaPagamento.listarFormasPagamento();
+        let formas = await FormaRecebimento.listarFormasPagamento();
         res.render("cart/carrinhoFinal", {
             formasPagamento: formas,
             usuario: codCliente

@@ -2,6 +2,7 @@ const Database = require("../database/database");
 
 class PromocaoModel {
     #COD_PROMO;
+    #COD_PESSOA; // pessoa fisica, saber o funcionario responsável pelo cadastro da promossão
     #NOME_PROMO;
     #TIPO_PROMO;
     #DESCONT_MON_PROMO;
@@ -9,8 +10,9 @@ class PromocaoModel {
     #DATA_INIC_PROMO;
     #DATA_FIM_PROMO;
 
-    constructor(id, nome, tipo, descontoMonetario, descontoPercentual, dataInicio, dataFim) {
+    constructor(id, idFun, nome, tipo, descontoMonetario, descontoPercentual, dataInicio, dataFim) {
         this.#COD_PROMO = id;
+        this.#COD_PESSOA = idFun;
         this.#NOME_PROMO = nome;
         this.#TIPO_PROMO = tipo;
         this.#DESCONT_MON_PROMO = descontoMonetario;
@@ -21,6 +23,9 @@ class PromocaoModel {
 
     get COD_PROMO() { return this.#COD_PROMO; }
     set COD_PROMO(v) { this.#COD_PROMO = v; }
+
+    get COD_PESSOA() { return this.#COD_PESSOA; }
+    set COD_PESSOA(v) { this.#COD_PESSOA = v; }
 
     get NOME_PROMO() { return this.#NOME_PROMO; }
     set NOME_PROMO(v) { this.#NOME_PROMO = v; }
@@ -41,8 +46,8 @@ class PromocaoModel {
     set DATA_FIM_PROMO(v) { this.#DATA_FIM_PROMO = v; }
 
     async cadastrarPromocao() {
-        let sql = "INSERT INTO PROMOCAO (NOME_PROMO, TIPO_PROMO, DESCONT_MON_PROMO, DESCONT_PER_PROMO, DATA_INIC_PROMO, DATA_FIM_PROMO) VALUES (?, ?, ?, ?, ?, ?)";
-        let values = [this.#NOME_PROMO, this.#TIPO_PROMO, this.#DESCONT_MON_PROMO, this.#DESCONT_PER_PROMO, this.#DATA_INIC_PROMO, this.#DATA_FIM_PROMO];
+        let sql = "INSERT INTO PROMOCAO (COD_PESSOA, NOME_PROMO, TIPO_PROMO, DESCONT_MON_PROMO, DESCONT_PER_PROMO, DATA_INIC_PROMO, DATA_FIM_PROMO) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        let values = [this.#COD_PESSOA, this.#NOME_PROMO, this.#TIPO_PROMO, this.#DESCONT_MON_PROMO, this.#DESCONT_PER_PROMO, this.#DATA_INIC_PROMO, this.#DATA_FIM_PROMO];
         let db = new Database();
         let result = await db.ExecutaComandoNonQuery(sql, values);
 
@@ -57,7 +62,7 @@ class PromocaoModel {
 
         for (let i = 0; i < linhas.length; i++) {
             let linha = linhas[i];
-            let promocao = new PromocaoModel(linha["COD_PROMO"], linha["NOME_PROMO"], linha["TIPO_PROMO"], linha["DESCONT_MON_PROMO"], linha["DESCONT_PER_PROMO"], linha["DATA_INIC_PROMO"], linha["DATA_FIM_PROMO"]);
+            let promocao = new PromocaoModel(linha["COD_PROMO"], linha["COD_PESSOA"], linha["NOME_PROMO"], linha["TIPO_PROMO"], linha["DESCONT_MON_PROMO"], linha["DESCONT_PER_PROMO"], linha["DATA_INIC_PROMO"], linha["DATA_FIM_PROMO"]);
             lista.push(promocao);
         }
 
@@ -65,8 +70,8 @@ class PromocaoModel {
     }
 
     async atualizarPromocao() {
-        let sql = "UPDATE PROMOCAO SET NOME_PROMO = ?, TIPO_PROMO = ?, DESCONT_MON_PROMO = ?, DESCONT_PER_PROMO = ?, DATA_INIC_PROMO = ?, DATA_FIM_PROMO = ? WHERE COD_PROMO = ?";
-        let values = [this.#NOME_PROMO, this.#TIPO_PROMO, this.#DESCONT_MON_PROMO, this.#DESCONT_PER_PROMO, this.#DATA_INIC_PROMO, this.#DATA_FIM_PROMO, this.#COD_PROMO];
+        let sql = "UPDATE PROMOCAO SET COD_PESSOA = ?, NOME_PROMO = ?, TIPO_PROMO = ?, DESCONT_MON_PROMO = ?, DESCONT_PER_PROMO = ?, DATA_INIC_PROMO = ?, DATA_FIM_PROMO = ? WHERE COD_PROMO = ?";
+        let values = [this.#COD_PESSOA, this.#NOME_PROMO, this.#TIPO_PROMO, this.#DESCONT_MON_PROMO, this.#DESCONT_PER_PROMO, this.#DATA_INIC_PROMO, this.#DATA_FIM_PROMO, this.#COD_PROMO];
         let db = new Database();
         let result = await db.ExecutaComandoNonQuery(sql, values);
 
@@ -90,7 +95,7 @@ class PromocaoModel {
 
         if (linhas.length > 0) {
             let linha = linhas[0];
-            let promocao = new PromocaoModel(linha["COD_PROMO"], linha["NOME_PROMO"], linha["TIPO_PROMO"], linha["DESCONT_MON_PROMO"], linha["DESCONT_PER_PROMO"], linha["DATA_INIC_PROMO"], linha["DATA_FIM_PROMO"]);
+            let promocao = new PromocaoModel(linha["COD_PROMO"], linha["COD_PESSOA"], linha["NOME_PROMO"], linha["TIPO_PROMO"], linha["DESCONT_MON_PROMO"], linha["DESCONT_PER_PROMO"], linha["DATA_INIC_PROMO"], linha["DATA_FIM_PROMO"]);
 
             return promocao;
         }

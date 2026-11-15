@@ -6,7 +6,6 @@ class ItemPedidoModel {
     #COD_PED;
     #COD_PROD;
     #QTD_PROD;
-    #COD_RECEB;
     #VALOR_UNI_PROD;
     // #SUBTOTAL_PED 
 
@@ -22,11 +21,10 @@ class ItemPedidoModel {
     get VALOR_UNI_PROD() { return this.#VALOR_UNI_PROD; }
     set VALOR_UNI_PROD(v) { this.#VALOR_UNI_PROD = v; }
 
-    constructor(idPed, idProd, qtdProd, idPag, valorUni) {
+    constructor(idPed, idProd, qtdProd, valorUni) {
         this.#COD_PED = idPed;
         this.#COD_PROD = idProd;
         this.#QTD_PROD = qtdProd;
-        this.#COD_RECEB = idPag; // remover
         this.#VALOR_UNI_PROD = valorUni;
     }
 
@@ -53,7 +51,7 @@ class ItemPedidoModel {
 
         for (let i = 0; i<rows.length;i++) {
             let row = rows[i];
-            let itemPedido = new ItemPedidoModel(row[""], row[""], row[""], row[""]);
+            let itemPedido = new ItemPedidoModel(row["COD_PED"], row["COD_PROD"], row["QTD_PROD"], row["VALOR_UNI_PROD"]);
             lista.push(itemPedido);
         }
         

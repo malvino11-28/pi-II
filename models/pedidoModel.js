@@ -57,7 +57,11 @@ class PedidoModel {
 
         let result = await db.ExecutaComandoLastInserted(sql, values);
 
-        return result;
+        if (result) {
+            this.#COD_PED = result;
+            return true;
+        }
+        return false;
     }
 
     async listarPedido() {

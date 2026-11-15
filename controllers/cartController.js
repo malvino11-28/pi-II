@@ -3,11 +3,13 @@ const FormaRecebimentoModel = require("../models/FormaRecebimentoModel");
 class cartController {
 
     async rotaCarrinho(req, res) {
-        let FormaRecebimento = new FormaRecebimentoModel();
+        let formaPagamento = new FormaPagamentoModel();
+        let codCliente = req.cookies.UserLogado;
 
         let formas = await FormaRecebimento.listarFormasPagamento();
         res.render("cart/carrinhoFinal", {
-            formasPagamento: formas
+            formasPagamento: formas,
+            usuario: codCliente
         });
     }
 

@@ -44,51 +44,93 @@
     </div>
     <div class="container">
       <div class="row  mt-md-n11 justify-content-center">
-        <div class="col-xxl-5 col-xl-4 col-lg-5 col-md-7 mx-auto">
+        <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 mx-auto">
           <div class="card_cadastro z-index-0 shadow pb-3 ">
             <div class="card-header-cadastro text-center pt-4">
               <h5 class="text-white">Cadastre-se aqui</h5>
             </div>
             <div class="card-body px-4 pt-4">
               <form action="/cadastrar" method="POST">
-                <!-- Nome -->
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="nomeCli" placeholder="Digite o nome completo">
-                </div>
+                <div class="row">
+                  <!-- Nome -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="nomeCli" class="form-label">Nome completo</label>
+                    <input type="text" class="form-control" id="nomeCli" placeholder="Digite o nome completo">
+                  </div>
 
-                <!-- CPF -->
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="cpfCli" placeholder="000.000.000-00" maxlength="14">
-                </div>
+                  <!-- CPF -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="cpfCli" class="form-label">CPF</label>
+                    <input type="text" class="form-control" id="cpfCli" placeholder="000.000.000-00" maxlength="14">
+                  </div>
 
-                <!-- RG -->
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="rgCli" placeholder="00.000.000-0" maxlength="12">
-                </div>
+                  <!-- RG -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="rgCli" class="form-label">RG</label>
+                    <input type="text" class="form-control" id="rgCli" placeholder="00.000.000-0" maxlength="12">
+                  </div>
 
-                <!-- Data de Nascimento -->
-                <div class="mb-3">
-                  <input type="date" class="form-control" id="dataNascCli">
-                </div>
+                  <!-- Data de Nascimento -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="dataNascCli" class="form-label">Data de nascimento</label>
+                    <input type="date" class="form-control" id="dataNascCli">
+                  </div>
 
-                <!-- E-mail -->
-                <div class="mb-3">
-                  <input type="email" class="form-control" id="emailCli" placeholder="Email" aria-label="Email">
-                </div>
+                  <!-- E-mail -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="emailCli" class="form-label">E-mail</label>
+                    <input type="email" class="form-control" id="emailCli" placeholder="Email" aria-label="Email">
+                  </div>
 
-                <!-- Telefone -->
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="celCli" placeholder="(00) 00000-0000" maxlength="15">
-                </div>
+                  <!-- Telefone -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="celCli" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="celCli" placeholder="(00) 00000-0000" maxlength="15">
+                  </div>
 
-                <!-- Senha -->
-                <div class="mb-3">
-                  <input type="password" class="form-control" id="senhaCli" placeholder="Digite a senha">
-                </div>
+                  <h6 class="col-12 mt-3 mb-3">Endereço</h6>
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="cepCli" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="cepCli" name="cep" maxlength="9" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}-?[0-9]{3}" required>
+                  </div>
 
-                <!-- Confirmação -->
-                <div class="mb-3">
-                  <input type="password" class="form-control" id="senhaConfirmacaoCli" placeholder="Digite a senha novamente">
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="ruaCli" class="form-label">Rua</label>
+                    <input type="text" class="form-control" id="ruaCli" name="rua" maxlength="255" autocomplete="address-line1" required>
+                  </div>
+
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="numeroCli" class="form-label">Número (opcional)</label>
+                    <input type="text" class="form-control" id="numeroCli" name="numero" maxlength="25">
+                  </div>
+
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="bairroCli" class="form-label">Bairro</label>
+                    <input type="text" class="form-control" id="bairroCli" name="bairro" maxlength="255" autocomplete="address-level3" required>
+                  </div>
+
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="cidadeCli" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" id="cidadeCli" name="cidade" maxlength="255" autocomplete="address-level2" required>
+                  </div>
+
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="ufCli" class="form-label">UF</label>
+                    <input type="text" class="form-control" id="ufCli" name="uf" maxlength="2" autocomplete="address-level1" pattern="[A-Za-z]{2}" required>
+                  </div>
+
+                  <!-- Senha -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="senhaCli" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="senhaCli" placeholder="Digite a senha">
+                  </div>
+
+                  <!-- Confirmação -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="senhaConfirmacaoCli" class="form-label">Confirmação de senha</label>
+                    <input type="password" class="form-control" id="senhaConfirmacaoCli" placeholder="Digite a senha novamente">
+                  </div>
+
                 </div>
 
                 <div class="form-check form-check-info text-start">

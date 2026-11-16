@@ -37,30 +37,19 @@ class PessoaModel {
 
     async cadastrarP() {
 
-        let banco = new Database();
-
         let sql = "INSERT INTO PESSOA (EMAIL_PESSOA, TELEFONE_PESSOA) VALUES (?, ?)";
-        let value = [this.EMAIL_PESSOA, this.TELEFONE_PESSOA];
-
-        let result = banco.ExecutaComandoNonQuery(sql, value);
-
-        return result;
-    }
-
-    async listarP() {
+        let values = [this.#EMAIL_PESSOA, this.#TELEFONE_PESSOA];
 
         let banco = new Database();
+        let result = await banco.ExecutaComandoLastInserted(sql, values);
 
-        let sql = "SELECT COD_PESSOA FROM PESSOA WHERE EMAIL_PESSOA = ? AND TELEFONE_PESSOA = ?";
-        let value = [this.EMAIL_PESSOA, this.TELEFONE_PESSOA];
+        if(result) {
 
-        let linha = banco.ExecutaComando(sql, value);
-
-        if(linha.length > 0) {
-
-            return linha;
+            this.#COD_PESSOA = result;
+            return true;
         }
-        
+
+        return false;
     }
 }
 

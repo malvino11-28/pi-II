@@ -1,4 +1,6 @@
 const PessoaFisicaModel = require("../models/pessoaFisicaModel");
+const EnderecoModel = require("../models/enderecoModel");
+
 const {
     somenteNumeros,
     validarCPF,
@@ -8,6 +10,13 @@ const {
     validarSenha,
     validarDataNascimento
 } = require("../utils/validacoes");
+
+const estadosValidos = [
+    "AC", "AL", "AP", "AM", "BA", "CE", "DF",
+    "ES", "GO", "MA", "MT", "MS", "MG", "PA",
+    "PB", "PR", "PE", "PI", "RJ", "RN", "RS",
+    "RO", "RR", "SC", "SP", "SE", "TO"
+];
 
 class authController {
 
@@ -22,9 +31,8 @@ class authController {
         const user = req.body.identificacao;
         const senha = req.body.senha;
         const user_tipo = req.body.tipoLogin;
-        
-        if(user_tipo === "funcionario") {
 
+        if (user_tipo === "funcionario") {
             let msg = "Matrícula ou senha inválidos!";
             let funcionario = new PessoaFisicaModel();
             funcionario = await funcionario.validar(user, senha, user_tipo);
@@ -34,10 +42,11 @@ class authController {
                 return res.redirect("admin");
             }
 
-            return res.render("auth/login", { mensagem: msg, tipo_usuario: user_tipo });
-        
-        } else if(user_tipo === "cliente") {
-
+            return res.render("auth/login", {
+                mensagem: msg,
+                tipo_usuario: user_tipo
+            });
+        } else if (user_tipo === "cliente") {
             let msg = "E-mail ou senha inválidos!";
             let cliente = new PessoaFisicaModel();
             cliente = await cliente.validar(user.trim().toLowerCase(), senha, user_tipo);
@@ -47,11 +56,14 @@ class authController {
                 return res.redirect("/carrinho");
             }
 
-            return res.render("auth/login", { mensagem: msg, tipo_usuario: user_tipo });
-        
+            return res.render("auth/login", {
+                mensagem: msg,
+                tipo_usuario: user_tipo
+            });
         } else {
-
-            return res.render("auth/login", { mensagem: "Tipo de usuário inválido!" });
+            return res.render("auth/login", {
+                mensagem: "Tipo de usuário inválido!"
+            });
         }
     }
 
@@ -61,7 +73,7 @@ class authController {
 
     async rotaCadastro(req, res) {
         try {
-            let erros = [];
+            const erros = [];
 
             if (!validarNomeCompleto(req.body.nome)) {
                 erros.push("Nome completo inválido.");
@@ -86,29 +98,84 @@ class authController {
             if (!validarTelefone(req.body.cel)) {
                 erros.push("Celular inválido.");
             }
-            
+
             if (!validarSenha(req.body.senha)) {
                 erros.push("A senha deve ter ao menos 8 caracteres.");
             }
+
             if (req.body.senha !== req.body.confirmacao) {
-                erros.push("O campo de senha e confirmação de senha estão diferentes.");
+                erros.push("Os campos de senha e confirmação devem ser iguais.");
             }
-            
+
+            if (!req.body.cep || !/^\d{5}-?\d{3}$/.test(req.body.cep.trim())) {
+                erros.push("CEP inválido. Informe 8 dígitos.");
+            }
+
+            if (!req.body.rua || req.body.rua.trim() === "") {
+                erros.push("Rua é obrigatória.");
+            }
+
+            if (!req.body.bairro || req.body.bairro.trim() === "") {
+                erros.push("Bairro é obrigatório.");
+            }
+
+            if (!req.body.cidade || req.body.cidade.trim() === "") {
+                erros.push("Cidade é obrigatória.");
+            }
+
+            if (!req.body.uf || !estadosValidos.includes(req.body.uf.trim().toUpperCase())) {
+                erros.push("Selecione uma UF válida.");
+            }
+
             if (erros.length > 0) {
-                return res.status(400).send({
+                return res.status(400).send({ ok: false, erros });
+            }
+
+            const cliente = new PessoaFisicaModel(
+                0,
+                req.body.nome.trim(),
+                somenteNumeros(req.body.cpf),
+                req.body.rg.trim(),
+                req.body.dt_nasc,
+                req.body.email.trim().toLowerCase(),
+                somenteNumeros(req.body.cel),
+                req.body.senha
+            );
+
+            const clienteCadastro = await cliente.cadastrarPF();
+
+            if (!clienteCadastro) {
+                return res.status(500).send({
                     ok: false,
-                    erros: erros
+                    erros: ["Não foi possível cadastrar o cliente."]
                 });
             }
 
-            let cliente = new PessoaFisicaModel(0, req.body.nome.trim(), somenteNumeros(req.body.cpf), req.body.rg.trim(), req.body.dt_nasc, req.body.email.trim().toLowerCase(), somenteNumeros(req.body.cel), req.body.senha);
-            
-            let retornoBan = await cliente.cadastrarPF();
-            
-            res.send({ ok: retornoBan });
+            const endereco = new EnderecoModel(
+                0,
+                cliente.COD_PESSOA,
+                req.body.rua.trim(),
+                (req.body.num || "").trim(),
+                req.body.bairro.trim(),
+                (req.body.comp || "").trim(),
+                req.body.cidade.trim(),
+                req.body.uf.trim().toUpperCase(),
+                somenteNumeros(req.body.cep)
+            );
+
+            const enderecoCadastro = await endereco.cadastrarEndereco();
+
+            if (!enderecoCadastro) {
+                return res.status(500).send({
+                    ok: false,
+                    erros: ["O cliente foi cadastrado, mas não foi possível salvar o endereço."]
+                });
+            }
+
+            return res.send({ ok: true });
 
         } catch (erro) {
-            console.log(erro);
+            console.error("Erro ao finalizar o cadastro");
 
             return res.status(500).send({
                 ok: false,
@@ -116,7 +183,6 @@ class authController {
             });
         }
     }
-
 }
 
 module.exports = authController;

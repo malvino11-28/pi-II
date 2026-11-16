@@ -1,5 +1,6 @@
 const Database = require("../database/database");
 const PessoaModel = require("./pessoaModel");
+const EnderecoModel = require("./enderecoModel");
 class PessoaFisicaModel extends PessoaModel {
 
     #NOME_PF;
@@ -103,12 +104,14 @@ class PessoaFisicaModel extends PessoaModel {
 
         let banco = new Database();
 
-        let pessoa = new PessoaModel(0, this.EMAIL_PESSOA, this.TELEFONE_PESSOA);
+        let pessoa = await super.cadastrarP();
 
-        pessoa.cadastrarP();
+        if(!pessoa == null){
+            return false;
+        }
 
-        let sql = "INSERT INTO PESSOA_FISICA (COD_PESSOA, NOME_PF, CPF_PF, RG_PF, DATA_NASC_PF, EMAIL_PESSOA, TELEFONE_PESSOA, SENHA_PF, MATRICULA_FUN, CARGO_FUN, STATUS_FUN) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        let values = [pessoa.COD_PESSOA, this.#NOME_PF, this.#CPF_PF, this.#RG_PF, this.#DATA_NASC_PF, this.EMAIL_PESSOA, this.TELEFONE_PESSOA, this.#SENHA_PF, this.#MATRICULA_FUN, this.#CARGO_FUN, this.#STATUS_FUN];
+        let sql = "INSERT INTO PESSOA_FISICA (COD_PESSOA, NOME_PF, CPF_PF, RG_PF, DATA_NASC_PF, EMAIL_PESSOA, TELEFONE_PESSOA, SENHA_PF, MATRICULA_FUN, CARGO_FUN, STATUS_FUN) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        let values = [this.COD_PESSOA, this.#NOME_PF, this.#CPF_PF, this.#RG_PF, this.#DATA_NASC_PF, this.EMAIL_PESSOA, this.TELEFONE_PESSOA, this.#SENHA_PF, this.#MATRICULA_FUN, this.#CARGO_FUN, this.#STATUS_FUN];
 
         let result = await banco.ExecutaComandoNonQuery(sql, values);
 

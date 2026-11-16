@@ -34,6 +34,34 @@ class PessoaModel {
     set TELEFONE_PESSOA(value) {
         this.#TELEFONE_PESSOA = value;
     }
+
+    async cadastrarP() {
+
+        let banco = new Database();
+
+        let sql = "INSERT INTO PESSOA (EMAIL_PESSOA, TELEFONE_PESSOA) VALUES (?, ?)";
+        let value = [this.EMAIL_PESSOA, this.TELEFONE_PESSOA];
+
+        let result = banco.ExecutaComandoNonQuery(sql, value);
+
+        return result;
+    }
+
+    async listarP() {
+
+        let banco = new Database();
+
+        let sql = "SELECT COD_PESSOA FROM PESSOA WHERE EMAIL_PESSOA = ? AND TELEFONE_PESSOA = ?";
+        let value = [this.EMAIL_PESSOA, this.TELEFONE_PESSOA];
+
+        let linha = banco.ExecutaComando(sql, value);
+
+        if(linha.length > 0) {
+
+            return linha;
+        }
+        
+    }
 }
 
 module.exports = PessoaModel;

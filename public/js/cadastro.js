@@ -7,6 +7,16 @@ function mascaraCPF(valor) {
         .slice(0, 14);
 }
 
+function mascaraRG(valor) {
+    return valor
+        .toUpperCase()
+        .replace(/[^0-9X]/g, "")
+        .slice(0, 9)
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/(\d{3})([0-9X])$/, "$1-$2");
+}
+
 function mascaraTelefone(valor) {
     const numero = valor.replace(/\D/g, "").slice(0, 11);
 
@@ -29,6 +39,13 @@ function mascaraTelefone(valor) {
         /^(\d{2})(\d{5})(\d{0,4})/,
         "($1) $2-$3"
     );
+}
+
+function mascaraCEP(valor) {
+    return valor
+        .replace(/\D/g, "")
+        .replace(/^(\d{5})(\d)/, "$1-$2")
+        .slice(0, 9);
 }
 
 function validarCPF(cpf) {
@@ -130,14 +147,42 @@ function validarDataNascimento(data) {
     return dataExiste && dataNascimento <= hoje;
 }
 
-function mascaraRG(valor) {
-    return valor
-        .toUpperCase()
-        .replace(/[^0-9X]/g, "")
-        .slice(0, 9)
-        .replace(/^(\d{2})(\d)/, "$1.$2")
-        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
-        .replace(/(\d{3})([0-9X])$/, "$1-$2");
+async function validarCEP(cep) {
+    cep = cep.replace(/\D/g, "");
+
+    const regex = /^[0-9]{8}$/;
+
+    if (!regex.test(cep)) {
+        return false;
+    }
+
+    try {
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const dados = await res.json();
+
+        if (!res.ok || dados.erro === true) {
+        return false;
+        }
+
+        return {
+        logradouro: dados.logradouro || "",
+        cidade: dados.localidade || "",
+        bairro: dados.bairro || "",
+        estado: dados.uf || "",
+        };
+
+    } catch (error) {
+        console.log(error);
+
+        // Para apresentação/local sem internet: se o CEP tiver 8 dígitos,
+        // o usuário ainda pode preencher o endereço manualmente.
+        return {
+        logradouro: "",
+        cidade: "",
+        bairro: "",
+        estado: "",
+        };
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -153,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let senhaCampo = document.querySelector("#senhaCli");
     let confirmacaoCampo = document.querySelector("#senhaConfirmacaoCli");
     let dataNascCampo = document.querySelector("#dataNascCli");
+    let cepCampo = document.querySelector("#cepCli");
 
     cpfCampo.addEventListener("input", function () {
         cpfCampo.value = mascaraCPF(cpfCampo.value);
@@ -246,7 +292,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    function cadastrarCliente() {
+    cepCampo.addEventListener("input", function () {
+        cepCampo.value = mascaraCEP(cepCampo.value);
+    });
+
+    cepCampo.addEventListener("blur", async function () {
+        
+        let endereco = await validarCEP(cepCampo.value);
+        
+        if(endereco !== false) {
+
+            document.querySelector("#ruaCli").value = endereco.logradouro;
+            document.querySelector("#bairroCli").value = endereco.bairro;
+            document.querySelector("#cidadeCli").value = endereco.cidade;
+            document.querySelector("#ufCli").value = endereco.estado;
+
+            cepCampo.classList.remove("is-invalid");
+            cepCampo.classList.add("is-valid");
+        
+        } else {
+            cepCampo.classList.remove("is-valid");
+            cepCampo.classList.add("is-invalid");
+        }
+    });
+
+    async function cadastrarCliente() {
 
         let nome = document.querySelector("#nomeCli");
         let cpf = document.querySelector("#cpfCli");
@@ -256,6 +326,13 @@ document.addEventListener("DOMContentLoaded", function () {
         let cel = document.querySelector("#celCli");
         let senha = document.querySelector("#senhaCli");
         let confirmacao = document.querySelector("#senhaConfirmacaoCli");
+        let cep = document.querySelector("#cepCli");
+        let rua = document.querySelector("#ruaCli");
+        let numero = document.querySelector("#numeroCli"); //opcional
+        let bairro = document.querySelector("#bairroCli");
+        let complemento = document.querySelector("#compCli");
+        let cidade = document.querySelector("#cidadeCli");
+        let uf = document.querySelector("#ufCli");
 
         let nomeValido = validarNomeCompleto(nome.value);
         let cpfValido = validarCPF(cpf.value);
@@ -265,6 +342,11 @@ document.addEventListener("DOMContentLoaded", function () {
         let celularValido = validarTelefone(cel.value);
         let senhaValida = validarSenha(senha.value);
         let confirmacaoValida = senhaValida && senha.value === confirmacao.value;
+        let cepValido = await (validarCEP(cep.value)) !== false;
+        let ruaValido = rua.value !== "";
+        let bairroValido = rua.value !== "";
+        let cidadeValido = rua.value !== "";
+        let ufValido = rua.value !== "";
 
         nome.classList.toggle("is-valid", nomeValido);
         nome.classList.toggle("is-invalid", !nomeValido);
@@ -284,6 +366,21 @@ document.addEventListener("DOMContentLoaded", function () {
         cel.classList.toggle("is-valid", celularValido);
         cel.classList.toggle("is-invalid", !celularValido);
 
+        cep.classList.toggle("is-valid", cepValido);
+        cep.classList.toggle("is-invalid", !cepValido);
+
+        rua.classList.toggle("is-valid", ruaValido);
+        rua.classList.toggle("is-invalid", !ruaValido);
+
+        bairro.classList.toggle("is-valid", bairroValido);
+        bairro.classList.toggle("is-invalid", !bairroValido);
+
+        cidade.classList.toggle("is-valid", cidadeValido);
+        cidade.classList.toggle("is-invalid", !cidadeValido);
+
+        uf.classList.toggle("is-valid", ufValido);
+        uf.classList.toggle("is-invalid", !ufValido);
+
         senha.classList.toggle("is-valid", senhaValida);
         senha.classList.toggle("is-invalid", !senhaValida);
 
@@ -297,6 +394,11 @@ document.addEventListener("DOMContentLoaded", function () {
             !dataValida ||
             !emailValido ||
             !celularValido ||
+            !cepValido ||
+            !ruaValido ||
+            !bairroValido ||
+            !cidadeValido ||
+            !ufValido ||
             !senhaValida ||
             !confirmacaoValida
         ) {
@@ -317,6 +419,13 @@ document.addEventListener("DOMContentLoaded", function () {
             dt_nasc: dt_nasc.value,
             email: email.value,
             cel: cel.value,
+            cep: cep.value,
+            rua: rua.value,
+            num: numero.value,
+            bairro: bairro.value,
+            complemento: complemento.value,
+            cidade: cidade.value,
+            uf: uf.value,
             senha: senha.value,
             confirmacao: confirmacao.value
         };

@@ -314,14 +314,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         containerCarrinho.addEventListener("change", function (e) {
             let item;
+            const input = e.target;
+            const id = input.dataset.id;
 
             for (let i = 0; i < listaCarrinho.length; i++) {
                 if (listaCarrinho[i].id == id) {
                     item = listaCarrinho[i];
                 }
             }
-
-            const input = e.target;
 
             if (input.dataset.acao !== "alterar") {
                 return;
@@ -369,29 +369,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let usuarioId = this.dataset.usuario;
 
-        // enviando para o back
-        fetch(`/pedido/salvar/${usuarioId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                itens: itens,
-                codPag: FormaRecebimento.value
-            })
-        }).then(res => {
-            return res.json();
-        }).then(resBody => {
-            if (resBody.ok) {
-                alert(`Pedido nº ${resBody.codPedido} realizado com sucesso!\nTotal: ${formatarValor(resBody.total)}`);
+        if (!usuarioId) {
+            alert("Faça login antes de realizar um pedido!");
+        } else {
 
-                localStorage.removeItem("carrinho");
-                listaCarrinho = [];
-                atualizarContador();
-                window.location.href = "/";
-            } else {
-                alert(resBody.msg || "Erro ao realizar pedido.");
-            }
-        });
+            // enviando para o back
+            fetch(`/pedido/salvar/${usuarioId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    itens: itens,
+                    codPag: FormaRecebimento.value
+                })
+            }).then(res => {
+                return res.json();
+            }).then(resBody => {
+                if (resBody.ok) {
+                    alert(`Pedido nº ${resBody.codPedido} realizado com sucesso!\nTotal: ${formatarValor(resBody.total)}`);
+
+                    localStorage.removeItem("carrinho");
+                    listaCarrinho = [];
+                    atualizarContador();
+                    window.location.href = "/";
+                } else {
+                    alert(resBody.msg || "Erro ao realizar pedido.");
+                }
+            });
+        }
     }
 });

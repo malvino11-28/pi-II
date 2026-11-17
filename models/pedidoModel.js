@@ -44,14 +44,13 @@ class PedidoModel {
     }
 
     async salvarPedido() {
-        let sql = "INSERT INTO PEDIDO (COD_CLI, COD_PROMO, STATUS_PED, COD_RECEB, DATA_PED, TOTAL_PED) VALUES (?, ?, ?, ?, ?, ?)";
+        let sql = "INSERT INTO PEDIDO (COD_CLI, COD_PROMO, STATUS_PED, COD_RECEB, DATA_PED, TOTAL_PED) VALUES (?, ?, ?, ?, CURDATE(), ?)";
 
         let values = [
             this.#COD_CLI,
             this.#COD_PROMO,
             "Pendente",
             this.#COD_RECEB,
-            this.#DATA_PED,
             this.#TOTAL_PED
         ];
 

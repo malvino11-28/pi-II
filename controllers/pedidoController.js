@@ -2,7 +2,7 @@ const PedidoModel = require("../models/pedidoModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
 const ProdutoModel = require("../models/produtoModel");
 const LoteModel = require("../models/loteModel");
-const FormaRecebimentoModel = require("../models/FormaRecebimentoModel");
+const FormaRecebimentoModel = require("../models/formaRecebimentoModel");
 
 class PedidoController {
 

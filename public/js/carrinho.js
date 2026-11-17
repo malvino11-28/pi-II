@@ -314,14 +314,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         containerCarrinho.addEventListener("change", function (e) {
             let item;
+            const input = e.target;
+            const id = input.dataset.id;
 
             for (let i = 0; i < listaCarrinho.length; i++) {
                 if (listaCarrinho[i].id == id) {
                     item = listaCarrinho[i];
                 }
             }
-
-            const input = e.target;
 
             if (input.dataset.acao !== "alterar") {
                 return;

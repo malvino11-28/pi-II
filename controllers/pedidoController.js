@@ -107,7 +107,7 @@ class PedidoController {
             let qtdRestante = produto.qtd;
             let loteModel = new LoteModel();
 
-            for (let j = 0; j<produto.lotes && qtdRestante > 0; j++) {
+            for (let j = 0; j<produto.lotes.length && qtdRestante > 0; j++) {
                 let lote = produto.lotes[j];
                 let estqLote = Number(lote.EST_LOTE);
                 let qtdUtilizada = Math.min(qtdRestante, estqLote);

@@ -34,7 +34,7 @@ class ItemPedidoModel {
     }
 
     async salvarItemPedido() {
-        let sql = "INSERT INTO ITEM_PEDIDO (COD_PED, COD_PROD, COD_LOTE, QTD_PROD, VALOR_UNI_PROD) VALUES (?, ?, ?, ?, ?)";
+        let sql = "INSERT INTO ITEM_PEDIDO (COD_PED, COD_PROD, COD_LOTE, QTD_PROD, VALOR_UNI) VALUES (?, ?, ?, ?, ?)";
 
         let values = [
             this.#COD_PED,

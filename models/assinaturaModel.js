@@ -13,31 +13,50 @@ class AssinaturaModel {
         this.#VENC_ASS = vencimento;
     }
 
-    get COD_PESSOA() { return this.#COD_PESSOA; }
-    set COD_PESSOA(v) { this.#COD_PESSOA = v; }
+    get COD_PESSOA() {
+        return this.#COD_PESSOA;
+    }
 
-    get COD_PLANO() { return this.#COD_PLANO; }
-    set COD_PLANO(v) { this.#COD_PLANO = v; }
+    set COD_PESSOA(value) {
+        this.#COD_PESSOA = value;
+    }
 
-    get STATUS_ASS() { return this.#STATUS_ASS; }
-    set STATUS_ASS(v) { this.#STATUS_ASS = v; }
+    get COD_PLANO() {
+        return this.#COD_PLANO;
+    }
+    set COD_PLANO(value) {
+        this.#COD_PLANO = value;
+    }
 
-    get VENC_ASS() { return this.#VENC_ASS; }
-    set VENC_ASS(v) { this.#VENC_ASS = v; }
+    get STATUS_ASS() {
+        return this.#STATUS_ASS;
+    }
+
+    set STATUS_ASS(value) {
+        this.#STATUS_ASS = value;
+    }
+
+    get VENC_ASS() {
+        return this.#VENC_ASS;
+    }
+
+    set VENC_ASS(value) {
+        this.#VENC_ASS = value;
+    }
 
     async cadastrarAssinatura() {
         let sql = "INSERT INTO ASSINATURA (COD_PESSOA, COD_PLANO, STATUS_ASS, VENC_ASS) VALUES (?, ?, ?, ?)";
         let values = [this.#COD_PESSOA, this.#COD_PLANO, this.#STATUS_ASS, this.#VENC_ASS];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
 
     async listarAssinaturas() {
         let sql = "SELECT * FROM ASSINATURA";
-        let db = new Database();
-        let linhas = await db.ExecutaComando(sql);
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql);
         let lista = [];
 
         for (let i = 0; i < linhas.length; i++) {
@@ -53,8 +72,8 @@ class AssinaturaModel {
     async atualizarAssinatura() {
         let sql = "UPDATE ASSINATURA SET COD_PLANO = ?, STATUS_ASS = ?, VENC_ASS = ? WHERE COD_PESSOA = ?";
         let values = [this.#COD_PLANO, this.#STATUS_ASS, this.#VENC_ASS, this.#COD_PESSOA];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
@@ -62,8 +81,8 @@ class AssinaturaModel {
     async excluirAssinatura(id) {
         let sql = "DELETE FROM ASSINATURA WHERE COD_PESSOA = ?";
         let values = [id];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
@@ -71,8 +90,8 @@ class AssinaturaModel {
     async obterAssinaturaId(id) {
         let sql = "SELECT * FROM ASSINATURA WHERE COD_PESSOA = ?";
         let values = [id];
-        let db = new Database();
-        let linhas = await db.ExecutaComando(sql, values);
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql, values);
 
         if (linhas.length > 0) {
             let linha = linhas[0];

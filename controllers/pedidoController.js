@@ -1,6 +1,5 @@
 const PedidoModel = require("../models/pedidoModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
-const ItemPedidoLoteModel = require("../models/itemPedidoLoteModel");
 const ProdutoModel = require("../models/produtoModel");
 const LoteModel = require("../models/loteModel");
 const FormaRecebimentoModel = require("../models/FormaRecebimentoModel");
@@ -105,75 +104,55 @@ class PedidoController {
 
         for (let i = 0; i < listaProdutos.length; i++) {
             let produto = listaProdutos[i];
-
-            let itemPedido = new ItemPedidoModel(
-                codPedido,
-                produto.produtoId,
-                produto.qtd,
-                produto.valorUnitario
-            );
-
-            let itemGravado = await itemPedido.salvarItemPedido();
-
-            if (!itemGravado) {
-                return res.send({
-                    ok: false,
-                    msg: "Erro ao registrar um dos itens do pedido."
-                });
-            }
-
             let qtdRestante = produto.qtd;
-
             let loteModel = new LoteModel();
 
-            for (let j = 0; j < produto.lotes.length && qtdRestante > 0; j++) {
-                if (qtdRestante <= 0) {
+            for (let j = 0; j<produto.lotes && qtdRestante > 0; j++) {
+                let lote = produto.lotes[j];
+                let estqLote = Number(lote.EST_LOTE);
+                let qtdUtilizada = Math.min(qtdRestante, estqLote);
+
+                if (qtdUtilizada < 0) {
                     return;
-                } else {
-                    let lote = produto.lotes[j];
-                    let estoqueLote = Number(lote.EST_LOTE);
-
-                    let qtdUtilizada = Math.min(
-                        qtdRestante,
-                        estoqueLote
-                    );
-
-                    if (qtdUtilizada > 0) {
-                        let itemLote = new ItemPedidoLoteModel(
-                            codPedido,
-                            produto.produtoId,
-                            lote.COD_LOTE,
-                            qtdUtilizada
-                        );
-
-                        let loteGravado = await itemLote.salvarItemPedidoLote();
-                        if (!loteGravado) {
-                            return res.send({
-                                ok: false,
-                                msg: "Erro ao registrar os lotes utilizados."
-                            });
-                        }
-
-                        let estoqueAtualizado = await loteModel.baixarEstoque(
-                            lote.COD_LOTE,
-                            qtdUtilizada
-                        );
-
-                        if (!estoqueAtualizado) {
-                            return res.send({
-                                ok: false,
-                                msg: "Erro ao atualizar o estoque de um dos lotes."
-                            });
-                        }
-                        qtdRestante = Number((qtdRestante - qtdUtilizada).toFixed(2));
-                    }
                 }
-            }
-            if (qtdRestante > 0) {
+
+                let itemPedido = new ItemPedidoModel(
+                    codPedido,
+                    produto.produtoId,
+                    lote.COD_LOTE,
+                    qtdUtilizada,
+                    produto.valorUnitario
+                );
+
+                let itemGravado = await itemPedido.salvarItemPedido();
+
+                if (!itemGravado) {
                     return res.send({
                         ok: false,
-                        msg: "Não foi possível separar toda a quantidade solicitada."
+                        msg: "Erro ao registrar um dos itens do pedido."
+                    })
+                }
+
+                let estoqueAtualizado = await loteModel.baixarEstoque(
+                    lote.COD_LOTE,
+                    qtdUtilizada
+                );
+
+                if (!estoqueAtualizado) {
+                    return res.send({
+                        ok: false,
+                        msg: "Erro ao atualizar o estoque de um dos lotes."
                     });
+                }
+
+                qtdRestante = Number((qtdRestante - qtdUtilizada).toFixed(2));
+            }
+
+            if (qtdRestante > 0) {
+                return res.send({
+                    ok: false,
+                    msg: "Não foi possível separar a quantidade solicitada."
+                });
             }
         }
         return res.send({

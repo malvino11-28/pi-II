@@ -51,7 +51,6 @@ class PedidoModel {
             this.#COD_PROMO,
             "Pendente",
             this.#COD_RECEB,
-            this.#DATA_PED,
             this.#TOTAL_PED
         ];
 

@@ -1,11 +1,45 @@
+const planoModel = require('../models/planoModel');
+
 class clienteController {
 
+    rotaPedidosView(req, res) {
+        res.render('cliente/pedidos', {
+            layout: 'layout/clienteLayout',
+            pagina: 'pedidos',
+            titulo: 'Meus pedidos'
+        });
+    }
+
+    rotaEnderecosView(req, res) {
+        res.render('cliente/enderecos', {
+            layout: 'layout/clienteLayout',
+            pagina: 'enderecos',
+            titulo: 'Endereços'
+        });
+    }
+
+    rotaAjudaView(req, res) {
+        res.render('cliente/ajuda', {
+            layout: 'layout/clienteLayout',
+            pagina: 'ajuda',
+            titulo: 'Preciso de ajuda'
+        });
+    }
+
     rotaAreaClienteView(req, res) {
-        res.render('client/area-cliente');
+        res.render('cliente/area-cliente', {
+            layout: 'layout/clienteLayout',
+            pagina: 'inicio',
+            titulo: 'Visão geral'
+        });
     }
 
     rotaAlterarDadosView(req, res) {
-        res.render('cliente/alterar-dados');
+        res.render('cliente/alterar-dados', {
+            layout: 'layout/clienteLayout',
+            pagina: 'dados',
+            titulo: 'Meus dados'
+        });
     }
 
     rotaAlterarDados(req, res) {
@@ -14,7 +48,11 @@ class clienteController {
     }
 
     rotaAlterarSenhaView(req, res) {
-        res.render('cliente/alterar-senha');
+        res.render('cliente/alterar-senha', {
+            layout: 'layout/clienteLayout',
+            pagina: 'senha',
+            titulo: 'Alterar senha'
+        });
     }
 
     rotaAlterarSenha(req, res) {
@@ -22,8 +60,18 @@ class clienteController {
         res.redirect('/cliente');
     }
 
-    rotaAssinaturaView(req, res) {
-        res.render('cliente/assinatura');
+    async rotaAssinaturaView(req, res) {
+
+        let plano = new planoModel();
+        let listaPlanos = await plano.listarPlanos();
+
+        res.render('cliente/assinatura', {
+            layout: 'layout/clienteLayout',
+            pagina: 'assinatura',
+            titulo: 'Minha assinatura',
+
+            planos: listaPlanos
+        });
     }
 
     rotaAssinarPlano(req, res) {

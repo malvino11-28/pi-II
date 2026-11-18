@@ -41,3 +41,17 @@ function avisarFormulario(event) {
     event.preventDefault();
     alert('Esta é uma demonstração. Os dados não foram salvos no sistema.');
 }
+
+addEventListener('DOMContentLoaded', function () {
+
+    let btns = document.querySelectorAll('#btn-plano');
+
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', cadastrarAssinatura);
+    }
+
+    function cadastrarAssinatura(event) {
+
+        
+    }
+});

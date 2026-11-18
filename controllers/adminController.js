@@ -5,6 +5,7 @@ const ProdutoModel = require("../models/produtoModel");
 const MarcaModel = require("../models/marcaModel");
 const LoteModel = require("../models/loteModel");
 const PedidoModel = require("../models/pedidoModel");
+const EntregaModel = require("../models/entregaModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
 
 const {
@@ -18,6 +19,7 @@ const {
 } = require("../utils/validacoes");
 
 const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisModel");
+const EnderecoModel = require("../models/enderecoModel");
 
 class adminController {
 
@@ -571,26 +573,33 @@ class adminController {
 
         if (!id || id <= 0) {
             
+        } else {
+            let pedidoModel = new PedidoModel();
+            let pedido = await pedidoModel.obterPedidoAdmin(id);
+
+            if (!pedido) {
+        
+            }
+
+            let itemPedidoModel = new ItemPedidoModel();
+            let itens = await itemPedidoModel.listarItensAdmin(id);
+
+            let entregaModel = new EntregaModel();
+            let enderecoModel = new EnderecoModel();
+            let entrega = await entregaModel.obterEntregaPedido(id);
+            let enderecos = await enderecoModel.listarEnderecosCliente(pedido.COD_CLI);
+
+            return res.render("admin/controlePedido", {
+                pedido,
+                itens,
+                entrega,
+                enderecos
+            });
         }
-
-        let pedidoModel = new PedidoModel();
-        let pedido = await pedidoModel.obterPedidoAdmin(id);
-
-        if (!pedido) {
-    
-        }
-
-        let itemPedidoModel = new ItemPedidoModel();
-        let itens = await itemPedidoModel.listarItensAdmin(id);
-
-        return res.render("admin/controlePedido", {
-            pedido: pedido,
-            itens: itens
-        });
     }
 
     async rotaAtualizarStatusPedido(req, res) {
-        let id = Number(req.params.id);
+        let id = req.params.id;
         let novoStatus = req.body.status;
 
         if (!id || id <= 0) {
@@ -633,23 +642,113 @@ class adminController {
             });
         }
 
-        let result = await pedidoModel.atualizarStatusPedido(
-            id,
-            novoStatus,
-            pedido.STATUS_PED
-        );
+        let result = false;
+
+        if (novoStatus == "Preparado") {
+            let itemPedidoModel = new ItemPedidoModel();
+            let itens = await itemPedidoModel.listarItensAdmin(id);
+            let conferidos = req.body.conferidos;
+
+            if (conferidos.length <= 0 || itens.length == 0 || conferidos.length != itens.length) {
+                return res.send({
+                    ok: false,
+                    msg: "Confira todos os produtos e lotes antes de concluir a preparação."
+                });
+            }
+
+            for (let i =0; i<itens.length; i++) {
+                let qtd = 0;
+
+                for (let j = 0; j<conferidos.length; j++) {
+                    if (conferidos[j] && conferidos[j].produto == itens[i].COD_PROD && conferidos[j].lote == itens[j].COD_LOTE) {
+                        qtd++;
+                    }
+                }
+
+                if (qtd !== 1) {
+                    return res.send({
+                        ok:false,
+                        msg: "A conferência está incompleta."
+                    });
+                }
+            }
+
+            result = await pedidoModel.atualizarStatusPedido(id, novoStatus, pedido.STATUS_PEDIDO);
+
+        } else if (novoStatus == "Cancelado") {
+            result = await pedidoModel.cancelarPedido(id, pedido.STATUS_PED);
+        } else {
+            let entregaModel = new EntregaModel();
+            let entrega = await entregaModel.obterEntregaPedido(id);
+
+            if (novoStatus == "Retirado") {
+                if (entrega) {
+                    return res.send({
+                        ok: false,
+                        msg:"Este pedido está destinado à entrega."
+                    });
+                }
+
+                result = await pedidoModel.retirarPedido(id);
+
+                if (!result) {
+                    return res.send({
+                        ok: false,
+                        msg: "Não foi possível confirmar a retirada."
+                    });
+                }
+            } else if (novoStatus == "Saiu para entrega") {
+                if (!entrega) {
+                    return res.send({
+                        ok: false,
+                        msg:"Cadastre a entrega antes de preparar o pedido"
+                    });
+                }
+
+                result = await pedidoModel.sairParaEntrega(id, entrega.COD_ENT);
+            }
+        }
 
         if (result) {
             return res.send({
                 ok: true,
-                msg: "Status atualizado com sucesso!"
-            });
-        } else {
-            return res.send({
-                ok: false,
-                msg: "Não foi possível atualizar. Atualize a página e tente novamente."
+                msg: "Operação realizada com sucesso!"
             });
         }
+
+        return res.send({
+            ok: false,
+            msg: "Não foi possível confirmar a operação."
+        });  
+    }
+
+    async rotaDefinirEntregaPedido(req, res) {
+        let id = req.params.id;
+        let idEndereco = req.body.idEndereco;
+        let data = req.body.data;
+
+        if (!id || id <= 0 || !idEndereco || idEndereco <= 0 || !data) {
+            return res.send({
+                ok: false,
+                msg: "Informe um endereço e uma data válidos."
+            });
+        }
+
+        let entregaModel = new EntregaModel();
+
+        let result = await entregaModel.definirEntregaPedido(id, idEndereco, data);
+
+        if (result) {
+            return res.send({
+                ok: true,
+                msg: "Entrega cadastrada!"
+            });
+        }
+
+        return res.send({
+            ok: false,
+            msg: "Não foi possível cadastrar a entrega."
+        });
     }
 }
 

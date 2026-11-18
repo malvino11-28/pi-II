@@ -6,16 +6,18 @@ class EnderecoModel {
     #RUA_END;
     #NUM_END;
     #BAIRRO_END;
+    #COMP_END;
     #CIDADE_END;
     #ESTADO_END;
     #CEP_END;
 
-    constructor(id, cod_pessoa, rua, numero, bairro, cidade, estado, cep) {
+    constructor(id, cod_pessoa, rua, numero, bairro, complemento, cidade, estado, cep) {
         this.#COD_END = id;
         this.#COD_PESSOA = cod_pessoa;
         this.#RUA_END = rua;
         this.#NUM_END = numero;
         this.#BAIRRO_END = bairro;
+        this.#COMP_END = complemento;
         this.#CIDADE_END = cidade;
         this.#ESTADO_END = estado;
         this.#CEP_END = cep;
@@ -36,6 +38,9 @@ class EnderecoModel {
     get BAIRRO_END() { return this.#BAIRRO_END; }
     set BAIRRO_END(v) { this.#BAIRRO_END = v; }
 
+    get COMP_END() { return this.#COMP_END; }
+    set COMP_END(v) { this.#COMP_END = v; }
+
     get CIDADE_END() { return this.#CIDADE_END; }
     set CIDADE_END(v) { this.#CIDADE_END = v; }
 
@@ -46,18 +51,18 @@ class EnderecoModel {
     set CEP_END(v) { this.#CEP_END = v; }
 
     async cadastrarEndereco() {
-        let sql = "INSERT INTO ENDERECO (COD_PESSOA, RUA_END, NUM_END, BAIRRO_END, CIDADE_END, ESTADO_END, CEP_END) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        let values = [this.#COD_PESSOA, this.#RUA_END, this.#NUM_END, this.#BAIRRO_END, this.#CIDADE_END, this.#ESTADO_END, this.#CEP_END];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let sql = "INSERT INTO ENDERECO (COD_PESSOA, RUA_END, NUM_END, BAIRRO_END, COMP_END, CIDADE_END, ESTADO_END, CEP_END) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        let values = [this.#COD_PESSOA, this.#RUA_END, this.#NUM_END, this.#BAIRRO_END, this.#COMP_END, this.#CIDADE_END, this.#ESTADO_END, this.#CEP_END];
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
 
     async listarEnderecos() {
         let sql = "SELECT * FROM ENDERECO";
-        let db = new Database();
-        let linhas = await db.ExecutaComando(sql);
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql);
         let lista = [];
 
         for (let i = 0; i < linhas.length; i++) {
@@ -72,8 +77,8 @@ class EnderecoModel {
     async atualizarEndereco() {
         let sql = "UPDATE ENDERECO SET COD_PESSOA = ?, RUA_END = ?, NUM_END = ?, BAIRRO_END = ?, CIDADE_END = ?, ESTADO_END = ?, CEP_END = ? WHERE COD_END = ?";
         let values = [this.#COD_PESSOA, this.#RUA_END, this.#NUM_END, this.#BAIRRO_END, this.#CIDADE_END, this.#ESTADO_END, this.#CEP_END, this.#COD_END];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
@@ -81,8 +86,8 @@ class EnderecoModel {
     async excluirEndereco(id) {
         let sql = "DELETE FROM ENDERECO WHERE COD_END = ?";
         let values = [id];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let banco = new Database();
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
@@ -90,8 +95,8 @@ class EnderecoModel {
     async obterPorId(id) {
         let sql = "SELECT * FROM ENDERECO WHERE COD_END = ?";
         let values = [id];
-        let db = new Database();
-        let linhas = await db.ExecutaComando(sql, values);
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql, values);
 
         if (linhas.length > 0) {
             let linha = linhas[0];

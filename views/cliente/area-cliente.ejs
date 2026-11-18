@@ -1,0 +1,90 @@
+<!-- Conteúdo desta página. O cabeçalho e o menu estão em clienteLayout.ejs. -->
+<section id="inicio" class="secao-cliente">
+                    <p class="titulo-pequeno">BEM-VINDO AO SEU ESPAÇO</p>
+                    <h1 class="h2">Olá, <%= cliente.NOME_PF %>!</h1>
+                    <p class="text-secondary">Seu próximo bom momento começa aqui.</p>
+
+                    <div class="banner-cliente rounded-3 p-4 my-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <span class="badge border border-warning text-warning mb-3">CLUBE CORTE IMPERIAL</span>
+                                <h2 class="h1 text-white">Mais sabor.<br>Mais vantagens para você.</h2>
+                                <p class="text-white-50">Encontre o plano que combina com a sua mesa.</p>
+                                <a class="btn btn-laranja" href="/cliente/assinatura">Conhecer os planos <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="col-md-4 d-none d-md-block">
+                                <img src="/imgs/picanha3.webp" class="img-fluid rounded-3" alt="Picanha bovina">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-4">
+                            <div class="card h-100"><div class="card-body">
+                                <i class="bi bi-box-seam text-vinho" aria-hidden="true"></i>
+                                <span class="small text-secondary ms-1">Pedidos realizados</span>
+                                <strong class="d-block fs-3 text-vinho mt-2">03</strong>
+                                <small class="text-secondary">Seu histórico na loja</small>
+                            </div></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card h-100"><div class="card-body">
+                                <i class="bi bi-truck text-vinho" aria-hidden="true"></i>
+                                <span class="small text-secondary ms-1">Em andamento</span>
+                                <strong class="d-block fs-3 text-vinho mt-2">01</strong>
+                                <small class="text-secondary">Preparando com cuidado</small>
+                            </div></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card h-100"><div class="card-body">
+                                <i class="bi bi-star text-vinho" aria-hidden="true"></i>
+                                <span class="small text-secondary ms-1">Minha assinatura</span>
+                                <strong class="d-block fs-3 text-vinho mt-2" id="resumo-plano">
+                                    <%= planoAssinado ? planoAssinado.NOME_PLANO : 'Sem plano' %>
+                                </strong>
+
+                                <small class="text-secondary">
+                                    Status:
+                                    <%= assinatura ? assinatura.STATUS_ASS : 'Pendente de plano' %>
+                                </small>
+                            </div></div>
+                        </div>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-7">
+                            <article class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap justify-content-between gap-2 mb-4">
+                                        <h2 class="h5 mb-0">Seu último pedido</h2>
+                                        <a class="btn btn-link btn-sm p-0" href="/cliente/pedidos">Ver todos →</a>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <strong>#CI-1048</strong><span class="badge text-bg-warning">Em preparo</span>
+                                    </div>
+                                    <p class="small text-secondary mt-2">17/11/2026 · 2 itens</p>
+                                    <div class="d-flex align-items-center gap-3 my-4">
+                                        <img src="/imgs/picanha3.webp" class="foto-pedido rounded" alt="Picanha bovina">
+                                        <div><strong class="small">O churrasco está garantido</strong><p class="small text-secondary mb-1">Picanha + linguiça toscana</p><strong>R$ 149,80</strong></div>
+                                    </div>
+                                    <div class="progress mb-2" role="progressbar" aria-label="Etapas do pedido" aria-valuenow="2" aria-valuemin="0" aria-valuemax="3">
+                                        <div class="progress-bar bg-warning progresso-pedido"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between small text-secondary mb-4"><span>Confirmado</span><span>Em preparo</span><span>Entrega</span></div>
+                                    <a class="btn btn-outline-secondary w-100" href="/cliente/pedidos">Acompanhar pedido</a>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-md-5">
+                            <article class="card h-100">
+                                <div class="card-body">
+                                    <i class="bi bi-person-circle fs-2 text-vinho" aria-hidden="true"></i>
+                                    <h2 class="h5 mt-3">Tudo no seu lugar</h2>
+                                    <p class="small text-secondary">Confira seus dados e endereço para receber seus pedidos com tranquilidade.</p>
+                                    <a class="atalho" href="/cliente/alterar-dados">Meus dados pessoais →</a>
+                                    <a class="atalho" href="/cliente/enderecos">Endereços de entrega →</a>
+                                    <a class="atalho" href="/cliente/ajuda">Dúvidas e atendimento →</a>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>

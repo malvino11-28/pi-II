@@ -1,0 +1,30 @@
+<!-- Conteúdo desta página. O cabeçalho e o menu estão em clienteLayout.ejs. -->
+<section id="dados" class="secao-cliente">
+                    <p class="titulo-pequeno">DO SEU JEITO</p>
+                    <h1 class="h2">Meus dados</h1>
+                    <p class="text-secondary">Suas informações pessoais e de contato.</p>
+                    <form class="card" onsubmit="avisarFormulario(event)">
+                        <div class="card-body">
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="nome" class="form-label">Nome completo</label>
+                                    <input id="nome" name="nome" type="text" class="form-control" value="<%= cliente.NOME_PF %>" required maxlength="100" autocomplete="name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">E-mail</label>
+                                    <input id="email" name="email" type="email" class="form-control" value="<%= cliente.EMAIL_PESSOA %>" required autocomplete="email">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="telefone" class="form-label">Celular</label>
+                                    <input id="telefone" name="telefone" type="tel" class="form-control" value="" placeholder="(18) 99999-9999" autocomplete="tel">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="nascimento" class="form-label">Data de nascimento</label>
+                                    <input id="nascimento" name="nascimento" type="date" class="form-control" value="" >
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-vinho">Salvar alterações</button>
+                        </div>
+                    </form>
+                    <a href="/cliente/alterar-senha" class="btn btn-link mt-3">Alterar minha senha</a>
+</section>

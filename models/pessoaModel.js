@@ -34,6 +34,23 @@ class PessoaModel {
     set TELEFONE_PESSOA(value) {
         this.#TELEFONE_PESSOA = value;
     }
+
+    async cadastrarP() {
+
+        let sql = "INSERT INTO PESSOA (EMAIL_PESSOA, TELEFONE_PESSOA) VALUES (?, ?)";
+        let values = [this.#EMAIL_PESSOA, this.#TELEFONE_PESSOA];
+
+        let banco = new Database();
+        let result = await banco.ExecutaComandoLastInserted(sql, values);
+
+        if(result) {
+
+            this.#COD_PESSOA = result;
+            return true;
+        }
+
+        return false;
+    }
 }
 
 module.exports = PessoaModel;

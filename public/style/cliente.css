@@ -1,0 +1,126 @@
+/* Complementos visuais. A estrutura e os formulários usam o Bootstrap. */
+
+/* Cores e cartões */
+.area-cliente h1,
+.area-cliente h2,
+.area-cliente .text-vinho,
+.area-cliente .btn-link {
+    color: #440a0a;
+}
+
+.area-cliente .card {
+    border: 1px solid #eadfd4;
+    border-radius: 12px;
+    background-color: #fffdf9;
+}
+
+.area-cliente .card-body {
+    padding: 24px;
+}
+
+.area-cliente .titulo-pequeno {
+    color: #98582e;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+/* Menu lateral */
+.area-cliente .avatar-cliente {
+    background-color: #efdfd0;
+    color: #440a0a;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.area-cliente .menu-cliente .nav-link {
+    color: #705b52;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 16px;
+    background-color: transparent;
+}
+
+.area-cliente .menu-cliente .nav-link:hover {
+    background-color: #f1e5d6;
+}
+
+.area-cliente .menu-cliente .nav-link.active {
+    background-color: #440a0a;
+    color: white;
+}
+
+/* Banner, convite e foto do pedido */
+.area-cliente .banner-cliente {
+    background-color: #440a0a;
+}
+
+.area-cliente .convite-clube {
+    background-color: #f5e9d9;
+    color: #440a0a;
+}
+
+.area-cliente .foto-pedido {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+}
+
+.area-cliente .progresso-pedido {
+    width: 66.67%;
+}
+
+/* Botões e links */
+.area-cliente .btn-vinho {
+    background-color: #440a0a;
+    border-color: #440a0a;
+    color: white;
+}
+
+.area-cliente .btn-vinho:hover {
+    background-color: #2d0606;
+    color: white;
+}
+
+.area-cliente .btn-laranja {
+    background-color: #ee7b30;
+    border-color: #ee7b30;
+    color: #2d0606;
+    font-weight: bold;
+}
+
+.area-cliente .btn-laranja:hover {
+    background-color: #ff9b55;
+    color: #2d0606;
+}
+
+.area-cliente .atalho {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    border: none;
+    border-top: 1px solid #eadfd4;
+    background-color: transparent;
+    text-align: left;
+    color: #440a0a;
+    font-size: 14px;
+}
+
+.area-cliente .plano-destaque {
+    border: 2px solid #ee7b30;
+    background-color: #fff9f0;
+}
+
+.area-cliente button:focus-visible,
+.area-cliente a:focus-visible,
+.area-cliente summary:focus-visible {
+    outline: 3px solid #b64a00;
+    outline-offset: 3px;
+}

@@ -1,7 +1,7 @@
 class clienteController {
 
     rotaAreaClienteView(req, res) {
-        res.render('cliente/area-cliente');
+        res.render('client/area-cliente');
     }
 
     rotaAlterarDadosView(req, res) {

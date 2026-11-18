@@ -46,14 +46,16 @@ class authController {
                 mensagem: msg,
                 tipo_usuario: user_tipo
             });
+
         } else if (user_tipo === "cliente") {
+            
             let msg = "E-mail ou senha inválidos!";
             let cliente = new PessoaFisicaModel();
             cliente = await cliente.validar(user.trim().toLowerCase(), senha, user_tipo);
 
             if (cliente) {
                 res.cookie("UserLogado", cliente.COD_PESSOA);
-                return res.redirect("/carrinho");
+                return res.redirect("/cliente");
             }
 
             return res.render("auth/login", {

@@ -565,20 +565,20 @@ class adminController {
         let itemPedido = new ItemPedidoModel();
         let itens = await itemPedido.listarItensAdmin(id);
 
-        return res.render("admin/detalhesPedido", { pedido, itens });
+        return res.render("admin/detalhesPedido", { pedido: p, itens });
     } 
 
     async rotaControlePedido(req, res) {
         let id = Number(req.params.id);
 
         if (!id || id <= 0) {
-            
+            return res.send("Código de pedido inválido.");
         } else {
             let pedidoModel = new PedidoModel();
             let pedido = await pedidoModel.obterPedidoAdmin(id);
 
             if (!pedido) {
-        
+                return res.send("Pedido não encontrado.");
             }
 
             let itemPedidoModel = new ItemPedidoModel();

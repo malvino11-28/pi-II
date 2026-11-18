@@ -83,21 +83,24 @@ class EntregaModel {
     }
 
     async definirEntregaPedido(idPedido, idEndereco, data) {
-        let sqlPedido = "SELECT COD_PED FROM PEDIDO WHERE COD_PED = ? AND STATUS_PED = 'Pendente' FOR UPDATE"; 
-        let valueP = [idPedido];
-
-        let sqlEntrega = `INSERT INTO ENTREGA (COD_PED, COD_END, DATA_ENT, STATUS_ENT)
-            SELECT P.COD_PED, EN.COD_END, ?, 'Pendente' FROM PEDIDO P
+        let sql = `
+            INSERT INTO ENTREGA (COD_PED, COD_END, DATA_ENT, STATUS_ENT)
+            SELECT P.COD_PED, EN.COD_END, ?, 'Pendente'
+            FROM PEDIDO P
             INNER JOIN ENDERECO EN ON EN.COD_PESSOA = P.COD_CLI
             WHERE P.COD_PED = ?
-            AND EN.COD_END = ?
+                AND P.STATUS_PED = 'Pendente'
+                AND EN.COD_END = ?
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM ENTREGA E
+                    WHERE E.COD_PED = P.COD_PED
+                )
         `;
-        let valueE = [data, id, idEndereco];
 
-        let resultP = await db.ExecutaComandoNonQuery(sqlPedido, valueP);
-        let resultE = await db.ExecutaComando(sqlEntrega, valueE);
+        let valores = [data, idPedido, idEndereco];
 
-        return resultP && resultE;
+        return await db.ExecutaComandoNonQuery(sql, valores);
     }
 }
 

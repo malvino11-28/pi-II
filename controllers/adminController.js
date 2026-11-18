@@ -660,7 +660,7 @@ class adminController {
                 let qtd = 0;
 
                 for (let j = 0; j<conferidos.length; j++) {
-                    if (conferidos[j] && conferidos[j].produto == itens[i].COD_PROD && conferidos[j].lote == itens[j].COD_LOTE) {
+                    if (conferidos[j] && conferidos[j].produto == itens[i].COD_PROD && conferidos[j].lote == itens[i].COD_LOTE) {
                         qtd++;
                     }
                 }
@@ -673,7 +673,7 @@ class adminController {
                 }
             }
 
-            result = await pedidoModel.atualizarStatusPedido(id, novoStatus, pedido.STATUS_PEDIDO);
+            result = await pedidoModel.atualizarStatusPedido(id, novoStatus, pedido.STATUS_PED);
 
         } else if (novoStatus == "Cancelado") {
             result = await pedidoModel.cancelarPedido(id, pedido.STATUS_PED);

@@ -83,10 +83,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function definirEntrega() {
         let id = this.dataset.id;
-        let codEndereco = document.querySelector("#enderecoEntrega").value;
+        let idEndereco = document.querySelector("#enderecoEntrega").value;
         let data = document.querySelector("#dataEntrega").value;
 
-        if (!codEndereco || !data) {
+        if (!idEndereco || !data) {
             alert("Selecione o endereço e a data da entrega.");
             return;
         }
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         let obj = {
-            codEndereco: codEndereco,
+            idEndereco: idEndereco,
             data: data
         };
 

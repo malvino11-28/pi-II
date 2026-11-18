@@ -206,30 +206,39 @@ class PedidoModel {
 
         let ok = 0;
         let resultL;
-        for (let i = 0;i < itens.length;i++) {
-            let item = itens[i];
-            let qtd = item.QTD_PROD;
+
+        for (let i = 0; i < itens.length; i++) {
+            let qtd = itens[i].QTD_PROD;
 
             if (!qtd || qtd <= 0) {
                 return false;
             }
-
-            let valuesLote = [qtd, item.COD_LOTE, item.COD_PROD];
-
-            resultL = await db.ExecutaComandoNonQuery(sqlLote, valuesLote);
-
-            if (resultL) {
-                ok++;
-            }
         }
 
-        if (ok < itens.length) {
-            return false;
-        } else {
-            let resultP = await db.ExecutaComandoNonQuery(sqlStatus, valuesStatus);
-            let resultE = await db.ExecutaComandoNonQuery(sqlEntrega, value);
+        let resultP = await db.ExecutaComandoNonQuery(sqlStatus, valuesStatus);
+        if (resultP) {
+            for (let i = 0;i < itens.length;i++) {
+                let qtd = itens[i].QTD_PROD;
 
-            return resultP && resultE && resultL;
+                let valuesLote = [qtd, item.COD_LOTE, item.COD_PROD];
+
+                resultL = await db.ExecutaComandoNonQuery(sqlLote, valuesLote);
+
+                if (resultL) {
+                    ok++;
+                } else {
+                    return false; 
+                }
+            }
+            if (ok < itens.length) {
+                return false;
+            } else {
+                await db.ExecutaComandoNonQuery(sqlEntrega, value);
+
+                return true;
+            }
+        } else {
+            return false;
         }
     }
 

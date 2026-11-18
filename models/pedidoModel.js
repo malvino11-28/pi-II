@@ -243,7 +243,7 @@ class PedidoModel {
     }
 
     async retirarPedido(id) {
-        let sql = "UPDATE PEDIDO SET SET_STATUS = 'Retirado' WHERE COD_PED = ? AND STATUS_PED = 'Preparado'";
+        let sql = "UPDATE PEDIDO SET STATUS_PED = 'Retirado' WHERE COD_PED = ? AND STATUS_PED = 'Preparado'";
         let value = [id];
 
         let result = await db.ExecutaComandoNonQuery(sql, value);

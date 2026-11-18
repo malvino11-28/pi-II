@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %> | Corte Imperial</title>
+    <!-- Mesmas versões usadas na página inicial do projeto. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/style/header.css" rel="stylesheet">
+    <link href="/style/index.css" rel="stylesheet">
+    <link href="/style/cliente.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="/js/cliente.js" defer></script>
+</head>
+<body class="area-cliente">
+    <header class="main-header">
+        <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <a href="/" class="d-flex align-items-center gap-3">
+                <img src="/imgs/logo.png" class="logo-img" alt="">
+                <div>
+                    <p class="brand-name">Corte Imperial</p>
+                    <p class="brand-subtitle">Açougue Premium</p>
+                </div>
+            </a>
+            <span class="text-white-50 small d-none d-xl-block">Qualidade em cada corte. Cuidado em cada pedido.</span>
+            <a href="/" class="btn btn-outline-light btn-sm">Voltar à loja <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </div>
+    </header>
+    <div class="main-nav text-white py-2">
+        <div class="container small">Minha conta</div>
+    </div>
+
+    <div class="container py-4">
+        <div class="row g-4">
+            <!-- Links para as páginas da área do cliente. -->
+            <aside class="col-lg-3">
+                <div class="d-flex align-items-center gap-3 border-bottom pb-4 mb-3">
+                    <div class="avatar-cliente">CE</div>
+                    <div><strong>Cliente Exemplo</strong><br><small class="text-secondary">Bem-vindo à sua conta</small></div>
+                </div>
+                <nav class="nav flex-column gap-2 menu-cliente" aria-label="Menu da conta">
+                    <a href="/cliente" class="nav-link text-start <%= pagina === 'inicio' ? 'active' : '' %>" <% if (pagina === 'inicio') { %>aria-current="page"<% } %>>
+                        <i class="bi bi-house-door me-2" aria-hidden="true"></i> Visão geral
+                    </a>
+                    <a href="/cliente/pedidos" class="nav-link text-start <%= pagina === 'pedidos' ? 'active' : '' %>" <% if (pagina === 'pedidos') { %>aria-current="page"<% } %>>
+                        <i class="bi bi-box-seam me-2" aria-hidden="true"></i> Meus pedidos
+                    </a>
+                    <a href="/cliente/assinatura" class="nav-link text-start <%= pagina === 'assinatura' ? 'active' : '' %>" <% if (pagina === 'assinatura') { %>aria-current="page"<% } %>>
+                        <i class="bi bi-star me-2" aria-hidden="true"></i> Minha assinatura
+                    </a>
+                    <a href="/cliente/alterar-dados" class="nav-link text-start <%= pagina === 'dados' || pagina === 'senha' ? 'active' : '' %>" <% if (pagina === 'dados') { %>aria-current="page"<% } %>>
+                        <i class="bi bi-person me-2" aria-hidden="true"></i> Meus dados
+                    </a>
+                    <a href="/cliente/enderecos" class="nav-link text-start <%= pagina === 'enderecos' ? 'active' : '' %>" <% if (pagina === 'enderecos') { %>aria-current="page"<% } %>>
+                        <i class="bi bi-geo-alt me-2" aria-hidden="true"></i> Endereços
+                    </a>
+                    <a href="/cliente/ajuda" class="nav-link text-start <%= pagina === 'ajuda' ? 'active' : '' %>" <% if (pagina === 'ajuda') { %>aria-current="page"<% } %>>
+                        <i class="bi bi-question-circle me-2" aria-hidden="true"></i> Preciso de ajuda
+                    </a>
+                </nav>
+                <div class="convite-clube p-4 mt-4 rounded d-none d-lg-block">
+                    <i class="bi bi-star fs-4" aria-hidden="true"></i>
+                    <p class="fw-bold mt-3">Seu churrasco merece<br>um toque imperial.</p>
+                    <a class="btn btn-sm btn-vinho" href="/cliente/assinatura">Conhecer os planos</a>
+                </div>
+            </aside>
+
+            <main class="col-lg-9" id="conteudo" tabindex="-1">
+                <p class="small text-secondary mb-4">Prévia demonstrativa · Dados, preços e benefícios ilustrativos</p>
+
+                <%- body %>
+
+                <footer class="border-top d-flex flex-wrap justify-content-between gap-2 mt-5 pt-3 small text-secondary">
+                    <span>© 2026 Corte Imperial</span><span>Qualidade e tradição à sua mesa.</span>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>

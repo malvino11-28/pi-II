@@ -1,0 +1,42 @@
+<!-- Conteúdo desta página. O cabeçalho e o menu estão em clienteLayout.ejs. -->
+<section id="enderecos" class="secao-cliente">
+                    <p class="titulo-pequeno">SEU PEDIDO NO LUGAR CERTO</p>
+                    <h1 class="h2">Meu endereço</h1>
+                    <p class="text-secondary">Confira seu endereço principal de entrega.</p>
+                    <form class="card" onsubmit="avisarFormulario(event)">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3"><h2 class="h5">Casa</h2><span class="badge text-bg-success align-self-start">Principal</span></div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="cep" class="form-label">CEP</label>
+                                    <input id="cep" name="cep" type="text" class="form-control" value="19000-000" required pattern="[0-9]{5}-?[0-9]{3}" maxlength="9">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="rua" class="form-label">Rua</label>
+                                    <input id="rua" name="rua" type="text" class="form-control" value="Rua Exemplo" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="numero" class="form-label">Número</label>
+                                    <input id="numero" name="numero" type="text" class="form-control" value="123" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="complemento" class="form-label">Complemento</label>
+                                    <input id="complemento" name="complemento" type="text" class="form-control" value="" >
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bairro" class="form-label">Bairro</label>
+                                    <input id="bairro" name="bairro" type="text" class="form-control" value="Centro" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cidade" class="form-label">Cidade</label>
+                                    <input id="cidade" name="cidade" type="text" class="form-control" value="Presidente Prudente" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="uf" class="form-label">Estado (UF)</label>
+                                    <input id="uf" name="uf" type="text" class="form-control" value="SP" required maxlength="2" pattern="[A-Za-z]{2}">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-vinho">Salvar endereço</button>
+                        </div>
+                    </form>
+                </section>

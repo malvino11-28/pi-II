@@ -17,4 +17,9 @@ router.post('/cliente/alterar-senha', auth.autenticarCliente, controller.rotaAlt
 router.get('/cliente/assinatura', auth.autenticarCliente, controller.rotaAssinaturaView);
 router.post('/cliente/assinatura', auth.autenticarCliente, controller.rotaAssinarPlano);
 
+// Demais páginas da área do cliente.
+router.get('/cliente/pedidos', auth.autenticarCliente, controller.rotaPedidosView);
+router.get('/cliente/enderecos', auth.autenticarCliente, controller.rotaEnderecosView);
+router.get('/cliente/ajuda', auth.autenticarCliente, controller.rotaAjudaView);
+
 module.exports = router;

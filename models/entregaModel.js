@@ -70,6 +70,35 @@ class EntregaModel {
         return result;
     }
 
+    async obterEntregaPedido(id) {
+        let sql = `SELECT E.*, 
+            EN.RUA_END, EN.NUM_END, EN.BAIRRO_END, EN.CIDADE_END, EN.ESTADO_END
+            FROM ENTREGA E LEFT JOIN ENDERECO EN ON EN.COD_END = E.COD_END
+            WHERE E.COD_PED = ?    
+        `;
+        let value = [id];
+
+        let rows = await db.ExecutaComando(sql, value);
+        return rows[0];
+    }
+
+    async definirEntregaPedido(idPedido, idEndereco, data) {
+        let sqlPedido = "SELECT COD_PED FROM PEDIDO WHERE COD_PED = ? AND STATUS_PED = 'Pendente' FOR UPDATE"; 
+        let valueP = [idPedido];
+
+        let sqlEntrega = `INSERT INTO ENTREGA (COD_PED, COD_END, DATA_ENT, STATUS_ENT)
+            SELECT P.COD_PED, EN.COD_END, ?, 'Pendente' FROM PEDIDO P
+            INNER JOIN ENDERECO EN ON EN.COD_PESSOA = P.COD_CLI
+            WHERE P.COD_PED = ?
+            AND EN.COD_END = ?
+        `;
+        let valueE = [data, id, idEndereco];
+
+        let resultP = await db.ExecutaComandoNonQuery(sqlPedido, valueP);
+        let resultE = await db.ExecutaComando(sqlEntrega, valueE);
+
+        return resultP && resultE;
+    }
 }
 
 module.exports = EntregaModel;

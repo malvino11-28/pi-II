@@ -36,8 +36,13 @@
             <!-- Links para as páginas da área do cliente. -->
             <aside class="col-lg-3">
                 <div class="d-flex align-items-center gap-3 border-bottom pb-4 mb-3">
-                    <div class="avatar-cliente">CE</div>
-                    <div><strong>Cliente Exemplo</strong><br><small class="text-secondary">Bem-vindo à sua conta</small></div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                        </svg>
+                    </div>
+                    <div><strong><%= cliente.NOME_PF %></strong><br><small class="text-secondary">Bem-vindo à sua conta</small></div>
                 </div>
                 <nav class="nav flex-column gap-2 menu-cliente" aria-label="Menu da conta">
                     <a href="/cliente" class="nav-link text-start <%= pagina === 'inicio' ? 'active' : '' %>" <% if (pagina === 'inicio') { %>aria-current="page"<% } %>>
@@ -67,7 +72,6 @@
             </aside>
 
             <main class="col-lg-9" id="conteudo" tabindex="-1">
-                <p class="small text-secondary mb-4">Prévia demonstrativa · Dados, preços e benefícios ilustrativos</p>
 
                 <%- body %>
 

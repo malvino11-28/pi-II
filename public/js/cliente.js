@@ -42,16 +42,101 @@ function avisarFormulario(event) {
     alert('Esta é uma demonstração. Os dados não foram salvos no sistema.');
 }
 
-addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    let btns = document.querySelectorAll('.btn-plano');
+    let btnConfirmar = document.getElementById('btn-confirmar-assinatura');
 
-    let btns = document.querySelectorAll('#btn-plano');
-
-    for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener('click', cadastrarAssinatura);
+    // Este arquivo também é carregado nas outras páginas do cliente.
+    if (!btnConfirmar) {
+        return;
     }
 
-    function cadastrarAssinatura(event) {
+    let codPlano = null;
+    let nomePlano = '';
+    let enviando = false;
 
-        
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', selecionarPlano);
+    }
+
+    btnConfirmar.addEventListener('click', cadastrarAssinatura);
+
+    function selecionarPlano(event) {
+        let botao = event.currentTarget;
+
+        codPlano = Number(botao.dataset.codPlano);
+        nomePlano = botao.dataset.nomePlano;
+
+        let valorPlano = Number(botao.dataset.valorPlano);
+
+        document.getElementById('nome-plano').textContent = nomePlano;
+
+        document.getElementById('valor-plano').textContent =
+            valorPlano.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+    }
+
+    async function cadastrarAssinatura() {
+        // Evita enviar novamente enquanto aguarda a resposta.
+        if (enviando) {
+            return;
+        }
+
+        if (!Number.isInteger(codPlano) || codPlano <= 0) {
+            alert('Selecione um plano válido.');
+            return;
+        }
+
+        // Guarda qual plano está sendo enviado nesta requisição.
+        let planoEnviado = codPlano;
+        let nomeEnviado = nomePlano;
+
+        enviando = true;
+        btnConfirmar.disabled = true;
+        btnConfirmar.textContent = 'Aguarde...';
+
+        try {
+            let resposta = await fetch('/cliente/assinatura', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    codPlano: planoEnviado
+                })
+            });
+
+            // Um redirecionamento pode retornar o HTML do login
+            // ou de outra página, em vez do JSON esperado.
+            let tipoResposta = resposta.headers.get('Content-Type') || '';
+
+            if (resposta.redirected || !tipoResposta.includes('application/json')) {
+                throw new Error(
+                    'O servidor retornou uma página em vez do resultado. ' +
+                    'Verifique seu login e a resposta da controladora.'
+                );
+            }
+
+            let resultado = await resposta.json();
+
+            if (!resposta.ok || resultado.ok !== true) {
+                throw new Error(
+                    resultado.mensagem || 'Não foi possível cadastrar a assinatura.'
+                );
+            }
+
+            alert(resultado.mensagem || 'Assinatura cadastrada com sucesso!');
+            window.location.reload();
+
+        } catch (erro) {
+            alert(erro.message || 'Erro de comunicação com o servidor.');
+
+        } finally {
+            enviando = false;
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = 'Confirmar assinatura';
+        }
     }
 });

@@ -4,8 +4,17 @@
                     <h1 class="h2">Um plano para a sua mesa.</h1>
                     <p class="text-secondary">Escolha como você quer aproveitar os melhores momentos.</p>
                     <div class="convite-clube p-3 rounded my-4">
-                        <strong>Sua assinatura: <span id="plano-atual">Sem plano</span></strong>
-                        <p class="small mb-0 mt-1" id="situacao-plano">Você ainda não possui uma assinatura.</p>
+                        <strong>
+                            Seu plano:
+                            <span id="plano-atual">
+                                <%= planoAssinado ? planoAssinado.NOME_PLANO : 'Sem plano' %>
+                            </span>
+                        </strong>
+
+                        <p class="small mb-0 mt-1" id="situacao-plano">
+                            Status:
+                            <%= assinatura ? assinatura.STATUS_ASS : 'Pendente de plano' %>
+                        </p>
                     </div>
                     <div class="row g-3">
                         <% for(let i=0; i<planos.length; i++) { %>
@@ -19,7 +28,7 @@
                                         <li class="mb-2">Promoções exclusivas do clube</li>
                                         <li>Acesso às novidades da loja</li>
                                     </ul>
-                                    <button type="button" class="btn btn-vinho mt-auto" id="btn-plano" data-bs-toggle="modal" data-bs-target="#modal-plano" onclick="escolherPlano('<%= planos[i].NOME_PLANO %>', '<%= planos[i].VALOR_PLANO %>')">Escolher <%= planos[i].NOME_PLANO %></button>
+                                    <button type="button" class="btn btn-vinho mt-auto btn-plano" data-cod-plano="<%= planos[i].COD_PLANO %>" data-nome-plano="<%= planos[i].NOME_PLANO %>" data-valor-plano="<%= planos[i].VALOR_PLANO %>" data-bs-toggle="modal" data-bs-target="#modal-plano">Escolher <%= planos[i].NOME_PLANO %></button>
                                 </div></article>
                             </div>
                         <% } %>
@@ -40,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
-                <button type="button" class="btn btn-vinho" data-bs-dismiss="modal" onclick="confirmarPlano()">Confirmar simulação</button>
+                <button type="button" class="btn btn-vinho" id="btn-confirmar-assinatura">Confirmar assinatura</button>
             </div>
         </div></div>
     </div>

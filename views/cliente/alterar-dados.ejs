@@ -8,11 +8,11 @@
                             <div class="row g-3 mb-4">
                                 <div class="col-md-6">
                                     <label for="nome" class="form-label">Nome completo</label>
-                                    <input id="nome" name="nome" type="text" class="form-control" value="Cliente Exemplo" required maxlength="100" autocomplete="name">
+                                    <input id="nome" name="nome" type="text" class="form-control" value="<%= cliente.NOME_PF %>" required maxlength="100" autocomplete="name">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">E-mail</label>
-                                    <input id="email" name="email" type="email" class="form-control" value="cliente@example.com" required autocomplete="email">
+                                    <input id="email" name="email" type="email" class="form-control" value="<%= cliente.EMAIL_PESSOA %>" required autocomplete="email">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="telefone" class="form-label">Celular</label>

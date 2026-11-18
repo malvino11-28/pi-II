@@ -1,4 +1,5 @@
 const planoModel = require('../models/planoModel');
+const AssinaturaModel = require('../models/assinaturaModel');
 
 class clienteController {
 
@@ -74,10 +75,97 @@ class clienteController {
         });
     }
 
-    rotaAssinarPlano(req, res) {
-        // Lógica para assinar um plano
-        res.redirect('/cliente');
+    async rotaAssinarPlano(req, res) {
+    try {
+        if (!req.cliente) {
+            return res.status(401).json({
+                ok: false,
+                mensagem: 'Faça login para assinar um plano.'
+            });
+        }
+
+        let codPlano = Number(req.body.codPlano);
+        let codPessoa = req.cliente.COD_PESSOA;
+
+        if (!Number.isInteger(codPlano) || codPlano <= 0) {
+            return res.status(400).json({
+                ok: false,
+                mensagem: 'Selecione um plano válido.'
+            });
+        }
+
+        // Busca as informações reais do plano no banco.
+        let plano = new planoModel();
+        plano = await plano.obterPlanoId(codPlano);
+
+        if (!plano) {
+            return res.status(404).json({
+                ok: false,
+                mensagem: 'Plano não encontrado.'
+            });
+        }
+
+        // Este método faz o cadastro inicial da assinatura.
+        let assinatura = new AssinaturaModel();
+        let existente = await assinatura.obterAssinaturaId(codPessoa);
+
+        if (existente) {
+            return res.status(409).json({
+                ok: false,
+                mensagem: 'Você já possui uma assinatura cadastrada.'
+            });
+        }
+
+        let duracao = Number(plano.DURACAO_PLANO);
+
+        if (!Number.isInteger(duracao) || duracao <= 0) {
+            return res.status(400).json({
+                ok: false,
+                mensagem: 'O plano está com a duração inválida.'
+            });
+        }
+
+        // Calcula o vencimento usando a duração em dias.
+        let vencimento = new Date();
+        vencimento.setDate(vencimento.getDate() + duracao);
+
+        // Formato aceito pelo campo DATE do MySQL: AAAA-MM-DD.
+        let ano = vencimento.getFullYear();
+        let mes = String(vencimento.getMonth() + 1).padStart(2, '0');
+        let dia = String(vencimento.getDate()).padStart(2, '0');
+
+        let dataVencimento = `${ano}-${mes}-${dia}`;
+
+        assinatura = new AssinaturaModel(
+            codPessoa,
+            plano.COD_PLANO,
+            'Ativa',
+            dataVencimento
+        );
+
+        let cadastrou = await assinatura.cadastrarAssinatura();
+
+        if (!cadastrou) {
+            return res.status(500).json({
+                ok: false,
+                mensagem: 'Não foi possível cadastrar a assinatura.'
+            });
+        }
+
+        return res.status(201).json({
+            ok: true,
+            mensagem: 'Assinatura cadastrada com sucesso!'
+        });
+
+    } catch (erro) {
+        console.error('Erro ao cadastrar assinatura:', erro);
+
+        return res.status(500).json({
+            ok: false,
+            mensagem: 'Erro interno ao cadastrar a assinatura.'
+        });
     }
+}
 }
 
 module.exports = clienteController;

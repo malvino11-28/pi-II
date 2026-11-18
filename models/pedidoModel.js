@@ -145,9 +145,40 @@ class PedidoModel {
         return result;
     }
 
-    async obterPorId(id) {
+    async listarPedidosAdmin() {
+        let sql = `
+            SELECT P.COD_PED, P.COD_CLI, P.DATA_PED, P.STATUS_PED, P.TOTAL_PED,
+                PF.NOME_PF AS NOME_CLIENTE,
+                F.NOME_RECEB AS FORMA_PAGAMENTO
+            FROM PEDIDO P
+            INNER JOIN PESSOA_FISICA PF ON PF.COD_PESSOA = P.COD_CLI
+            INNER JOIN FORMA_PAGAMENTO F ON F.COD_RECEB = P.COD_RECEB
+            ORDER BY P.DATA_PED DESC, P.COD_PED DESC
 
+        `;
+
+        let result = await db.ExecutaComando(sql);
+        return result
     }
+
+    async obterPedidoAdmin(id) {
+        let sql = `
+            SELECT P.COD_PED, P.COD_CLI, P.DATA_PED, P.STATUS_PED, P.TOTAL_PED,
+                PF.NOME_PF AS NOME_CLIENTE,
+                PF.EMAIL_PESSOA, PF.TELEFONE_PESSOA,
+                F.NOME_RECEB AS FORMA_PAGAMENTO
+            FROM PEDIDO P
+            INNER JOIN PESSOA_FISICA PF ON PF.COD_PESSOA = P.COD_CLI
+            INNER JOIN FORMA_PAGAMENTO F ON F.COD_RECEB = P.COD_RECEB
+            WHERE P.COD_PED = ?
+        `;
+        let value = [id];
+
+        let rows = await db.ExecutaComando(sql, value);
+        return rows[0];
+    }
+
+    
 }
 
 module.exports = PedidoModel;

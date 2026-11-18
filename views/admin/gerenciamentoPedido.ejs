@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Pedidos - Corte Imperial</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/style/admin.css" rel="stylesheet">
+</head>
+<body>
+    <header class="admin-header">
+        <div class="container d-flex align-items-center">
+            <a href="/admin">
+                <img src="/imgs/logo.png" alt="Corte Imperial"
+                     class="admin-logo me-3">
+            </a>
+
+            <div>
+                <h1 class="admin-brand">Corte Imperial</h1>
+                <p class="admin-subtitle">Painel Administrativo</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-title-section">
+        <div class="container">
+            <h2 class="page-title">Gerenciamento de Pedidos</h2>
+
+            <p class="page-breadcrumb">
+                <a href="/admin">Início</a>
+                <i class="bi bi-chevron-right"></i>
+                Pedidos
+            </p>
+        </div>
+    </div>
+
+    <main class="container mb-5">
+        <div class="stats-container">
+            <div class="row">
+                <div class="col-md-4 col-xl-2 mb-3">
+                    <div class="stat-card">
+                        <p class="stat-number"><%= total %></p>
+                        <p class="stat-label">Total de pedidos</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-2 mb-3">
+                    <div class="stat-card">
+                        <p class="stat-number"><%= pendentes %></p>
+                        <p class="stat-label">Pendentes</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-2 mb-3">
+                    <div class="stat-card">
+                        <p class="stat-number"><%= preparados %></p>
+                        <p class="stat-label">Preparados</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-2 mb-3">
+                    <div class="stat-card">
+                        <p class="stat-number"><%= emEntrega %></p>
+                        <p class="stat-label">Saiu para entrega</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-2 mb-3">
+                    <div class="stat-card">
+                        <p class="stat-number"><%= retirados %></p>
+                        <p class="stat-label">Retirados</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-2 mb-3">
+                    <div class="stat-card">
+                        <p class="stat-number"><%= cancelados %></p>
+                        <p class="stat-label">Cancelados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-header">
+                <h3 class="table-title">Pedidos cadastrados</h3>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table clientes-table">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Forma de recebimento</th>
+                            <th>Total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% for (let i = 0; i < pedidos.length; i++) { %>
+                            <tr>
+                                <td>#<%= pedidos[i].COD_PED %></td>
+
+                                <td>
+                                    <%= pedidos[i].NOME_CLIENTE %>
+                                </td>
+
+                                <td>
+                                    <%= formatarData(pedidos[i].DATA_PED) %>
+                                </td>
+
+                                <td>
+                                    <%= pedidos[i].STATUS_PED %>
+                                </td>
+
+                                <td>
+                                    <%= pedidos[i].FORMA_RECEBIMENTO %>
+                                </td>
+
+                                <td>
+                                    R$ <%= formatarValor(pedidos[i].TOTAL_PED) %>
+                                </td>
+
+                                <td>
+                                    <a
+                                        href="/admin/pedidos/<%= pedidos[i].COD_PED %>"
+                                        class="btn-acao btn-editar"
+                                        title="Consultar pedido">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <% } %>
+
+                        <% if (pedidos.length === 0) { %>
+                            <tr>
+                                <td colspan="7" class="sem-clientes">
+                                    Nenhum pedido cadastrado.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

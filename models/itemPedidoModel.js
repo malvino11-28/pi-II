@@ -85,6 +85,24 @@ class ItemPedidoModel {
         let result = await db.ExecutaComandoNonQuery(sql, value);
         return result;
     }
+
+    async listarItensAdmin(id) {
+        let sql = `
+            SELECT I.COD_PROD, I.COD_LOTE, I.QTD_PROD, I.VALOR_UNI,
+                P.NOME_PROD, P.UNI_MEDIDA_PROD, L.NUM_LOTE
+            FROM ITEM_PEDIDO I
+            INNER JOIN PRODUTO P ON P.COD_PROD = I.COD_PROD
+            INNER JOIN LOTE L ON L.COD_LOTE = I.COD_LOTE
+                        AND L.COD_PROD = I.COD_PROD
+            WHERE I.COD_PED = ?
+            ORDER BY P.NOME_PROD, I.COD_PROD, I.COD_LOTE
+        `;
+        let value = [id];
+
+        let result = await db.ExecutaComando(sql, value);
+
+        return result;
+    }
 }
 
 module.exports = ItemPedidoModel;

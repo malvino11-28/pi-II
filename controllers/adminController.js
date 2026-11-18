@@ -4,6 +4,8 @@ const CategoriaModel = require("../models/categoriaModel");
 const ProdutoModel = require("../models/produtoModel");
 const MarcaModel = require("../models/marcaModel");
 const LoteModel = require("../models/loteModel");
+const PedidoModel = require("../models/pedidoModel");
+const ItemPedidoModel = require("../models/itemPedidoModel");
 
 const {
     somenteNumeros,
@@ -494,6 +496,75 @@ class adminController {
             res.send({ ok: false });
         }
     }
+
+    // pedido
+
+    async rotaGerenciarPedido(req, res) {
+        let pedidoModel = new PedidoModel();
+        let pedidos = await pedidoModel.listarPedidosAdmin();
+
+        let total = pedidos.length;
+        let pendentes = 0;
+        let preparados= 0;
+        let emEntrega= 0;
+        let retirados= 0;
+        let cancelados= 0;
+
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Pendente") {
+                pendentes++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Preparado") {
+                preparados++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Saiu para entrega") {
+                emEntrega++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Retirado") {
+                retirados++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Cancelado") {
+                cancelados++;
+            }
+        }
+
+        res.render("admin/gerenciamentoPedido", {
+            pedidos,
+            total,
+            pendentes,
+            preparados,
+            emEntrega,
+            retirados,
+            cancelados
+        });
+    }
+
+    async rotaDetalhesPedido(req, res) {
+        let id = req.params.id;
+        
+        if(!id && id <=0 ) {
+            res.send({ok: false});
+        } 
+
+        let pedido = new PedidoModel();
+        let p = await pedido.obterPedidoAdmin(id);
+
+        if (!p) {
+
+        }
+        let itemPedido = new ItemPedidoModel();
+        let itens = await itemPedido.listarItensAdmin(id);
+
+        return res.render("admin/detalhesPedido", { pedido, itens });
+    } 
 }
 
 module.exports = adminController;

@@ -10,6 +10,7 @@ const contactRoute = require("./contactRoute");
 const cartRoute = require("./cartRoute");
 const authRoute = require("./authRoute");
 const adminRoute = require("./adminRoute");
+const clienteRoute = require("./clienteRoute");
 
 router.use("/", indexRoute);
 router.use("/", productRoute);
@@ -19,5 +20,6 @@ router.use("/", cartRoute);
 router.use("/", pedidoRoute);
 router.use("/", authRoute);
 router.use("/", adminRoute);
+router.use("/", clienteRoute);
 
 module.exports = router;

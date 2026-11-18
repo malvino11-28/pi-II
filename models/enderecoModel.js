@@ -1,5 +1,7 @@
 const Database = require("../database/database");
 
+const db = new Database();
+
 class EnderecoModel {
     #COD_END;
     #COD_PESSOA;

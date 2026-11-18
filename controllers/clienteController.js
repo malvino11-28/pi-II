@@ -1,3 +1,5 @@
+const planoModel = require('../models/planoModel');
+
 class clienteController {
 
     rotaPedidosView(req, res) {
@@ -58,11 +60,17 @@ class clienteController {
         res.redirect('/cliente');
     }
 
-    rotaAssinaturaView(req, res) {
+    async rotaAssinaturaView(req, res) {
+
+        let plano = new planoModel();
+        let listaPlanos = await plano.listarPlanos();
+
         res.render('cliente/assinatura', {
             layout: 'layout/clienteLayout',
             pagina: 'assinatura',
-            titulo: 'Minha assinatura'
+            titulo: 'Minha assinatura',
+
+            planos: listaPlanos
         });
     }
 

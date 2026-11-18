@@ -186,6 +186,78 @@ class PedidoModel {
         let result = await db.ExecutaComandoNonQuery(sql, values);
         return result;
     }
+
+    async cancelarPedido(id, statusAtual) {
+        if (statusAtual !== "Pendente" && statusAtual != "Preparado") {
+            return false;
+        }
+
+        let sql = "SELECT COD_PROD, COD_LOTE, QTD_PROD FROM ITEM_PEDIDO WHERE COD_PED = ? ORDER BY COD_LOTE, COD_PROD";
+        let value = [id];
+
+        let itens = await db.ExecutaComando(sql, value);
+
+        let sqlStatus = "UPDATE PEDIDO SET STATUS_PED = ? WHERE COD_PED = ? AND STATUS_PED = ?";
+        let valuesStatus = ["Cancelado", id, statusAtual];
+
+        let sqlLote = "UPDATE LOTE SET EST_LOTE = EST_LOTE + ? WHERE COD_LOTE = ? AND COD_PROD = ?";
+
+        let sqlEntrega = "UPDATE ENTREGA SET STATUS_ENT = 'Cancelado' WHERE COD_PED = ?";
+
+        let ok = 0;
+        let resultL;
+        for (let i = 0;i < itens.length;i++) {
+            let item = itens[i];
+            let qtd = item.QTD_PROD;
+
+            if (!qtd || qtd <= 0) {
+                return false;
+            }
+
+            let valuesLote = [qtd, item.COD_LOTE, item.COD_PROD];
+
+            resultL = await db.ExecutaComandoNonQuery(sqlLote, valuesLote);
+
+            if (resultL) {
+                ok++;
+            }
+        }
+
+        if (ok < itens.length) {
+            return false;
+        } else {
+            let resultP = await db.ExecutaComandoNonQuery(sqlStatus, valuesStatus);
+            let resultE = await db.ExecutaComandoNonQuery(sqlEntrega, value);
+
+            return resultP && resultE && resultL;
+        }
+    }
+
+    async retirarPedido(id) {
+        let sql = "UPDATE PEDIDO SET_STATUS = 'Retirado' WHERE COD_PED = ? AND STATUS_PED = 'Preparado'";
+        let value = [id];
+
+        let result = await db.ExecutaComandoNonQuery(sql, value);
+        
+        return result;
+    }
+
+    async sairParaEntrega(id, idEntrega) {
+        let sql = "UPDATE PEDIDO SET STATUS_PED = 'Saiu para entrega' WHERE COD_PED = ? AND STATUS_PED = 'Preparado'";
+        let value = [id];
+
+        let sqlEntrega = "UPDATE ENTREGA SET STATUS_ENT = 'Saiu para entrega' WHERE COD_ENT = ? AND COD_PED = ? AND STATUS_ENT = 'Pendente'";
+        let valuesE = [idEntrega, id];
+
+        let sqlItemEnt = "INSERT INTO ITEM_ENTREGA (COD_PROD, COD_LOTE, COD_ENT) SELECT COD_PROD, COD_LOTE, ? FROM ITEM_PEDIDO WHERE COD_PED = ?";
+        let valuesIE = [idEntrega, id];
+
+        let resultP = await db.ExecutaComandoNonQuery(sql, value);
+        let resultE = await db.ExecutaComandoNonQuery(sqlEntrega, valuesE);
+        let resultIE = await db.ExecutaComandoNonQuery(sqlItemEnt, valuesIE);
+
+        return resultP && resultIE && resultE;
+    }
 }
 
 module.exports = PedidoModel;

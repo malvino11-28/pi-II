@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        enviar(`/admin/pedidos/${id}/status${obj}`);
+        enviar(`/admin/pedidos/${id}/status`, obj);
     }
 
     function definirEntrega() {
@@ -100,6 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
             data: data
         };
 
-        enviar(`/admin/pedidos/${id}/entrega${obj}`);
+        enviar(`/admin/pedidos/${id}/entrega`, obj);
     }
 });

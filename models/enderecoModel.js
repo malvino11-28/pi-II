@@ -1,5 +1,7 @@
 const Database = require("../database/database");
 
+const db = new Database();
+
 class EnderecoModel {
     #COD_END;
     #COD_PESSOA;
@@ -116,6 +118,15 @@ class EnderecoModel {
 
         return null;
     }
+
+    async listarEnderecosCliente(idCliente) {
+        let sql = "SELECT * FROM ENDERECO WHERE COD_PESSOA = ? ORDER BY COD_END";
+        let value = [idCliente];
+
+        let result = await db.ExecutaComando(sql, value);
+        return result;
+    }
+
 }
 
 module.exports = EnderecoModel;

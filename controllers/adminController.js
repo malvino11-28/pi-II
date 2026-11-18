@@ -4,6 +4,9 @@ const CategoriaModel = require("../models/categoriaModel");
 const ProdutoModel = require("../models/produtoModel");
 const MarcaModel = require("../models/marcaModel");
 const LoteModel = require("../models/loteModel");
+const PedidoModel = require("../models/pedidoModel");
+const EntregaModel = require("../models/entregaModel");
+const ItemPedidoModel = require("../models/itemPedidoModel");
 
 const {
     somenteNumeros,
@@ -16,6 +19,7 @@ const {
 } = require("../utils/validacoes");
 
 const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisModel");
+const EnderecoModel = require("../models/enderecoModel");
 
 class adminController {
 
@@ -492,6 +496,258 @@ class adminController {
         } else {
             res.send({ ok: false });
         }
+    }
+
+    // pedido
+
+    async rotaGerenciarPedido(req, res) {
+        let pedidoModel = new PedidoModel();
+        let pedidos = await pedidoModel.listarPedidosAdmin();
+
+        let total = pedidos.length;
+        let pendentes = 0;
+        let preparados= 0;
+        let emEntrega= 0;
+        let retirados= 0;
+        let cancelados= 0;
+
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Pendente") {
+                pendentes++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Preparado") {
+                preparados++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Saiu para entrega") {
+                emEntrega++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Retirado") {
+                retirados++;
+            }
+        }
+        for (let i = 0;i<pedidos.length;i++) {
+            if (pedidos[i].STATUS_PED == "Cancelado") {
+                cancelados++;
+            }
+        }
+
+        res.render("admin/gerenciamentoPedido", {
+            pedidos,
+            total,
+            pendentes,
+            preparados,
+            emEntrega,
+            retirados,
+            cancelados
+        });
+    }
+
+    async rotaDetalhesPedido(req, res) {
+        let id = req.params.id;
+        
+        if(!id && id <=0 ) {
+            res.send({ok: false});
+        } 
+
+        let pedido = new PedidoModel();
+        let p = await pedido.obterPedidoAdmin(id);
+
+        if (!p) {
+
+        }
+        let itemPedido = new ItemPedidoModel();
+        let itens = await itemPedido.listarItensAdmin(id);
+
+        return res.render("admin/detalhesPedido", { pedido: p, itens });
+    } 
+
+    async rotaControlePedido(req, res) {
+        let id = Number(req.params.id);
+
+        if (!id || id <= 0) {
+            return res.send("Código de pedido inválido.");
+        } else {
+            let pedidoModel = new PedidoModel();
+            let pedido = await pedidoModel.obterPedidoAdmin(id);
+
+            if (!pedido) {
+                return res.send("Pedido não encontrado.");
+            }
+
+            let itemPedidoModel = new ItemPedidoModel();
+            let itens = await itemPedidoModel.listarItensAdmin(id);
+
+            let entregaModel = new EntregaModel();
+            let enderecoModel = new EnderecoModel();
+            let entrega = await entregaModel.obterEntregaPedido(id);
+            let enderecos = await enderecoModel.listarEnderecosCliente(pedido.COD_CLI);
+
+            return res.render("admin/controlePedido", {
+                pedido,
+                itens,
+                entrega,
+                enderecos
+            });
+        }
+    }
+
+    async rotaAtualizarStatusPedido(req, res) {
+        let id = req.params.id;
+        let novoStatus = req.body.status;
+
+        if (!id || id <= 0) {
+            return res.send({
+                ok: false,
+                msg: "Código de pedido inválido."
+            });
+        }
+
+        let pedidoModel = new PedidoModel();
+        let pedido = await pedidoModel.obterPedidoAdmin(id);
+
+        if (!pedido) {
+            return res.send({
+                ok: false,
+                msg: "Pedido não encontrado."
+            });
+        }
+
+        let permitido = false;
+
+        if (pedido.STATUS_PED === "Pendente") {
+            if (novoStatus === "Preparado" || novoStatus === "Cancelado") {
+                permitido = true;
+            }
+        } else if (pedido.STATUS_PED === "Preparado") {
+            if (
+                novoStatus === "Retirado" ||
+                novoStatus === "Saiu para entrega" ||
+                novoStatus === "Cancelado"
+            ) {
+                permitido = true;
+            }
+        }
+
+        if (!permitido) {
+            return res.send({
+                ok: false,
+                msg: "Essa alteração não é permitida para o status atual."
+            });
+        }
+
+        let result = false;
+
+        if (novoStatus == "Preparado") {
+            let itemPedidoModel = new ItemPedidoModel();
+            let itens = await itemPedidoModel.listarItensAdmin(id);
+            let conferidos = req.body.conferidos;
+
+            if (conferidos.length <= 0 || itens.length == 0 || conferidos.length != itens.length) {
+                return res.send({
+                    ok: false,
+                    msg: "Confira todos os produtos e lotes antes de concluir a preparação."
+                });
+            }
+
+            for (let i =0; i<itens.length; i++) {
+                let qtd = 0;
+
+                for (let j = 0; j<conferidos.length; j++) {
+                    if (conferidos[j] && conferidos[j].produto == itens[i].COD_PROD && conferidos[j].lote == itens[i].COD_LOTE) {
+                        qtd++;
+                    }
+                }
+
+                if (qtd !== 1) {
+                    return res.send({
+                        ok:false,
+                        msg: "A conferência está incompleta."
+                    });
+                }
+            }
+
+            result = await pedidoModel.atualizarStatusPedido(id, novoStatus, pedido.STATUS_PED);
+
+        } else if (novoStatus == "Cancelado") {
+            result = await pedidoModel.cancelarPedido(id, pedido.STATUS_PED);
+        } else {
+            let entregaModel = new EntregaModel();
+            let entrega = await entregaModel.obterEntregaPedido(id);
+
+            if (novoStatus == "Retirado") {
+                if (entrega) {
+                    return res.send({
+                        ok: false,
+                        msg:"Este pedido está destinado à entrega."
+                    });
+                }
+
+                result = await pedidoModel.retirarPedido(id);
+
+                if (!result) {
+                    return res.send({
+                        ok: false,
+                        msg: "Não foi possível confirmar a retirada."
+                    });
+                }
+            } else if (novoStatus == "Saiu para entrega") {
+                if (!entrega) {
+                    return res.send({
+                        ok: false,
+                        msg:"Cadastre a entrega antes de preparar o pedido"
+                    });
+                }
+
+                result = await pedidoModel.sairParaEntrega(id, entrega.COD_ENT);
+            }
+        }
+
+        if (result) {
+            return res.send({
+                ok: true,
+                msg: "Operação realizada com sucesso!"
+            });
+        }
+
+        return res.send({
+            ok: false,
+            msg: "Não foi possível confirmar a operação."
+        });  
+    }
+
+    async rotaDefinirEntregaPedido(req, res) {
+        let id = req.params.id;
+        let idEndereco = req.body.idEndereco;
+        let data = req.body.data;
+
+        if (!id || id <= 0 || !idEndereco || idEndereco <= 0 || !data) {
+            return res.send({
+                ok: false,
+                msg: "Informe um endereço e uma data válidos."
+            });
+        }
+
+        let entregaModel = new EntregaModel();
+
+        let result = await entregaModel.definirEntregaPedido(id, idEndereco, data);
+
+        if (result) {
+            return res.send({
+                ok: true,
+                msg: "Entrega cadastrada!"
+            });
+        }
+
+        return res.send({
+            ok: false,
+            msg: "Não foi possível cadastrar a entrega."
+        });
     }
 }
 

@@ -145,8 +145,139 @@ class PedidoModel {
         return result;
     }
 
-    async obterPorId(id) {
+    async listarPedidosAdmin() {
+        let sql = `
+            SELECT P.COD_PED, P.COD_CLI, P.DATA_PED, P.STATUS_PED, P.TOTAL_PED,
+                PF.NOME_PF AS NOME_CLIENTE,
+                F.NOME_RECEB AS FORMA_RECEBIMENTO
+            FROM PEDIDO P
+            INNER JOIN PESSOA_FISICA PF ON PF.COD_PESSOA = P.COD_CLI
+            INNER JOIN FORMA_RECEBIMENTO F ON F.COD_RECEB = P.COD_RECEB
+            ORDER BY P.DATA_PED DESC, P.COD_PED DESC
 
+        `;
+
+        let result = await db.ExecutaComando(sql);
+        return result
+    }
+
+    async obterPedidoAdmin(id) {
+        let sql = `
+            SELECT P.COD_PED, P.COD_CLI, P.DATA_PED, P.STATUS_PED, P.TOTAL_PED,
+                PF.NOME_PF AS NOME_CLIENTE,
+                PF.EMAIL_PESSOA, PF.TELEFONE_PESSOA,
+                F.NOME_RECEB AS FORMA_RECEBIMENTO
+            FROM PEDIDO P
+            INNER JOIN PESSOA_FISICA PF ON PF.COD_PESSOA = P.COD_CLI
+            INNER JOIN FORMA_RECEBIMENTO F ON F.COD_RECEB = P.COD_RECEB
+            WHERE P.COD_PED = ?
+        `;
+        let value = [id];
+
+        let rows = await db.ExecutaComando(sql, value);
+        return rows[0];
+    }
+
+    async atualizarStatusPedido(id, novoStatus, statusAtual) {
+        let sql = "UPDATE PEDIDO SET STATUS_PED = ? WHERE COD_PED = ? AND STATUS_PED = ?";
+
+        let values = [novoStatus, id, statusAtual];
+
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+        return result;
+    }
+
+    async cancelarPedido(id, statusAtual) {
+        if (statusAtual !== "Pendente" && statusAtual != "Preparado") {
+            return false;
+        }
+
+        let sql = "SELECT COD_PROD, COD_LOTE, QTD_PROD FROM ITEM_PEDIDO WHERE COD_PED = ? ORDER BY COD_LOTE, COD_PROD";
+        let value = [id];
+
+        let itens = await db.ExecutaComando(sql, value);
+
+        let sqlStatus = "UPDATE PEDIDO SET STATUS_PED = ? WHERE COD_PED = ? AND STATUS_PED = ?";
+        let valuesStatus = ["Cancelado", id, statusAtual];
+
+        let sqlLote = "UPDATE LOTE SET EST_LOTE = EST_LOTE + ? WHERE COD_LOTE = ? AND COD_PROD = ?";
+
+        let sqlEntrega = "UPDATE ENTREGA SET STATUS_ENT = 'Cancelado' WHERE COD_PED = ?";
+
+        let ok = 0;
+        let resultL;
+
+        for (let i = 0; i < itens.length; i++) {
+            let qtd = itens[i].QTD_PROD;
+
+            if (!qtd || qtd <= 0) {
+                return false;
+            }
+        }
+
+        let resultP = await db.ExecutaComandoNonQuery(sqlStatus, valuesStatus);
+        if (resultP) {
+            for (let i = 0;i < itens.length;i++) {
+                let qtd = itens[i].QTD_PROD;
+
+                let valuesLote = [qtd, item.COD_LOTE, item.COD_PROD];
+
+                resultL = await db.ExecutaComandoNonQuery(sqlLote, valuesLote);
+
+                if (resultL) {
+                    ok++;
+                } else {
+                    return false; 
+                }
+            }
+            if (ok < itens.length) {
+                return false;
+            } else {
+                await db.ExecutaComandoNonQuery(sqlEntrega, value);
+
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    async retirarPedido(id) {
+        let sql = "UPDATE PEDIDO SET STATUS_PED = 'Retirado' WHERE COD_PED = ? AND STATUS_PED = 'Preparado'";
+        let value = [id];
+
+        let result = await db.ExecutaComandoNonQuery(sql, value);
+        
+        return result;
+    }
+
+    async sairParaEntrega(id, idEntrega) {
+        let sql = "UPDATE PEDIDO SET STATUS_PED = 'Saiu para entrega' WHERE COD_PED = ? AND STATUS_PED = 'Preparado'";
+        let value = [id];
+
+        let sqlEntrega = "UPDATE ENTREGA SET STATUS_ENT = 'Saiu para entrega' WHERE COD_ENT = ? AND COD_PED = ? AND STATUS_ENT = 'Pendente'";
+        let valuesE = [idEntrega, id];
+
+        let sqlItemEnt = "INSERT INTO ITEM_ENTREGA (COD_PROD, COD_LOTE, COD_ENT) SELECT COD_PROD, COD_LOTE, ? FROM ITEM_PEDIDO WHERE COD_PED = ?";
+        let valuesIE = [idEntrega, id];
+
+        let resultP = await db.ExecutaComandoNonQuery(sql, value);
+
+        if (!resultP) {
+            return false;
+        }
+
+        let resultE = await db.ExecutaComandoNonQuery(sqlEntrega, valuesE);
+        if (!resultE) {
+            return false;
+        }
+
+        let resultIE = await db.ExecutaComandoNonQuery(sqlItemEnt, valuesIE);
+        if (!resultIE) {
+            return false;
+        }
+
+        return resultP && resultIE && resultE;
     }
 }
 

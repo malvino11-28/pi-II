@@ -26,7 +26,7 @@ class RecebimentoModel {
     set VALOR_REC(v) { this.#VALOR_REC = v; }
 
     async cadastrarRecebimento() {
-        let sql = "INSERT INTO RECEBIMENTO (COD_PED, DATA_REC, VALOR_REC) VALUES (?, ?, ?, ?)";
+        let sql = "INSERT INTO RECEBIMENTO (COD_PED, DATA_REC, VALOR_REC) VALUES (?, ?, ?)";
         let values = [this.#COD_PED, this.#DATA_REC, this.#VALOR_REC];
         let db = new Database();
         let result = await db.ExecutaComandoNonQuery(sql, values);

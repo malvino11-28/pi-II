@@ -565,6 +565,92 @@ class adminController {
 
         return res.render("admin/detalhesPedido", { pedido, itens });
     } 
+
+    async rotaControlePedido(req, res) {
+        let id = Number(req.params.id);
+
+        if (!id || id <= 0) {
+            
+        }
+
+        let pedidoModel = new PedidoModel();
+        let pedido = await pedidoModel.obterPedidoAdmin(id);
+
+        if (!pedido) {
+    
+        }
+
+        let itemPedidoModel = new ItemPedidoModel();
+        let itens = await itemPedidoModel.listarItensAdmin(id);
+
+        return res.render("admin/controlePedido", {
+            pedido: pedido,
+            itens: itens
+        });
+    }
+
+    async rotaAtualizarStatusPedido(req, res) {
+        let id = Number(req.params.id);
+        let novoStatus = req.body.status;
+
+        if (!id || id <= 0) {
+            return res.send({
+                ok: false,
+                msg: "Código de pedido inválido."
+            });
+        }
+
+        let pedidoModel = new PedidoModel();
+        let pedido = await pedidoModel.obterPedidoAdmin(id);
+
+        if (!pedido) {
+            return res.send({
+                ok: false,
+                msg: "Pedido não encontrado."
+            });
+        }
+
+        let permitido = false;
+
+        if (pedido.STATUS_PED === "Pendente") {
+            if (novoStatus === "Preparado" || novoStatus === "Cancelado") {
+                permitido = true;
+            }
+        } else if (pedido.STATUS_PED === "Preparado") {
+            if (
+                novoStatus === "Retirado" ||
+                novoStatus === "Saiu para entrega" ||
+                novoStatus === "Cancelado"
+            ) {
+                permitido = true;
+            }
+        }
+
+        if (!permitido) {
+            return res.send({
+                ok: false,
+                msg: "Essa alteração não é permitida para o status atual."
+            });
+        }
+
+        let result = await pedidoModel.atualizarStatusPedido(
+            id,
+            novoStatus,
+            pedido.STATUS_PED
+        );
+
+        if (result) {
+            return res.send({
+                ok: true,
+                msg: "Status atualizado com sucesso!"
+            });
+        } else {
+            return res.send({
+                ok: false,
+                msg: "Não foi possível atualizar. Atualize a página e tente novamente."
+            });
+        }
+    }
 }
 
 module.exports = adminController;

@@ -128,12 +128,21 @@
                                 </td>
 
                                 <td>
-                                    <a
-                                        href="/admin/pedidos/<%= pedidos[i].COD_PED %>"
-                                        class="btn-acao btn-editar"
-                                        title="Consultar pedido">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
+                                    <div class="acoes-cliente">
+                                        <a
+                                            href="/admin/pedidos/<%= pedidos[i].COD_PED %>"
+                                            class="btn-acao btn-editar"
+                                            title="Consultar pedido">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a
+                                            href="/admin/pedidos/<%= pedidos[i].COD_PED %>/controle"
+                                            class="btn-acao btn-editar"
+                                            title="Controlar pedido">
+                                            <i class="bi bi-gear"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         <% } %>

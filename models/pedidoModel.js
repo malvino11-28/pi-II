@@ -178,7 +178,14 @@ class PedidoModel {
         return rows[0];
     }
 
-    
+    async atualizarStatusPedido(id, novoStatus, statusAtual) {
+        let sql = "UPDATE PEDIDO SET STATUS_PED = ? WHERE COD_PED = ? AND STATUS_PED = ?";
+
+        let values = [novoStatus, id, statusAtual];
+
+        let result = await db.ExecutaComandoNonQuery(sql, values);
+        return result;
+    }
 }
 
 module.exports = PedidoModel;

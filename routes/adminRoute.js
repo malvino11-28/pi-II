@@ -48,5 +48,7 @@ router.post("/admin/produto/excluir-lote", auth.autenticarFuncionario, controlle
 
 router.get("/admin/pedidos", auth.autenticarFuncionario, controller.rotaGerenciarPedido);
 router.get("/admin/pedidos/:id", auth.autenticarFuncionario, controller.rotaDetalhesPedido);
+router.get("/admin/pedidos/:id/controle", auth.autenticarFuncionario, controller.rotaControlePedido);
+router.post("/admin/pedidos/:id/status", auth.autenticarFuncionario, controller.rotaAtualizarStatusPedido);
 
 module.exports = router;

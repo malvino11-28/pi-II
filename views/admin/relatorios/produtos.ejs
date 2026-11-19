@@ -1,0 +1,154 @@
+<%- include('inicio', {titulo: 'Relatório de produtos'}) %>
+
+<form method="GET" action="/admin/relatorios/produtos" class="filtros">
+    <label>
+        Marca
+        <select name="marca">
+            <option value="">Todas</option>
+
+            <% for (let i = 0; i < marcas.length; i++) { %>
+                <option value="<%= marcas[i].COD_MAR %>"
+                    <%= filtros.marca == marcas[i].COD_MAR ? 'selected' : '' %>>
+                    <%= marcas[i].NOME_MAR %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Categoria
+        <select name="categoria">
+            <option value="">Todas</option>
+
+            <% for (let i = 0; i < categorias.length; i++) { %>
+                <option value="<%= categorias[i].COD_CAT %>"
+                    <%= filtros.categoria == categorias[i].COD_CAT ? 'selected' : '' %>>
+                    <%= categorias[i].NOME_CAT %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Fornecedor
+        <select name="fornecedor">
+            <option value="">Todos</option>
+
+            <% for (let i = 0; i < fornecedores.length; i++) { %>
+                <option value="<%= fornecedores[i].COD_PESSOA %>"
+                    <%= filtros.fornecedor == fornecedores[i].COD_PESSOA ? 'selected' : '' %>>
+                    <%= fornecedores[i].RAZAO_PJ %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Lote com saldo e validade até
+        <input type="date" name="validade"
+               value="<%= filtros.validade %>">
+    </label>
+
+    <label>
+        Estoque disponível a partir de
+        <input type="number" name="estoqueMin"
+               min="0" step="any"
+               value="<%= filtros.estoqueMin %>">
+    </label>
+
+    <label>
+        Estoque crítico: disponível até
+        <input type="number" name="estoqueMax"
+               min="0" step="any"
+               value="<%= filtros.estoqueMax %>">
+    </label>
+
+    <label>
+        Ordenar por
+        <select name="ordem">
+            <option value="">Nome</option>
+
+            <option value="mais"
+                <%= filtros.ordem == 'mais' ? 'selected' : '' %>>
+                Mais pedidos
+            </option>
+
+            <option value="menos"
+                <%= filtros.ordem == 'menos' ? 'selected' : '' %>>
+                Menos pedidos
+            </option>
+        </select>
+    </label>
+
+    <div class="acoes nao-imprimir">
+        <button class="btn btn-primary">Consultar</button>
+
+        <a class="btn btn-secondary"
+           href="/admin/relatorios/produtos">Limpar</a>
+
+        <button type="button" class="btn btn-dark"
+                onclick="window.print()">Imprimir</button>
+    </div>
+</form>
+
+<p>Produtos encontrados: <%= lista.length %></p>
+
+<p>
+    Disponível: saldo dos lotes não vencidos.
+    Quantidade pedida: pedidos não cancelados,
+    na unidade do produto.
+</p>
+
+<p>
+    Fornecedor identifica produtos comprados dele;
+    validade identifica produtos com algum lote com saldo até a data.
+    Os saldos exibidos são do produto inteiro.
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Produto</th>
+                <th>Marca</th>
+                <th>Categoria</th>
+                <th>Unidade</th>
+                <th>Preço normal</th>
+                <th>Estoque total</th>
+                <th>Disponível</th>
+                <th>Menor validade com saldo</th>
+                <th>Quantidade pedida</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (let i = 0; i < lista.length; i++) { %>
+                <tr>
+                    <td><%= lista[i].COD_PROD %></td>
+                    <td><%= lista[i].NOME_PROD %></td>
+                    <td><%= lista[i].NOME_MAR %></td>
+                    <td><%= lista[i].NOME_CAT %></td>
+                    <td><%= lista[i].UNI_MEDIDA_PROD %></td>
+
+                    <td>
+                        R$ <%= formatarValor(lista[i].VALOR_UNI_PROD) %>
+                    </td>
+
+                    <td><%= lista[i].ESTOQUE_TOTAL %></td>
+                    <td><%= lista[i].ESTOQUE_DISPONIVEL %></td>
+                    <td><%= lista[i].VALIDADE || '-' %></td>
+                    <td><%= lista[i].QTD_PEDIDA %></td>
+                </tr>
+            <% } %>
+
+            <% if (lista.length == 0) { %>
+                <tr>
+                    <td colspan="10">Nenhum produto encontrado.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('fim') %>

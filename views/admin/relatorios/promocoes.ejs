@@ -1,0 +1,133 @@
+<%- include('inicio', {titulo: 'Relatório de promoções'}) %>
+
+<form method="GET" action="/admin/relatorios/promocoes" class="filtros">
+    <label>
+        Período: início
+        <input type="date" name="inicio" value="<%= filtros.inicio %>">
+    </label>
+
+    <label>
+        Período: fim
+        <input type="date" name="fim" value="<%= filtros.fim %>">
+    </label>
+
+    <label>
+        Status atual
+        <select name="status">
+            <option value="">Todos</option>
+
+            <% let status = ['Programada', 'Ativa', 'Encerrada']; %>
+
+            <% for (let i = 0; i < status.length; i++) { %>
+                <option value="<%= status[i] %>"
+                    <%= filtros.status == status[i] ? 'selected' : '' %>>
+                    <%= status[i] %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Marca
+        <select name="marca">
+            <option value="">Todas</option>
+
+            <% for (let i = 0; i < marcas.length; i++) { %>
+                <option value="<%= marcas[i].COD_MAR %>"
+                    <%= filtros.marca == marcas[i].COD_MAR ? 'selected' : '' %>>
+                    <%= marcas[i].NOME_MAR %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Categoria
+        <select name="categoria">
+            <option value="">Todas</option>
+
+            <% for (let i = 0; i < categorias.length; i++) { %>
+                <option value="<%= categorias[i].COD_CAT %>"
+                    <%= filtros.categoria == categorias[i].COD_CAT ? 'selected' : '' %>>
+                    <%= categorias[i].NOME_CAT %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Desconto exato (%)
+        <input type="number" name="percentual"
+               min="0" max="100" step="0.01"
+               value="<%= filtros.percentual %>">
+    </label>
+
+    <div class="acoes nao-imprimir">
+        <button class="btn btn-primary">Consultar</button>
+
+        <a class="btn btn-secondary"
+           href="/admin/relatorios/promocoes">Limpar</a>
+
+        <button type="button" class="btn btn-dark"
+                onclick="window.print()">Imprimir</button>
+    </div>
+</form>
+
+<p>Itens em promoções encontrados: <%= lista.length %></p>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Promoção</th>
+                <th>Período</th>
+                <th>Status atual</th>
+                <th>Desconto</th>
+                <th>Produto</th>
+                <th>Marca / categoria</th>
+                <th>Lote</th>
+                <th>Preço promocional</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (let i = 0; i < lista.length; i++) { %>
+                <tr>
+                    <td><%= lista[i].COD_PROMO %></td>
+                    <td><%= lista[i].NOME_PROMO %></td>
+
+                    <td>
+                        <%= lista[i].INICIO %>
+                        até
+                        <%= lista[i].FIM %>
+                    </td>
+
+                    <td><%= lista[i].SITUACAO %></td>
+                    <td><%= lista[i].DESCONT_PER_PROMO %>%</td>
+                    <td><%= lista[i].NOME_PROD %></td>
+
+                    <td>
+                        <%= lista[i].NOME_MAR %> /
+                        <%= lista[i].NOME_CAT %>
+                    </td>
+
+                    <td><%= lista[i].NUM_LOTE %></td>
+
+                    <td>
+                        R$ <%= formatarValor(lista[i].VALOR_PROMO) %>
+                        / <%= lista[i].UNI_MEDIDA_PROD %>
+                    </td>
+                </tr>
+            <% } %>
+
+            <% if (lista.length == 0) { %>
+                <tr>
+                    <td colspan="9">Nenhuma promoção encontrada.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('fim') %>

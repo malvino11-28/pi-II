@@ -1,0 +1,109 @@
+<%- include('inicio', {titulo: 'Relatório de entregas de pedidos'}) %>
+
+<form method="GET" action="/admin/relatorios/entregas" class="filtros">
+    <label>
+        Data prevista inicial
+        <input type="date" name="inicio" value="<%= filtros.inicio %>">
+    </label>
+
+    <label>
+        Data prevista final
+        <input type="date" name="fim" value="<%= filtros.fim %>">
+    </label>
+
+    <label>
+        Status
+        <select name="status">
+            <option value="">Todos</option>
+
+            <% let status = ['Pendente', 'Saiu para entrega', 'Cancelado']; %>
+
+            <% for (let i = 0; i < status.length; i++) { %>
+                <option value="<%= status[i] %>"
+                    <%= filtros.status == status[i] ? 'selected' : '' %>>
+                    <%= status[i] %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Cliente
+        <select name="cliente">
+            <option value="">Todos</option>
+
+            <% for (let i = 0; i < clientes.length; i++) { %>
+                <option value="<%= clientes[i].COD_PESSOA %>"
+                    <%= filtros.cliente == clientes[i].COD_PESSOA ? 'selected' : '' %>>
+                    <%= clientes[i].NOME_PF %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Região (bairro, cidade ou estado)
+        <input type="text" name="regiao" value="<%= filtros.regiao %>">
+    </label>
+
+    <div class="acoes nao-imprimir">
+        <button class="btn btn-primary">Consultar</button>
+
+        <a class="btn btn-secondary"
+           href="/admin/relatorios/entregas">Limpar</a>
+
+        <button type="button" class="btn btn-dark"
+                onclick="window.print()">Imprimir</button>
+    </div>
+</form>
+
+<p>Entregas encontradas: <%= lista.length %></p>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Entrega</th>
+                <th>Pedido</th>
+                <th>Data prevista</th>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Endereço</th>
+                <th>Bairro</th>
+                <th>Cidade / estado</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (let i = 0; i < lista.length; i++) { %>
+                <tr>
+                    <td><%= lista[i].COD_ENT %></td>
+                    <td><%= lista[i].COD_PED %></td>
+                    <td><%= lista[i].DATA %></td>
+                    <td><%= lista[i].CLIENTE %></td>
+                    <td><%= lista[i].STATUS_ENT %></td>
+
+                    <td>
+                        <%= lista[i].RUA_END %>,
+                        <%= lista[i].NUM_END %>
+                    </td>
+
+                    <td><%= lista[i].BAIRRO_END %></td>
+
+                    <td>
+                        <%= lista[i].CIDADE_END %> /
+                        <%= lista[i].ESTADO_END %>
+                    </td>
+                </tr>
+            <% } %>
+
+            <% if (lista.length == 0) { %>
+                <tr>
+                    <td colspan="8">Nenhuma entrega encontrada.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('fim') %>

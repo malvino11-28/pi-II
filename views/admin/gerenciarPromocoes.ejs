@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promoções - Corte Imperial</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/style/admin.css" rel="stylesheet">
+
+    <script src="/js/promocoes.js" defer></script>
+</head>
+<body>
+    <%
+        function formatarData(valor) {
+            if (typeof valor === 'string') {
+                let partes = valor.substring(0, 10).split('-');
+                return partes[2] + '/' + partes[1] + '/' + partes[0];
+            }
+
+            return new Date(valor).toLocaleDateString('pt-BR');
+        }
+    %>
+
+    <header class="admin-header">
+        <div class="container d-flex align-items-center">
+            <a href="/admin">
+                <img src="/imgs/logo.png" alt="Corte Imperial" class="admin-logo me-3">
+            </a>
+
+            <div>
+                <h1 class="admin-brand">Corte Imperial</h1>
+                <p class="admin-subtitle">Painel Administrativo</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-title-section">
+        <div class="container">
+            <h2 class="page-title">Definir Promoção</h2>
+            <a href="/admin/produto">Voltar para produtos</a>
+        </div>
+    </div>
+
+    <main class="container pb-5">
+        <div class="form-card">
+            <div class="card-header-custom">
+                <h3>Nova promoção</h3>
+            </div>
+
+            <form id="formPromocao">
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="nomePromocao" class="form-label">Nome</label>
+                        <input id="nomePromocao" class="form-control"
+                               maxlength="100" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="percentualPromocao" class="form-label">
+                            Desconto (%)
+                        </label>
+                        <input id="percentualPromocao" class="form-control"
+                               type="number" min="0.01" max="100"
+                               step="0.01" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="inicioPromocao" class="form-label">
+                            Data inicial
+                        </label>
+                        <input id="inicioPromocao" class="form-control"
+                               type="date" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="fimPromocao" class="form-label">
+                            Data final
+                        </label>
+                        <input id="fimPromocao" class="form-control"
+                               type="date" required>
+                    </div>
+                </div>
+
+                <p>
+                    Selecione os lotes participantes. Os botões abaixo ajudam
+                    a marcar os lotes de uma categoria ou marca.
+                </p>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="categoriaPromocao" class="form-label">
+                            Categoria
+                        </label>
+
+                        <select id="categoriaPromocao" class="form-select mb-2">
+                            <option value="">Selecione</option>
+
+                            <% for (let i = 0; i < categorias.length; i++) { %>
+                                <option value="<%= categorias[i].COD_CAT %>">
+                                    <%= categorias[i].NOME_CAT %>
+                                </option>
+                            <% } %>
+                        </select>
+
+                        <button type="button" id="btnMarcarCategoria"
+                                class="btn btn-outline-secondary">
+                            Marcar categoria
+                        </button>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="marcaPromocao" class="form-label">
+                            Marca
+                        </label>
+
+                        <select id="marcaPromocao" class="form-select mb-2">
+                            <option value="">Selecione</option>
+
+                            <% for (let i = 0; i < marcas.length; i++) { %>
+                                <option value="<%= marcas[i].COD_MAR %>">
+                                    <%= marcas[i].NOME_MAR %>
+                                </option>
+                            <% } %>
+                        </select>
+
+                        <button type="button" id="btnMarcarMarca"
+                                class="btn btn-outline-secondary">
+                            Marcar marca
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Selecionar</th>
+                                <th>Produto</th>
+                                <th>Lote</th>
+                                <th>Validade</th>
+                                <th>Preço normal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (lotes.length === 0) { %>
+                                <tr>
+                                    <td colspan="5">
+                                        Nenhum lote com saldo e dentro da validade.
+                                    </td>
+                                </tr>
+                            <% } %>
+
+                            <% for (let i = 0; i < lotes.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox"
+                                               class="lote-promocao"
+                                               value="<%= lotes[i].COD_LOTE %>"
+                                               data-categoria="<%= lotes[i].COD_CAT %>"
+                                               data-marca="<%= lotes[i].COD_MAR %>"
+                                               aria-label="Selecionar lote <%= lotes[i].NUM_LOTE %> do produto <%= lotes[i].NOME_PROD %>">
+                                    </td>
+
+                                    <td>
+                                        <%= lotes[i].NOME_PROD %><br>
+                                        <small>
+                                            <%= lotes[i].NOME_CAT %> /
+                                            <%= lotes[i].NOME_MAR %>
+                                        </small>
+                                    </td>
+
+                                    <td><%= lotes[i].NUM_LOTE %></td>
+                                    <td><%= lotes[i].DATA_VENC_LOTE %></td>
+
+                                    <td>
+                                        R$ <%= Number(lotes[i].VALOR_UNI_PROD)
+                                            .toFixed(2).replace('.', ',') %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-end mt-3">
+                    <button type="reset" class="btn-clear">Limpar</button>
+
+                    <button type="submit" id="btnSalvarPromocao" class="btn-save">
+                        Salvar promoção
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-card mt-4">
+            <div class="table-header">
+                <h3 class="table-title">Promoções cadastradas</h3>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Desconto</th>
+                            <th>Período</th>
+                            <th>Produtos e lotes</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (promocoes.length === 0) { %>
+                            <tr>
+                                <td colspan="5">Nenhuma promoção cadastrada.</td>
+                            </tr>
+                        <% } %>
+
+                        <% for (let i = 0; i < promocoes.length; i++) { %>
+                            <tr>
+                                <td><%= promocoes[i].COD_PROMO %></td>
+                                <td><%= promocoes[i].NOME_PROMO %></td>
+
+                                <td>
+                                    <% if (promocoes[i].DESCONT_PER_PROMO != null) { %>
+                                        <%= Number(promocoes[i].DESCONT_PER_PROMO) %>%
+                                    <% } else { %>
+                                        R$ <%= Number(promocoes[i].DESCONT_MON_PROMO)
+                                            .toFixed(2).replace('.', ',') %>
+                                    <% } %>
+                                </td>
+
+                                <td>
+                                    <%= formatarData(promocoes[i].DATA_INIC_PROMO) %>
+                                    até
+                                    <%= formatarData(promocoes[i].DATA_FIM_PROMO) %>
+                                </td>
+
+                                <td>
+                                    <% for (let j = 0; j < itens.length; j++) { %>
+                                        <% if (Number(itens[j].COD_PROMO) === Number(promocoes[i].COD_PROMO)) { %>
+                                            <div>
+                                                <%= itens[j].NOME_PROD %> —
+                                                lote <%= itens[j].NUM_LOTE %>:
+                                                R$ <%= Number(itens[j].VALOR_PROMO)
+                                                    .toFixed(2).replace('.', ',') %>
+                                            </div>
+                                        <% } %>
+                                    <% } %>
+                                </td>
+
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm btn-excluir-promocao"
+                                            data-id="<%= promocoes[i].COD_PROMO %>">
+                                        Excluir
+                                    </button>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

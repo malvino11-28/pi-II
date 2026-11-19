@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     let listaCarrinho = [];
+    let consultaCarrinho = 0;
     let carrinho = localStorage.getItem("carrinho");
 
     if (carrinho) {
@@ -56,12 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // buscando dados do produto no banco
+        // buscando obj do produto no banco
 
         let res = await fetch(`/produtos/obter/${produtoId}`);
-        let dados = await res.json();
+        let obj = await res.json();
 
-        let produto = dados.produto;
+        let produto = obj.produto;
 
         let indice = -1;
         for (let i = 0; i<listaCarrinho.length;i++) {
@@ -150,9 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <div class="product-info">
                                     <h5>${item.nome}</h5>
                                     <p>
-                                        Preço unitário:
-                                        ${formatarValor(item.preco)}
+                                        Preço: R$
+                                        <span id="preco-normal-${item.id}">
+                                            ${formatarValor(item.preco)}
+                                        </span>
                                     </p>
+
+                                    <p id="promocao-${item.id}" class="text-success"></p>
                                     <p>
                                         Unidade: ${item.unidade}
                                     </p>
@@ -191,9 +196,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </div>
                             </div>
                             <div class="col-md-2 col-6 mb-3 mb-md-0 text-center">
-                                <div class="product-price">
-                                    ${formatarValor(item.quantidade * item.preco)}
-                                </div>
+                                <div class="product-price" id="subtotal-${item.id}">
+                                Calculando...
+                            </div>
                             </div>
 
                             <div class="col-md-2 col-12 text-center">
@@ -216,39 +221,93 @@ document.addEventListener("DOMContentLoaded", () => {
         atualizarResumo();
     }
 
-    function atualizarResumo() {
-        let qtdProdutos = listaCarrinho.length;
+    async function atualizarResumo() {
+        let consulta = ++consultaCarrinho;
+        let quantidade = listaCarrinho.length;
 
-        const subtotal = calcularValorTotal();
-
-        const totalItems = document.querySelector("#totalItems");
-        const itemCount = document.querySelector("#itemCount");
-        const campoSubtotal = document.querySelector("#subtotal");
-        const campoTotal = document.querySelector("#total");
-
-        if (totalItems) {
-            totalItems.textContent = qtdProdutos;
-        }
-
-        if (itemCount) {
-            itemCount.textContent = qtdProdutos;
-        }
-
-        if (campoSubtotal) {
-            campoSubtotal.textContent = formatarValor(subtotal);
-        }
-
-        if (campoTotal) {
-            campoTotal.textContent = formatarValor(subtotal);
-        }
-
+        document.querySelector("#totalItems").textContent = quantidade;
+        document.querySelector("#itemCount").textContent = quantidade;
         atualizarContador();
 
-        const btnFinalizar = document.querySelector("#btnFinalizarCompra");
+        let campoSubtotal = document.querySelector("#subtotal");
+        let campoTotal = document.querySelector("#total");
+        let campoDesconto = document.querySelector("#desconto");
 
-        if (btnFinalizar) {
-            btnFinalizar.disabled = qtdProdutos === 0;
+        btnFinalizar.disabled = true;
+
+        if (quantidade === 0) {
+            campoSubtotal.textContent = formatarValor(0);
+            campoTotal.textContent = formatarValor(0);
+            campoDesconto.textContent = formatarValor(0);
+            return;
         }
+
+        campoTotal.textContent = "Calculando...";
+
+        let itens = [];
+
+        for (let i = 0; i < listaCarrinho.length; i++) {
+            itens.push({
+                id: listaCarrinho[i].id,
+                quantidade: Number(listaCarrinho[i].quantidade)
+            });
+        }
+
+        let res = await fetch("/pedido/calcular", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                itens: itens
+            })
+        });
+
+        let obj = await res.json();
+
+        if (consulta !== consultaCarrinho) {
+            return;
+        }
+
+        if (!obj.ok) {
+            campoTotal.textContent = "Indisponível";
+            alert(obj.msg || obj.mensagem);
+            return;
+        }
+
+        campoSubtotal.textContent = formatarValor(obj.totalNormal);
+        campoDesconto.textContent = formatarValor(obj.desconto);
+        campoTotal.textContent = formatarValor(obj.total);
+
+        for (let i = 0; i < listaCarrinho.length; i++) {
+            let item = listaCarrinho[i];
+            let normal = 0;
+            let atual = 0;
+            let preco = 0;
+
+            for (let j = 0; j < obj.itens.length; j++) {
+                let linha = obj.itens[j];
+
+                if (linha.produtoId == item.id) {
+                    normal += Number(linha.subtotalNormal);
+                    atual += Number(linha.subtotal);
+                    preco = Number(linha.valorNormal);
+                }
+            }
+
+            document.querySelector("#preco-normal-" + item.id).textContent =
+                formatarValor(preco);
+
+            document.querySelector("#subtotal-" + item.id).textContent =
+                "R$ " + formatarValor(atual);
+
+            document.querySelector("#promocao-" + item.id).textContent =
+                atual < normal
+                    ? "Promoção: economia de R$ " + formatarValor(normal - atual)
+                    : "";
+        }
+
+        btnFinalizar.disabled = false;
     }
 
     const containerCarrinho = document.querySelector("#cartItems");
@@ -401,5 +460,71 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+    }
+
+    let consultaProduto = 0;
+
+    async function mostrarPromocaoProduto() {
+        let campo = document.querySelector("#ofertaProduto");
+
+        if (!campo || !btnAdicionar) {
+            return;
+        }
+
+        let consulta = ++consultaProduto;
+        let quantidade = Number(document.querySelector("#qty").value);
+
+        if (!Number.isFinite(quantidade) || quantidade <= 0) {
+            campo.textContent = "";
+            return;
+        }
+
+        let res = await fetch("/pedido/calcular", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                itens: [{
+                    id: btnAdicionar.dataset.produto,
+                    quantidade: quantidade
+                }]
+            })
+        });
+
+        let obj = await res.json();
+
+        if (consulta !== consultaProduto) {
+            return;
+        }
+
+        if (!obj.ok) {
+            campo.textContent = obj.msg || obj.mensagem;
+            return;
+        }
+
+        campo.textContent = obj.desconto > 0
+            ? "Total com promoção para esta quantidade: R$ " +
+            formatarValor(obj.total) +
+            " — economia de R$ " + formatarValor(obj.desconto)
+            : "Total para esta quantidade: R$ " + formatarValor(obj.total);
+    }
+
+    if (btnAdicionar && document.querySelector("#ofertaProduto")) {
+        document.querySelector("#qty").addEventListener(
+            "change",
+            mostrarPromocaoProduto
+        );
+
+        let botoesQuantidade = document.querySelectorAll(".qty-input button");
+
+        for (let i = 0; i < botoesQuantidade.length; i++) {
+            botoesQuantidade[i].addEventListener(
+                "click",
+                mostrarPromocaoProduto
+            );
+        }
+
+        mostrarPromocaoProduto();
     }
 });

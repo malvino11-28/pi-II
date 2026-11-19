@@ -8,5 +8,6 @@ let controller = new PedidoController();
 let auth = new AuthMiddleware();
 
 router.post("/pedido/salvar/:id", auth.autenticarCliente, controller.rotaSalvarPedido);
+router.post("/pedido/calcular", controller.rotaCalcularPedido);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const Database = require("../database/database.js");
 
-const db = new Database;
+const banco = new Database;
 
 class ItemCompraModel {
     #COD_COMPRA;
@@ -21,7 +21,7 @@ class ItemCompraModel {
         let sql = "INSERT INTO ITEM_COMPRA (COD_COMPRA, COD_PROD, COD_LOTE, QUANT_PROD, VALOR_UNI_PROD) VALUES (?, ?, ?, ?, ?)";
         let values = [this.#COD_COMPRA, this.#COD_PROD, this.#COD_LOTE, this.#QUANT_PROD, this.#VALOR_UNI_PROD];
 
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
 
         return result;
     }
@@ -30,7 +30,7 @@ class ItemCompraModel {
         let sql = "SELECT * FROM ITEM_COMPRA WHERE COD_COMPRA = ?";
         let value = [this.#COD_COMPRA];
 
-        let rows = await db.ExecutaComandoNonQuery(sql, values);
+        let rows = await banco.ExecutaComandoNonQuery(sql, value);
         let lista = [];
 
         for (let i =0; i<rows.length;i++) {
@@ -46,7 +46,7 @@ class ItemCompraModel {
         let sql = "UPDATE ITEM_COMPRA SET COD_PROD = ?, COD_LOTE = ?, QUANT_PROD = ? WHERE COD_COMPRA = ?";
         let values = [this.#COD_PROD, this.#COD_LOTE, this.QUANT_PROD, this.#COD_COMPRA];
 
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let result = await banco.ExecutaComandoNonQuery(sql, values);
         return result;
     }
 
@@ -54,8 +54,10 @@ class ItemCompraModel {
         let sql = "DELETE FROM ITEM_COMPRA WHERE COD_COMPRA = ?";
         let value = [id];
 
-        let result = await db.ExecutaComandoNonQuery(sql, value);
+        let result = await banco.ExecutaComandoNonQuery(sql, value);
 
         return result;
     }
 }
+
+module.exports = ItemCompraModel;

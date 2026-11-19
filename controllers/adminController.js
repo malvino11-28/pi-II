@@ -8,6 +8,8 @@ const PedidoModel = require("../models/pedidoModel");
 const EntregaModel = require("../models/entregaModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
 const ItemDescModel = require("../models/itemDescModel");
+const PromocaoModel = require("../models/promocaoModel");
+const ItemPromoModel = require("../models/itemPromoModel");
 
 const {
     somenteNumeros,
@@ -22,6 +24,7 @@ const {
 const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisModel");
 const EnderecoModel = require("../models/enderecoModel");
 const DescarteModel = require("../models/descarteModel");
+const PromocaoModel = require("../models/promocaoModel");
 
 class adminController {
 
@@ -887,6 +890,162 @@ class adminController {
         return res.send({
             ok: true,
             msg: "Descarte registrado e estoque atualizado!"
+        });
+    }
+
+    // promocao
+
+    async rotaPromocoes(req, res) {
+        let promocaoModel = new PromocaoModel();
+        let itemPromoModel = new ItemPromoModel();
+        let categoriaModel = new CategoriaModel();
+        let marcaModel = new MarcaModel();
+
+        let promocoes = await promocaoModel.listarPromocoes();
+        let itens = await itemPromoModel.listarItemPromo();
+        let lotes = await promocaoModel.listarLotesVencPromocao();
+        let categorias = await categoriaModel.listarCategoria();
+        let marcas = await marcaModel.listarMarcas();
+
+        res.render("admin/promocoes", {
+            promocoes,
+            itens,
+            lotes,
+            categorias,
+            marcas
+        });
+    }
+
+    async rotaCadastrarPromocao(req, res) {
+        let nome = req.body.nome;
+        let percentual = req.body.percentual;
+        let inicio = req.body.inicio;
+        let fim = req.body.fim;
+        let idLotes = req.body.lotes;
+        let fun = req.cookies.UserLogado;
+
+        if (!fun || fun <= 0) {
+            return res.send({
+                ok: false,
+                msg: "Funcionário inválido."
+            });
+        }
+
+        if (nome.trim() == "" || nome.trim().length > 100) {
+            return res.send({
+                ok: false,
+                msg: "Informe um nome de até 100 caracteres."
+            });
+        }
+
+        if (percentual <= 0 || percentual > 100) {
+            return res.send({
+                ok: false,
+                msg: "Informe um desconto maior que zero e até 100%."
+            });
+        }
+
+        if (!inicio || !fim || fim < inicio) { // a ser ajustado
+            return res.send({
+                ok: false,
+                msg: "Informe datas válidas."
+            });
+        }
+
+        if (idLotes.length <= 0) {
+            return res.send({
+                ok: false,
+                msg: "Selecione pelo menos um lote."
+            });
+        }
+
+        let itemPromoModel = new ItemPromoModel();
+        let lotesDisponiveis = await itemPromoModel.listarLotesVencPromocao();
+        let selec = [];
+
+        for (let i = 0; i<idLotes.length;i++) {
+            let id = idLotes[i];
+
+            if (!id || id <= 0) {
+                return res.send({
+                    ok: false,
+                    msg: "Lote inválido."
+                });
+            }
+
+            for (let j = 0; j<selec.length; j++) {
+                if (selec[j].COD_LOTE == id) {
+                    return res.send({
+                        ok: false,
+                        msg: "O mesmo lote foi enviado mais de uma vez."
+                    })
+                }
+            }
+        
+            let lote = null;
+
+            for (let j = 0; j<lotesDisponiveis.length;j++) {
+                if (lotesDisponiveis[j].COD_LOTE == id) {
+                    lote = lotesDisponiveis[j];
+                    j = 9999;
+                }
+            }
+
+            if (!lote || lote.DATA_VENC_LOTE < inicio) {
+                return res.send({
+                    ok: false,
+                    msg: "Um dos lotes está indisponível."
+                });
+            }
+
+            let preco = lote.VALOR_UNI_PROD;
+
+            if (!preco || preco <= 0) {
+                return res.send({
+                    ok: false,
+                    msg: "Um dos produtos está com o preço inválido."
+                });
+            }
+
+            selec.push(lote);
+        }
+
+        let promocao = new PromocaoModel(0, fun, nome.trim(), "Manual", null, percentual, inicio, fim);
+
+        let salvou = await promocao.cadastrarPromocao();
+
+        if (!salvou) {
+            return res.send({
+                ok: false,
+                msg: "Não foi possível cadastrar a promoção."
+            });
+        }
+
+        for (let i = 0; i < selec.length;i++) {
+            let lote = selec[i];
+
+            let precoCentavos = Math.round(lote.VALOR_UNI_PROD * 100);
+            let percentCentesimos = Math.round(percentual * 100);
+            let valor = Math.round(precoCentavos * (10000 - percentCentesimos) / 10000) / 100;
+
+            let item = new ItemPromoModel(promocao.COD_PROMO, lote.COD_PROMO, lote.COD_LOTE, valor);
+
+            let salvouItem = await item.cadastrarItemPromo();
+
+            if (!salvouItem) {
+                await itemPromoModel.excluirPorPromocao(promocao.COD_PROMO);
+                await promocao.excluirPromocao(promocao.COD_PROMO);
+
+                return res.send({
+                    ok: false,
+                    msg: "Não foi possível registrar os itens da promoção."
+                });
+            }
+        }
+
+        return res.send({
+            ok: true,
+            msg: "Promoção cadastrada com sucesso!"
         });
     }
 }

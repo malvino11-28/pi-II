@@ -1,5 +1,7 @@
 const Database = require("../database/database");
 
+let db = new Database();
+
 class PromocaoModel {
     #COD_PROMO;
     #COD_PESSOA; // pessoa fisica, saber o funcionario responsável pelo cadastro da promossão
@@ -49,9 +51,13 @@ class PromocaoModel {
         let sql = "INSERT INTO PROMOCAO (COD_PESSOA, NOME_PROMO, TIPO_PROMO, DESCONT_MON_PROMO, DESCONT_PER_PROMO, DATA_INIC_PROMO, DATA_FIM_PROMO) VALUES (?, ?, ?, ?, ?, ?, ?)";
         let values = [this.#COD_PESSOA, this.#NOME_PROMO, this.#TIPO_PROMO, this.#DESCONT_MON_PROMO, this.#DESCONT_PER_PROMO, this.#DATA_INIC_PROMO, this.#DATA_FIM_PROMO];
         let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let id = await db.ExecutaComandoLastInserted(sql, values);
 
-        return result;
+        if (id > 0) {
+            this.#COD_PROMO = id;
+            return true;
+        }
+        return false;
     }
 
     async listarPromocoes() {
@@ -101,6 +107,25 @@ class PromocaoModel {
         }
 
         return null;
+    }
+
+    async obterValorVigente(idProd, idLote) { // retorna valor promocional quando tem
+        let sql = `SELECT MIN(I.VALOR_PROMO) AS VALOR_PROMO
+            FROM ITEM_PROMO I
+            INNER JOIN PROMOCAO P ON P.COD_PROMO = I.COD_PROMO
+            INNER JOIN LOTE L ON L.COD_LOTE = I.COD_LOTE
+                AND L.COD_PROD = I.COD_PROD
+            WHERE I.COD_PROD = ?
+                AND I.COD_LOTE = ?
+                AND CURDATE() BETWEEN P.DATA_INIC_PROMO AND P.DATA_FIM_PROMO
+                AND L.DATA_VENC_LOTE >= CURDATE()
+                AND L.EST_LOTE > 0
+        `;
+        let values = [idProd, idLote];
+
+        let rows = await db.ExecutaComando(sql, values);
+        
+        return rows[0].VALOR_PROMO;
     }
 }
 

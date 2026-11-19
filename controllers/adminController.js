@@ -778,7 +778,7 @@ class adminController {
         let itemDescModel = new ItemDescModel();
         let descartes = itemDescModel.listarDescLote(id);
 
-        return res.render("admin/descarte", {
+        return res.render("admin/descarteLote", {
             lote,
             descartes,
             produto

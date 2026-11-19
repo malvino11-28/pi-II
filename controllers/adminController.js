@@ -7,6 +7,7 @@ const LoteModel = require("../models/loteModel");
 const PedidoModel = require("../models/pedidoModel");
 const EntregaModel = require("../models/entregaModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
+const ItemDescModel = require("../models/itemDescModel");
 
 const {
     somenteNumeros,
@@ -20,6 +21,7 @@ const {
 
 const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisModel");
 const EnderecoModel = require("../models/enderecoModel");
+const DescarteModel = require("../models/descarteModel");
 
 class adminController {
 
@@ -747,6 +749,144 @@ class adminController {
         return res.send({
             ok: false,
             msg: "Não foi possível cadastrar a entrega."
+        });
+    }
+
+    // descarte
+
+    async rotaDescarteLote(req, res) {
+        let id = req.params.id;
+
+        if(!id || id <= 0) {
+            return res.send("Lote inválido.");
+        }
+
+        let loteModel = new LoteModel();
+        let lote = await loteModel.obterLoteId(id);
+
+        if (!lote) {
+            return res.send("Lote não encontrado.");
+        }
+
+        let produtoModel = new ProdutoModel();
+        let produto = await produtoModel.obterProdutoId(lote.COD_PROD);
+
+        if (!produto) {
+            return res.send("Produto não encontrado.");
+        }
+
+        let itemDescModel = new ItemDescModel();
+        let descartes = await itemDescModel.listarDescLote(id);
+
+        return res.render("admin/descarteLote", {
+            lote,
+            descartes,
+            produto
+        });
+    }
+
+    async rotaRegistrarDescarte(req, res) {
+        let id = req.params.id;
+        let qtd = req.body.qtd;
+        let motivo = req.body.motivo;
+        let idFuncionario = req.cookies.UserLogado;
+
+        if (!id || id <= 0 || !idFuncionario || idFuncionario <= 0) {
+            console.log(id);
+            console.log(idFuncionario);
+            return res.send({
+                ok: false,
+                msg:"Lote ou funcionário inválido."
+            });
+        }
+
+        if (!qtd || qtd <= 0) {
+            return res.send({
+                ok: false,
+                msg:"Informe uma quantidade maior do que zero."
+            });
+        }
+
+        motivo = motivo.trim();
+
+        let loteModel = new LoteModel();
+        let lote = await loteModel.obterLoteId(id);
+
+        if (!lote) {
+            return res.send({
+                ok: false,
+                msg: "Lote não encontrado."
+            });
+        }
+
+        if (qtd > lote.EST_LOTE) {
+            return res.send({
+                ok: false,
+                msg: "A quantidade informada é maior que o estoque do lote."
+            });
+        }
+
+        let produtoModel = new ProdutoModel();
+        let produto = await produtoModel.obterProdutoId(lote.COD_PROD);
+
+        if (!produto) {
+            return res.send({
+                ok: false,
+                msg: "Produto não encontrado."
+            });
+        }
+
+        if (produto.UNI_MEDIDA_PROD == "UN" && !isInteger(qtd)) {
+            return res.send({
+                ok: false,
+                msg: "Informe uma quantidade inteira para produtos em unidade."
+            });
+        }
+
+        let descarte = new DescarteModel(0, idFuncionario, null);
+        let salvo = await descarte.cadastrarDescarte();
+
+        if (!salvo) {
+            return res.send({
+                ok: false,
+                msg: "Não foi possível registrar o descarte."
+            });
+        }
+
+        let item = new ItemDescModel(
+            descarte.COD_DESC,
+            lote.COD_PROD,
+            lote.COD_LOTE,
+            qtd,
+            motivo
+        );
+
+        let itemSalvo = await item.cadastrarItemDesc();
+
+        if (!itemSalvo) {
+            await descarte.excluirDescarte(descarte.COD_DESC);
+
+            return res.send({
+                ok: false,
+                msg: "Não foi possível registrar o item do descarte."
+            });
+        }
+
+        let estoqueAtualizado = await loteModel.baixarEstoque(id, qtd);
+
+        if (!estoqueAtualizado) {
+            await item.excluirItemDesc(descarte.COD_DESC);
+            await descarte.excluirDescarte(descarte.COD_DESC);
+
+            return res.send({
+                ok: false,
+                msg: "Erro ao atualizar estoque: O saldo do lote pode ter mudado."
+            });
+        }
+
+        return res.send({
+            ok: true,
+            msg: "Descarte registrado e estoque atualizado!"
         });
     }
 }

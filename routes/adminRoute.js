@@ -52,4 +52,7 @@ router.get("/admin/pedidos/:id/controle", auth.autenticarFuncionario, controller
 router.post("/admin/pedidos/:id/status", auth.autenticarFuncionario, controller.rotaAtualizarStatusPedido);
 router.post("/admin/pedidos/:id/entrega", auth.autenticarFuncionario, controller.rotaDefinirEntregaPedido);
 
+router.get("/admin/produto/descarte-lote/:id", auth.autenticarFuncionario, controller.rotaDescarteLote);
+router.post("/admin/produto/descarte-lote/:id", auth.autenticarFuncionario, controller.rotaRegistrarDescarte);
+
 module.exports = router;

@@ -11,6 +11,7 @@ const cartRoute = require("./cartRoute");
 const authRoute = require("./authRoute");
 const adminRoute = require("./adminRoute");
 const clienteRoute = require("./clienteRoute");
+const relatorioRoute = require("./relatorioRoute");
 
 router.use("/", indexRoute);
 router.use("/", productRoute);
@@ -21,5 +22,6 @@ router.use("/", pedidoRoute);
 router.use("/", authRoute);
 router.use("/", adminRoute);
 router.use("/", clienteRoute);
+router.use("/", relatorioRoute);
 
 module.exports = router;

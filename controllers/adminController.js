@@ -1027,7 +1027,7 @@ class adminController {
             let percentCentesimos = Math.round(percentual * 100);
             let valor = Math.round(precoCentavos * (10000 - percentCentesimos) / 10000) / 100;
 
-            let item = new ItemPromoModel(promocao.COD_PROMO, lote.COD_PROMO, lote.COD_LOTE, valor);
+            let item = new ItemPromoModel(promocao.COD_PROMO, lote.COD_PROD, lote.COD_LOTE, valor);
 
             let salvouItem = await item.cadastrarItemPromo();
 

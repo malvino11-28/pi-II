@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let botao = document.querySelector("#btnSalvarPromocao");
     let lotes = document.querySelectorAll(".lote-promocao");
 
+    let botoesExcluir = document.querySelectorAll(".btn-excluir-promocao");
+
+    for (let i=0; i<botoesExcluir.length;i++) {
+        botoesExcluir[i].addEventListener("click", excluirPromocao);    
+    }
+
     document.querySelector("#btnMarcarCategoria").addEventListener("click", () => {
         let id = document.querySelector("#categoriaPromocao").value;
 
@@ -22,6 +28,29 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    function excluirPromocao() {
+        if (!confirm("Deseja excluir esta promoção?")) {
+            return;
+        }
+
+         fetch("/admin/produto/excluir-promocao", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: this.dataset.id
+            })
+        }).then(function (res) {
+            return res.json();
+        }).then(function (resBody) {
+            alert(resBody.msg);
+            if (resBody.ok) {
+                window.location.reload();
+            }
+        });
+    }
 
     form.addEventListener("submit", e => {
         e.preventDefault();

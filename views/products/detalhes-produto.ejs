@@ -23,12 +23,6 @@
                     <%= produto.NOME_PROD %>
                 </h1>
                 <div class="preco-wrap">
-                    <!-- TODO: PRECO_ANTIGO_PROD ainda não existe na model. -->
-                    <% if (produto.PRECO_ANTIGO_PROD != null && Number(produto.PRECO_ANTIGO_PROD) > Number(produto.VALOR_UNI_PROD)) { %>
-                        <div class="preco-antigo">
-                            R$ <%= formatarValor(produto.PRECO_ANTIGO_PROD) %>
-                        </div>
-                    <% } %>
                     <div class="preco-atual">
                         R$ <%= formatarValor(produto.VALOR_UNI_PROD) %>
                     </div>
@@ -36,6 +30,8 @@
                         em até 2x de R$ <%= formatarValor(Number(produto.VALOR_UNI_PROD) / 2) %> sem juros
                     </div>
                 </div>
+
+                <p id="ofertaProduto" class="text-success"></p>
 
                 <% if (produto.DESC_RED_PROD) { %>
                     <div class="desc-curta">

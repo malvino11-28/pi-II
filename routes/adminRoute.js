@@ -57,5 +57,6 @@ router.post("/admin/produto/descarte-lote/:id", auth.autenticarFuncionario, cont
 
 router.get("/admin/produto/promocoes", auth.autenticarFuncionario, controller.rotaPromocoes);
 router.post("/admin/produto/promocoes", auth.autenticarFuncionario, controller.rotaCadastrarPromocao);
+router.post("/admin/produto/excluir-promocao", auth.autenticarFuncionario, controller.rotaExcluirPromocao);
 
 module.exports = router;

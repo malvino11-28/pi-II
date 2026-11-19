@@ -1047,6 +1047,28 @@ class adminController {
             msg: "Promoção cadastrada com sucesso!"
         });
     }
+
+    async rotaExcluirPromocao(req, res) {
+        let id = Number(req.body.id);
+
+        if (!id || id <= 0) {
+            return res.send({
+                ok: false,
+                msg: "Promoção inválida."
+            });
+        }
+
+        let item = new ItemPromoModel();
+        let promocao = new PromocaoModel();
+
+        await item.excluirPorPromocao(id);
+        let excluiu = await promocao.excluirPromocao(id);
+
+        return res.send({
+            ok: excluiu,
+            msg: excluiu ? "Promoção excluída!" : "Não foi possível excluir a promoção."
+        });
+    }
 }
 
 module.exports = adminController;

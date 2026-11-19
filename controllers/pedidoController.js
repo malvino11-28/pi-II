@@ -21,6 +21,7 @@ async function calcularItensPedido(itens) {
         let selec = [];
         let produtos = [];
         let total = 0;
+        let totalNormal = 0;
 
         for (let i = 0; i<itens.length; i++) {
             if (!itens[i]) {
@@ -87,7 +88,10 @@ async function calcularItensPedido(itens) {
                 let centesimos = Math.round(qtdUsada * 100);
                 let subtotal = Math.round(centavos * centesimos / 100) / 100;
 
-                total += subtotal;
+                let subtotalNormal = Math.round(Math.round(precoNormal * 100) * centesimos / 100) / 100;
+
+                total = Number((total + subtotal).toFixed(2));
+                totalNormal = Number((totalNormal + subtotalNormal).toFixed(2));
 
                 selec.push({
                     produtoId: id,
@@ -95,6 +99,8 @@ async function calcularItensPedido(itens) {
                     loteId: lote.COD_LOTE,
                     quantidade: qtdUsada,
                     valorUnitario: valor,
+                    valorNormal: precoNormal,
+                    subtotalNormal: subtotalNormal,
                     subtotal: subtotal
                 });
 
@@ -112,7 +118,9 @@ async function calcularItensPedido(itens) {
         return {
             ok: true,
             itens: selec,
-            total: total
+            total: total,
+            totalNormal: totalNormal,
+            desconto: Number((totalNormal - total).toFixed(2))
         };
     }
 

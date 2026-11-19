@@ -24,18 +24,14 @@ class ItemPromoModel {
     }
 
     async listarItemPromo() {
-        let sql = "SELECT * FROM ITEM_PROMO";
-
-        let rows = await db.ExecutaComando(sql);
-        let lista = [];
-
-        for (let i = 0;i<rows.length;i++) {
-            let row = rows[i];
-            let itemPromo = new ItemPromoModel(row["COD_PROMO"], row["COD_PROD"], row["COD_LOTE"], row["VALOR_PROMO"]);
-            lista.push(itemPromo);
-        }
-
-        return lista;
+        let sql = `SELECT I.*, P.NOME_PROD, L.NUM_LOTE
+                FROM ITEM_PROMO I
+                INNER JOIN PRODUTO P ON P.COD_PROD = I.COD_PROD
+                INNER JOIN LOTE L ON L.COD_LOTE = I.COD_LOTE
+                ORDER BY I.COD_PROMO, P.NOME_PROD, L.COD_LOTE`;
+        
+        let result = await db.ExecutaComando(sql);
+        return result;
     }
 
     async excluirItemPromo(id) {
@@ -53,8 +49,13 @@ class ItemPromoModel {
             INNER JOIN PRODUTO P ON P.COD_PROD = L.COD_PROD
             INNER JOIN CATEGORIA C ON C.COD_CAT = P.COD_CAT
             INNER JOIN MARCA M ON M.COD_MAR = P.COD_MAR
-               WHERE L.EST_LOTE > 0 AND L.DATA_VENC_LOTE >= CURDATE()
-               ORDER BY P.NOME_PROD, L.DATA_VENC_LOTE, L.COD_LOTE
+                WHERE L.EST_LOTE > 0
+                    AND L.DATA_VENC_LOTE >= CURDATE()
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM ITEM_PROMO I
+                        WHERE I.COD_LOTE = L.COD_LOTE
+                    )
         `;
         let result = await db.ExecutaComando(sql);
         return result;

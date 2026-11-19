@@ -21,13 +21,20 @@ class DescarteModel { //
     set DATA_DESC(v) { this.#DATA_DESC = v; }
 
     async cadastrarDescarte() {
-        let sql = "INSERT INTO DESCARTE (COD_PESSOA, DATA_DESC) VALUES (?, ?, ?)";
-        let values = [this.#COD_PESSOA, this.#DATA_DESC];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+    let sql = "INSERT INTO DESCARTE (COD_PESSOA, DATA_DESC) VALUES (?, CURDATE())";
 
-        return result;
+    let valores = [this.#COD_PESSOA];
+    let db = new Database();
+
+    let codigo = await db.ExecutaComandoLastInserted(sql, valores);
+
+    if (codigo) {
+        this.#COD_DESC = codigo;
+        return true;
     }
+
+    return false;
+}
 
     async listarDescartes() {
         let sql = "SELECT * FROM DESCARTE";

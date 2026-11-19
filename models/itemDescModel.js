@@ -62,6 +62,24 @@ class ItemDescModel {
         let result = await db.ExecutaComandoNonQuery(sql, value);
         return result;
     }
+
+    async listarDescLote(idLote) {
+        let sql = `
+            SELECT D.COD_DESC, D.DATA_DESC,
+                I.QTD_LOTE, I.MOTIVO_DESC,
+                PF.NOME_PF AS NOME_FUNCIONARIO
+            FROM ITEM_DESC I
+            INNER JOIN DESCARTE D ON D.COD_DESC = I.COD_DESC
+            LEFT JOIN PESSOA_FISICA PF
+                ON PF.COD_PESSOA = D.COD_PESSOA
+            WHERE I.COD_LOTE = ?
+            ORDER BY D.DATA_DESC DESC, D.COD_DESC DESC
+        `;
+        let value = [idLote];
+
+        let result = await db.ExecutaComando(sql, value);
+        return result;
+    }
 }
 
 module.exports = ItemDescModel;

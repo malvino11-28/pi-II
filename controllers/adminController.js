@@ -791,7 +791,9 @@ class adminController {
         let motivo = req.body.motivo;
         let idFuncionario = req.cookies.UserLogado;
 
-        if (!id || id <= 0 || !idFuncionario || !idFuncionario <= 0) {
+        if (!id || id <= 0 || !idFuncionario || idFuncionario <= 0) {
+            console.log(id);
+            console.log(idFuncionario);
             return res.send({
                 ok: false,
                 msg:"Lote ou funcionário inválido."
@@ -870,10 +872,7 @@ class adminController {
             });
         }
 
-        let estoqueAtualizado = await loteModel.baixarEstoque(
-            id,
-            quantidade
-        );
+        let estoqueAtualizado = await loteModel.baixarEstoque(id, qtd);
 
         if (!estoqueAtualizado) {
             await item.excluirItemDesc(descarte.COD_DESC);

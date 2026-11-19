@@ -47,7 +47,7 @@ class ItemPromoModel {
     }
 
     async listarLotesVencPromocao() {
-        let sql = `SELECT L.COD_LOTE, L.COD_PROD, L.NUM_LOTE, L.EST_LOTE, DATE_FORMAT(L.DATA_VENC_LOTE, '%Y-%m-%d') AS DATA_VENC_LOTE
+        let sql = `SELECT L.COD_LOTE, L.COD_PROD, L.NUM_LOTE, L.EST_LOTE, DATE_FORMAT(L.DATA_VENC_LOTE, '%Y-%m-%d') AS DATA_VENC_LOTE,
             P.NOME_PROD, P.VALOR_UNI_PROD, P.COD_CAT, P.COD_MAR, C.NOME_CAT, M.NOME_MAR
             FROM LOTE L
             INNER JOIN PRODUTO P ON P.COD_PROD = L.COD_PROD

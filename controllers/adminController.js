@@ -8,7 +8,6 @@ const PedidoModel = require("../models/pedidoModel");
 const EntregaModel = require("../models/entregaModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
 const ItemDescModel = require("../models/itemDescModel");
-const PromocaoModel = require("../models/promocaoModel");
 const ItemPromoModel = require("../models/itemPromoModel");
 
 const {
@@ -903,11 +902,11 @@ class adminController {
 
         let promocoes = await promocaoModel.listarPromocoes();
         let itens = await itemPromoModel.listarItemPromo();
-        let lotes = await promocaoModel.listarLotesVencPromocao();
+        let lotes = await itemPromoModel.listarLotesVencPromocao();
         let categorias = await categoriaModel.listarCategoria();
         let marcas = await marcaModel.listarMarcas();
 
-        res.render("admin/promocoes", {
+        res.render("admin/gerenciarPromocoes", {
             promocoes,
             itens,
             lotes,

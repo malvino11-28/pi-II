@@ -6,14 +6,14 @@ class ItemDescModel {
     #COD_DESC;
     #COD_PROD;
     #COD_LOTE;
-    #QTD_LOTE;
+    #QTD_DESC;
     #MOTIVO_DESC;
 
     constructor(idDesc, idProd, idLote, qtdLote, motivo) {
         this.#COD_DESC = idDesc;
         this.#COD_PROD = idProd;
         this.#COD_LOTE = idLote;
-        this.#QTD_LOTE = qtdLote;
+        this.#QTD_DESC = qtdLote;
         this.#MOTIVO_DESC = motivo;
     }
 
@@ -26,15 +26,15 @@ class ItemDescModel {
     get COD_LOTE() { return this.#COD_LOTE; }
     set COD_LOTE(v) { this.#COD_LOTE = v; }
 
-    get QTD_LOTE() { return this.#QTD_LOTE; }
-    set QTD_LOTE(v) { this.#QTD_LOTE = v; }
+    get QTD_DESC() { return this.#QTD_DESC; }
+    set QTD_DESC(v) { this.#QTD_DESC = v; }
 
     get MOTIVO_DESC() { return this.#MOTIVO_DESC; }
     set MOTIVO_DESC(v) { this.#MOTIVO_DESC = v; }
 
     async cadastrarItemDesc() {
-        let sql = "INSERT INTO ITEM_DESC (COD_DESC, COD_PROD, COD_LOTE, QTD_LOTE, MOTIVO_DESC) VALUES (?, ?, ?, ?, ?)";
-        let values = [this.#COD_DESC, this.#COD_PROD, this.#COD_LOTE, this.#QTD_LOTE, this.#MOTIVO_DESC];
+        let sql = "INSERT INTO ITEM_DESC (COD_DESC, COD_PROD, COD_LOTE, QTD_DESC, MOTIVO_DESC) VALUES (?, ?, ?, ?, ?)";
+        let values = [this.#COD_DESC, this.#COD_PROD, this.#COD_LOTE, this.#QTD_DESC, this.#MOTIVO_DESC];
 
         let result = await db.ExecutaComandoNonQuery(sql, values);
         return result;
@@ -48,7 +48,7 @@ class ItemDescModel {
 
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            let itemDesc = new ItemDescModel(row["COD_DESC"], row["COD_PROD"], row["COD_LOTE"], row["QTD_LOTE"], row["MOTIVO_DESC"]);
+            let itemDesc = new ItemDescModel(row["COD_DESC"], row["COD_PROD"], row["COD_LOTE"], row["QTD_DESC"], row["MOTIVO_DESC"]);
             lista.push(itemDesc);
         }
 
@@ -66,7 +66,7 @@ class ItemDescModel {
     async listarDescLote(idLote) {
         let sql = `
             SELECT D.COD_DESC, D.DATA_DESC,
-                I.QTD_LOTE, I.MOTIVO_DESC,
+                I.QTD_DESC, I.MOTIVO_DESC,
                 PF.NOME_PF AS NOME_FUNCIONARIO
             FROM ITEM_DESC I
             INNER JOIN DESCARTE D ON D.COD_DESC = I.COD_DESC

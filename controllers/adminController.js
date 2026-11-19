@@ -1255,6 +1255,7 @@ class adminController {
                 msg: `Falha ao ${etapa}. Confira os registros antes de reenviar.`
             });
         }
+    }
     // promocao
 
     async rotaPromocoes(req, res) {

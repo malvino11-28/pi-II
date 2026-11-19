@@ -8,6 +8,9 @@ const PedidoModel = require("../models/pedidoModel");
 const EntregaModel = require("../models/entregaModel");
 const ItemPedidoModel = require("../models/itemPedidoModel");
 const ItemDescModel = require("../models/itemDescModel");
+const CompraModel = require("../models/compraModel");
+const ItemCompraModel = require("../models/itemCompraModel");
+const ContasPagarModel = require("../models/contasPagarModel");
 const ItemPromoModel = require("../models/itemPromoModel");
 
 const {
@@ -24,6 +27,36 @@ const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisM
 const EnderecoModel = require("../models/enderecoModel");
 const DescarteModel = require("../models/descarteModel");
 const PromocaoModel = require("../models/promocaoModel");
+
+function dataValidaCompra(valor) {
+    if (typeof valor !== "string" || !/^[1-9]\d{3}-\d{2}-\d{2}$/.test(valor)) {
+        return false;
+    }
+
+    let data = new Date(valor + "T00:00:00Z");
+
+    if (isNaN(data.getTime())) {
+        return false;
+    }
+
+    return data.toISOString().slice(0, 10) === valor;
+}
+
+function paraCentesimos(valor) {
+    if (typeof valor !== "number" && typeof valor !== "string") {
+        return NaN;
+    }
+
+    let texto = String(valor).trim().replace(",", ".");
+
+    if (!/^\d{1,8}([.]\d{1,2})?$/.test(texto)) {
+        return NaN;
+    }
+
+    let [inteiro, decimal = ""] = texto.split(".");
+
+    return Number(inteiro) * 100 + Number(decimal.padEnd(2, "0"));
+}
 
 class adminController {
 
@@ -892,6 +925,336 @@ class adminController {
         });
     }
 
+    async rotaEfetuarCompraView(req, res) {
+        let fornecedorModel = new PessoaJuridicaModel();
+        let produtoModel = new ProdutoModel();
+
+        let fornecedores = await fornecedorModel.listarPJ();
+        let produtos = await produtoModel.listarProdutos();
+
+        res.render("admin/efetuarCompra", {
+            fornecedores: fornecedores,
+            produtos: produtos
+        });
+    }
+
+    async rotaListarLotesCompra(req, res) {
+        let idProduto = Number(req.params.idProduto);
+
+        if (!Number.isInteger(idProduto) || idProduto <= 0) {
+            return res.status(400).send({
+                ok: false,
+                msg: "Produto inválido."
+            });
+        }
+
+        let loteModel = new LoteModel();
+        let lotes = await loteModel.listarLoteProduto(idProduto);
+
+        return res.send({ ok: true, lotes: lotes });
+    }
+
+    async rotaEfetuarCompra(req, res) {
+        let codCompra = null;
+        let etapa = "validar a compra";
+
+        try {
+            
+            let { idFornecedor, dataCompra, itens, valorPago, parcelas = [] } = req.body || {};
+
+            if (!/^\d+$/.test(String(idFornecedor)) || Number(idFornecedor) <= 0) {
+                return res.status(400).send({ ok: false, msg: "Selecione um fornecedor." });
+            }
+
+            if (!dataValidaCompra(dataCompra)) {
+                return res.status(400).send({ ok: false, msg: "Informe uma data de compra válida." });
+            }
+
+            if (!Array.isArray(itens) || itens.length === 0) {
+                return res.status(400).send({ ok: false, msg: "Adicione pelo menos um item." });
+            }
+
+            let fornecedorModel = new PessoaJuridicaModel();
+            let fornecedor = await fornecedorModel.obterPorId(Number(idFornecedor));
+
+            if (!fornecedor) {
+                return res.status(400).send({ ok: false, msg: "Fornecedor não encontrado." });
+            }
+
+            let loteModel = new LoteModel();
+            let produtoModel = new ProdutoModel();
+            let itensCompra = [];
+            let totalCentavos = 0;
+
+            for (let item of itens) {
+                if (!item) {
+                    return res.status(400).send({ ok: false, msg: "Item de compra inválido." });
+                }
+
+                let qtd100 = paraCentesimos(item.qtd);
+                let custoCentavos = paraCentesimos(item.valorUnitario);
+
+                if (!Number.isFinite(qtd100) || qtd100 <= 0 ||
+                    !Number.isFinite(custoCentavos) || custoCentavos <= 0) {
+                    return res.status(400).send({
+                        ok: false,
+                        msg: "Informe uma quantidade e um custo unitário maiores que zero."
+                    });
+                }
+
+                let idProduto;
+                let idLote = null;
+                let novoLote = null;
+                let chaveLote;
+
+                if (item.idLote != null) {
+                    if (!/^\d+$/.test(String(item.idLote)) ||
+                        Number(item.idLote) <= 0 || item.novoLote) {
+                        return res.status(400).send({ ok: false, msg: "Confira o lote selecionado." });
+                    }
+
+                    let lote = await loteModel.obterLoteId(Number(item.idLote));
+
+                    if (!lote) {
+                        return res.status(400).send({ ok: false, msg: "Lote não encontrado." });
+                    }
+
+                    idLote = lote.COD_LOTE;
+                    idProduto = lote.COD_PROD;
+                    chaveLote = `lote-${idLote}`;
+
+                    if (item.idProduto != null && Number(item.idProduto) !== Number(idProduto)) {
+                        return res.status(400).send({
+                            ok: false,
+                            msg: "O lote pertence a outro produto."
+                        });
+                    }
+
+                } else {
+                    novoLote = item.novoLote;
+                    idProduto = Number(item.idProduto);
+
+                    if (!Number.isInteger(idProduto) || idProduto <= 0 ||
+                        typeof novoLote?.numeroLote !== "string" || !novoLote.numeroLote.trim()) {
+                        return res.status(400).send({
+                            ok: false,
+                            msg: "Informe o produto e o número do novo lote."
+                        });
+                    }
+
+                    let numero = novoLote.numeroLote.trim().toUpperCase();
+                    let fabricacao = novoLote.dataFabricacao;
+                    let validade = novoLote.dataVencimento;
+
+                    if (!dataValidaCompra(validade) ||
+                        (fabricacao && (!dataValidaCompra(fabricacao) || fabricacao >= validade))) {
+                        return res.status(400).send({
+                            ok: false,
+                            msg: "Confira as datas de fabricação e validade do novo lote."
+                        });
+                    }
+
+                    let cadastrados = await loteModel.listarLoteProduto(idProduto);
+                    let jaExiste = cadastrados.some(lote =>
+                        String(lote.NUM_LOTE).trim().toUpperCase() === numero
+                    );
+
+                    if (jaExiste) {
+                        return res.status(400).send({
+                            ok: false,
+                            msg: "Esse lote já existe. Selecione o lote cadastrado."
+                        });
+                    }
+
+                    chaveLote = `novo-${idProduto}-${numero}`;
+                }
+
+                let produto = await produtoModel.obterProdutoId(idProduto);
+
+                if (!produto) {
+                    return res.status(400).send({ ok: false, msg: "Produto não encontrado." });
+                }
+
+                let quantidade = qtd100 / 100;
+
+                if (produto.UNI_MEDIDA_PROD === "UN" && !Number.isInteger(quantidade)) {
+                    return res.status(400).send({
+                        ok: false,
+                        msg: "Informe uma quantidade inteira para produtos vendidos em unidade."
+                    });
+                }
+
+                if (itensCompra.some(linha => linha.chaveLote === chaveLote)) {
+                    return res.status(400).send({
+                        ok: false,
+                        msg: "O mesmo lote foi adicionado duas vezes."
+                    });
+                }
+
+                let subtotalCentavos = Math.round(qtd100 * custoCentavos / 100);
+                totalCentavos += subtotalCentavos;
+
+                if (subtotalCentavos < 1 || totalCentavos > 9999999999) {
+                    return res.status(400).send({ ok: false, msg: "Confira o valor dos itens da compra." });
+                }
+
+                itensCompra.push({
+                    idProduto,
+                    idLote,
+                    novoLote,
+                    chaveLote,
+                    quantidade,
+                    valorUnitario: custoCentavos / 100
+                });
+            }
+
+            let pagoCentavos = paraCentesimos(valorPago);
+
+            if (!Number.isFinite(pagoCentavos) || pagoCentavos < 0 || !Array.isArray(parcelas)) {
+                return res.status(400).send({ ok: false, msg: "Confira os dados de pagamento." });
+            }
+
+            let somaCentavos = pagoCentavos;
+            let contas = [];
+
+            for (let parcela of parcelas) {
+                let valorCentavos = paraCentesimos(parcela?.valor);
+
+                if (!Number.isFinite(valorCentavos) || valorCentavos <= 0 ||
+                    !dataValidaCompra(parcela?.dataVencimento)) {
+                    return res.status(400).send({
+                        ok: false,
+                        msg: "Confira o valor e o vencimento de cada parcela."
+                    });
+                }
+
+                somaCentavos += valorCentavos;
+
+                contas.push({
+                    valor: valorCentavos / 100,
+                    vencimento: parcela.dataVencimento
+                });
+            }
+
+            if (somaCentavos !== totalCentavos) {
+                return res.status(400).send({
+                    ok: false,
+                    msg: "O valor pago mais as parcelas deve ser igual ao total da compra."
+                });
+            }
+
+            etapa = "cadastrar a compra";
+
+            let compra = new CompraModel(
+                0, fornecedor.COD_PESSOA, dataCompra, totalCentavos / 100
+            );
+
+            let idGerado = await compra.cadastrarCompra();
+
+            if (!Number.isInteger(idGerado) || idGerado <= 0) {
+                throw new Error("Não foi possível obter o código da compra.");
+            }
+
+            codCompra = idGerado;
+
+            for (let dados of itensCompra) {
+                if (dados.novoLote) {
+                    etapa = "cadastrar o lote " + dados.novoLote.numeroLote;
+
+                    let novo = dados.novoLote;
+                    let lote = new LoteModel(
+                        0,
+                        dados.idProduto,
+                        null,
+                        novo.numeroLote.trim(),
+                        novo.dataFabricacao || null,
+                        novo.dataVencimento,
+                        0
+                    );
+
+                    let loteSalvo = await lote.cadastrarLote();
+
+                    if (!loteSalvo || !lote.COD_LOTE) {
+                        throw new Error("Não foi possível cadastrar o lote.");
+                    }
+
+                    dados.idLote = lote.COD_LOTE;
+                }
+
+                etapa = "gravar o item do lote " + dados.idLote;
+
+                let itemCompra = new ItemCompraModel(
+                    codCompra,
+                    dados.idProduto,
+                    dados.idLote,
+                    dados.quantidade,
+                    dados.valorUnitario
+                );
+
+                let itemSalvo = await itemCompra.cadastrarItemCompra();
+
+                if (!itemSalvo) {
+                    throw new Error("Não foi possível gravar o item da compra.");
+                }
+            }
+
+            for (let i = 0; i < contas.length; i++) {
+                etapa = `gravar a parcela ${i + 1}`;
+
+                let conta = new ContasPagarModel(
+                    codCompra,
+                    contas[i].vencimento,
+                    null,
+                    contas[i].valor,
+                    "PENDENTE",
+                    i + 1
+                );
+
+                let salva = await conta.cadastrarParcela();
+
+                if (!salva) {
+                    throw new Error("Não foi possível cadastrar a parcela.");
+                }
+            }
+
+            for (let dados of itensCompra) {
+                etapa = "atualizar o estoque do lote " + dados.idLote;
+
+                let estoqueAtualizado = await loteModel.adicionarEstoque(
+                    dados.idLote,
+                    dados.idProduto,
+                    dados.quantidade
+                );
+
+                if (!estoqueAtualizado) {
+                    throw new Error("Não foi possível atualizar o estoque.");
+                }
+            }
+
+            etapa = "concluir a compra";
+
+            let compraConcluida = await compra.concluirCompra(codCompra);
+
+            if (!compraConcluida) {
+                throw new Error("Não foi possível concluir a compra.");
+            }
+
+            return res.status(201).send({
+                ok: true,
+                codCompra,
+                msg: "Compra nº " + codCompra + " registrada com sucesso!"
+            });
+
+        } catch (erro) {
+            console.error(`Erro ao ${etapa}`, codCompra, erro.message);
+
+            return res.status(500).send({
+                ok: false,
+                codCompra,
+                etapa,
+                msg: `Falha ao ${etapa}. Confira os registros antes de reenviar.`
+            });
+        }
     // promocao
 
     async rotaPromocoes(req, res) {

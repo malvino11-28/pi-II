@@ -1,48 +1,101 @@
 const Database = require("../database/database");
 
-class CompraModel {
+class compraModel {
     #COD_COMPRA;
     #COD_PESSOA;
     #DATA_COMPRA;
-    #TOTAL_COMPRA;
+    #VALOR_TOTAL_COMPRA;
+    #STATUS_COMPRA;
 
-    constructor(id, cod_pessoa, data, total) {
-        this.#COD_COMPRA = id;
-        this.#COD_PESSOA = cod_pessoa;
-        this.#DATA_COMPRA = data;
-        this.#TOTAL_COMPRA = total;
+    constructor(codCompra, codPessoa, dataCompra, valorTotalCompra, statusCompra = "Pendente") {
+        this.#COD_COMPRA = codCompra;
+        this.#COD_PESSOA = codPessoa;
+        this.#DATA_COMPRA = dataCompra;
+        this.#VALOR_TOTAL_COMPRA = valorTotalCompra;
+        this.#STATUS_COMPRA = statusCompra;
     }
 
-    get COD_COMPRA() { return this.#COD_COMPRA; }
-    set COD_COMPRA(v) { this.#COD_COMPRA = v; }
+    get COD_COMPRA() {
+        return this.#COD_COMPRA;
+    }
 
-    get COD_PESSOA() { return this.#COD_PESSOA; }
-    set COD_PESSOA(v) { this.#COD_PESSOA = v; }
+    set COD_COMPRA(value) {
+        this.#COD_COMPRA = value;
+    }
 
-    get DATA_COMPRA() { return this.#DATA_COMPRA; }
-    set DATA_COMPRA(v) { this.#DATA_COMPRA = v; }
+    get COD_PESSOA() {
+        return this.#COD_PESSOA;
+    }
 
-    get TOTAL_COMPRA() { return this.#TOTAL_COMPRA; }
-    set TOTAL_COMPRA(v) { this.#TOTAL_COMPRA = v; }
+    set COD_PESSOA(value) {
+        this.#COD_PESSOA = value;
+    }
+
+    get DATA_COMPRA() {
+        return this.#DATA_COMPRA;
+    }
+
+    set DATA_COMPRA(value) {
+        this.#DATA_COMPRA = value;
+    }
+
+    get VALOR_TOTAL_COMPRA() {
+        return this.#VALOR_TOTAL_COMPRA;
+    }
+
+    set VALOR_TOTAL_COMPRA(value) {
+        this.#VALOR_TOTAL_COMPRA = value;
+    }
+
+    get STATUS_COMPRA() {
+        return this.#STATUS_COMPRA;
+    }
 
     async cadastrarCompra() {
-        let sql = "INSERT INTO COMPRA (COD_PESSOA, DATA_COMPRA, TOTAL_COMPRA) VALUES (?, ?, ?)";
-        let values = [this.#COD_PESSOA, this.#DATA_COMPRA, this.#TOTAL_COMPRA];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let sql = `
+            INSERT INTO COMPRA (COD_PESSOA, DATA_COMPRA, VALOR_TOTAL_COMPRA)
+            VALUES (?, ?, ?)
+        `;
 
-        return result;
+        let values = [
+            this.#COD_PESSOA,
+            this.#DATA_COMPRA,
+            this.#VALOR_TOTAL_COMPRA
+        ];
+
+        let banco = new Database();
+        let codCompra = await banco.ExecutaComandoLastInserted(sql, values);
+
+        return codCompra;
+    }
+
+    async concluirCompra(codCompra) {
+        let sql = `
+            UPDATE COMPRA
+            SET STATUS_COMPRA = 'Concluída'
+            WHERE COD_COMPRA = ? AND STATUS_COMPRA = 'Pendente'
+        `;
+
+        let banco = new Database();
+        let resultado = await banco.ExecutaComandoNonQuery(sql, [codCompra]);
+
+        return resultado;
     }
 
     async listarCompras() {
         let sql = "SELECT * FROM COMPRA";
-        let db = new Database();
-        let linhas = await db.ExecutaComando(sql);
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql);
         let lista = [];
 
-        for (let i = 0; i < linhas.length; i++) {
-            let linha = linhas[i];
-            let compra = new CompraModel(linha["COD_COMPRA"], linha["COD_PESSOA"], linha["DATA_COMPRA"], linha["TOTAL_COMPRA"]);
+        for (let linha of linhas) {
+            let compra = new compraModel(
+                linha.COD_COMPRA,
+                linha.COD_PESSOA,
+                linha.DATA_COMPRA,
+                linha.VALOR_TOTAL_COMPRA,
+                linha.STATUS_COMPRA
+            );
 
             lista.push(compra);
         }
@@ -51,38 +104,52 @@ class CompraModel {
     }
 
     async atualizarCompra() {
-        let sql = "UPDATE COMPRA SET COD_PESSOA = ?, DATA_COMPRA = ?, TOTAL_COMPRA = ? WHERE COD_COMPRA = ?";
-        let values = [this.#COD_PESSOA, this.#DATA_COMPRA, this.#TOTAL_COMPRA, this.#COD_COMPRA];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let sql = `
+            UPDATE COMPRA
+            SET COD_PESSOA = ?, DATA_COMPRA = ?, VALOR_TOTAL_COMPRA = ?
+            WHERE COD_COMPRA = ?
+        `;
 
-        return result;
+        let values = [
+            this.#COD_PESSOA,
+            this.#DATA_COMPRA,
+            this.#VALOR_TOTAL_COMPRA,
+            this.#COD_COMPRA
+        ];
+
+        let banco = new Database();
+        let resultado = await banco.ExecutaComandoNonQuery(sql, values);
+
+        return resultado;
     }
 
-    async excluirCompra(id) {
+    async excluirCompra(codCompra) {
         let sql = "DELETE FROM COMPRA WHERE COD_COMPRA = ?";
-        let values = [id];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let banco = new Database();
+        let resultado = await banco.ExecutaComandoNonQuery(sql, [codCompra]);
 
-        return result;
+        return resultado;
     }
 
-    async obterCompraId(id) {
+    async obterCompraId(codCompra) {
         let sql = "SELECT * FROM COMPRA WHERE COD_COMPRA = ?";
-        let values = [id];
-        let db = new Database();
-        let linhas = await db.ExecutaComando(sql, values);
+        let banco = new Database();
+        let linhas = await banco.ExecutaComando(sql, [codCompra]);
 
-        if (linhas.length > 0) {
-            let linha = linhas[0];
-            let compra = new CompraModel(linha["COD_COMPRA"], linha["COD_PESSOA"], linha["DATA_COMPRA"], linha["TOTAL_COMPRA"]);
-
-            return compra;
+        if (linhas.length === 0) {
+            return null;
         }
 
-        return null;
+        let linha = linhas[0];
+
+        return new compraModel(
+            linha.COD_COMPRA,
+            linha.COD_PESSOA,
+            linha.DATA_COMPRA,
+            linha.VALOR_TOTAL_COMPRA,
+            linha.STATUS_COMPRA
+        );
     }
 }
 
-module.exports = CompraModel;
+module.exports = compraModel;

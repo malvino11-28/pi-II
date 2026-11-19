@@ -49,6 +49,15 @@ class LoteModel {
         return linhas;
     }
 
+    async adicionarEstoque(idLote, idProduto, quantidade) {
+        const sql = "UPDATE LOTE SET EST_LOTE = EST_LOTE + ? WHERE COD_LOTE = ? AND COD_PROD = ? AND ? > 0";
+
+        const valores = [quantidade, idLote, idProduto, quantidade];
+        const banco = new Database();
+
+        return banco.ExecutaComandoNonQuery(sql, valores);
+    }
+
     async baixarEstoque(idLote, quantidade) {
         let sql = "UPDATE LOTE SET EST_LOTE = EST_LOTE - ? WHERE COD_LOTE = ? AND EST_LOTE >= ?";
         let values = [
@@ -88,19 +97,24 @@ class LoteModel {
     }
 
     async cadastrarLote() {
-        let sql = "INSERT INTO LOTE (COD_PROD, COD_PROMO, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE) VALUES (?, ?, ?, ?, ?, ?)";
+        let sql = `
+            INSERT INTO LOTE
+                (COD_PROD, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
         let values = [
             this.#COD_PROD,
-            this.#COD_PROMO,
             this.#NUM_LOTE,
             this.#DATA_FAB_LOTE,
             this.#DATA_VENC_LOTE,
             this.#EST_LOTE
         ];
-        let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
 
-        return result;
+        let banco = new Database();
+        this.#COD_LOTE = await banco.ExecutaComandoLastInserted(sql, values);
+
+        return this.#COD_LOTE > 0;
     }
 
     async listarLoteProduto(idProduto) {

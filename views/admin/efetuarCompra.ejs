@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efetuar Compra - Corte Imperial</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style/admin.css">
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="container d-flex align-items-center">
+            <a href="/admin">
+                <img src="/imgs/logo.png" alt="Corte Imperial" class="admin-logo me-3">
+            </a>
+            <div>
+                <h1 class="admin-brand">Corte Imperial</h1>
+                <p class="admin-subtitle">Painel Administrativo</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <a href="/admin">Voltar ao painel</a>
+        <h2 class="my-3">Efetuar compra</h2>
+
+        <fieldset id="camposCompra">
+            <!-- Dados da compra -->
+            <section class="card p-3 mb-3">
+                <h3 class="h5 mb-3">Dados da compra</h3>
+
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="fornecedor" class="form-label">Fornecedor</label>
+                        <select id="fornecedor" class="form-select" required>
+                            <option value="">Selecione um fornecedor</option>
+                            <% for (let fornecedor of fornecedores) { %>
+                                <option value="<%= fornecedor.COD_PESSOA %>">
+                                    <%= fornecedor.RAZAO_PJ %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="dataCompra" class="form-label">Data da compra</label>
+                        <input type="date" id="dataCompra" class="form-control" required>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Produtos e lotes -->
+            <section class="card p-3 mb-3">
+                <h3 class="h5 mb-3">Itens da compra</h3>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="produto" class="form-label">Produto</label>
+                        <select id="produto" class="form-select">
+                            <option value="">Selecione um produto</option>
+                            <% for (let produto of produtos) { %>
+                                <option value="<%= produto.COD_PROD %>"
+                                        data-unidade="<%= produto.UNI_MEDIDA_PROD %>">
+                                    <%= produto.NOME_PROD %> (<%= produto.UNI_MEDIDA_PROD %>)
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="lote" class="form-label">Lote</label>
+                        <select id="lote" class="form-select" disabled>
+                            <option value="">Selecione um produto primeiro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="dadosNovoLote" class="mt-3" hidden>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="numeroLote" class="form-label">Número do novo lote</label>
+                            <input type="text" id="numeroLote" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="fabricacao" class="form-label">Fabricação (opcional)</label>
+                            <input type="date" id="fabricacao" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="validade" class="form-label">Validade</label>
+                            <input type="date" id="validade" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-1">
+                    <div class="col-md-4">
+                        <label for="quantidade" class="form-label">Quantidade recebida</label>
+                        <input type="number" id="quantidade" class="form-control"
+                               min="0.01" max="99999999.99" step="0.01" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="custo" class="form-label">Custo unitário (R$)</label>
+                        <input type="number" id="custo" class="form-control"
+                               min="0.01" max="99999999.99" step="0.01" required>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" id="btnAdicionarItem" class="btn btn-primary">
+                            Adicionar item
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive mt-3">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Lote</th>
+                                <th>Quantidade</th>
+                                <th>Custo unitário</th>
+                                <th>Subtotal</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaItens"></tbody>
+                    </table>
+                </div>
+
+                <p class="mb-0 text-end fs-5">
+                    <strong>Total da compra: <span id="totalCompra">R$ 0,00</span></strong>
+                </p>
+            </section>
+
+            <!-- Pagamento -->
+            <section class="card p-3 mb-3">
+                <h3 class="h5 mb-3">Pagamento</h3>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="condicao" class="form-label">Condição de pagamento</label>
+                        <select id="condicao" class="form-select">
+                            <option value="quitada">Compra já quitada</option>
+                            <option value="prazo">A pagar em uma ou mais parcelas</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6" id="campoEntrada" hidden>
+                        <label for="entrada" class="form-label">Entrada já paga (R$)</label>
+                        <input type="number" id="entrada" class="form-control"
+                               min="0" max="99999999.99" step="0.01" value="0" required>
+                    </div>
+                </div>
+
+                <div id="areaParcelas" class="mt-3" hidden>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="valorParcela" class="form-label">Valor da parcela (R$)</label>
+                            <input type="number" id="valorParcela" class="form-control"
+                                   min="0.01" max="99999999.99" step="0.01" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="vencimentoParcela" class="form-label">Vencimento</label>
+                            <input type="date" id="vencimentoParcela" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" id="btnAdicionarParcela" class="btn btn-outline-primary">
+                                Adicionar parcela
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-3">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Parcela</th>
+                                    <th>Vencimento</th>
+                                    <th>Valor</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaParcelas"></tbody>
+                        </table>
+                    </div>
+
+                    <p class="mb-0">
+                        <strong id="resumoParcelas">Falta distribuir: R$ 0,00</strong>
+                    </p>
+                </div>
+            </section>
+
+            <button type="button" id="btnConfirmar" class="btn btn-success">
+                Confirmar compra
+            </button>
+        </fieldset>
+
+        <p id="mensagem" class="mt-3" role="status" aria-live="polite"></p>
+        <a id="novaCompra" href="/admin/efetuar-compra" hidden>Registrar outra compra</a>
+    </main>
+
+    <script>
+        let itensCompra = [];
+        let parcelas = [];
+        let consultaLotes = 0;
+
+        function campo(id) {
+            return document.getElementById(id);
+        }
+
+        function moeda(centavos) {
+            return (centavos / 100).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+        }
+
+        function mostrarMensagem(texto, sucesso = false) {
+            campo("mensagem").textContent = texto;
+            campo("mensagem").className = sucesso ? "mt-3 text-success" : "mt-3 text-danger";
+        }
+
+        function totalCompra() {
+            let total = 0;
+
+            for (let item of itensCompra) {
+                total += item.subtotalCentavos;
+            }
+
+            return total;
+        }
+
+        function totalParcelas() {
+            let total = 0;
+
+            for (let parcela of parcelas) {
+                total += parcela.centavos;
+            }
+
+            return total;
+        }
+
+        function atualizarTotais() {
+            let total = totalCompra();
+            campo("totalCompra").textContent = moeda(total);
+
+            let entrada = Math.round((campo("entrada").valueAsNumber || 0) * 100);
+            let diferenca = total - entrada - totalParcelas();
+
+            if (diferenca < 0) {
+                campo("resumoParcelas").textContent =
+                    "Entrada e parcelas excedem o total em " + moeda(-diferenca);
+            } else {
+                campo("resumoParcelas").textContent = "Falta distribuir: " + moeda(diferenca);
+            }
+        }
+
+        // Define a data de hoje usando a data local do computador.
+        let hoje = new Date();
+        let mes = String(hoje.getMonth() + 1).padStart(2, "0");
+        let dia = String(hoje.getDate()).padStart(2, "0");
+        campo("dataCompra").value = hoje.getFullYear() + "-" + mes + "-" + dia;
+
+        // Carrega os lotes quando o funcionário escolhe um produto.
+        campo("produto").addEventListener("change", async function () {
+            let consultaAtual = ++consultaLotes;
+            let idProduto = campo("produto").value;
+            let campoLote = campo("lote");
+
+            campoLote.disabled = true;
+            campoLote.options.length = 0;
+            campo("dadosNovoLote").hidden = true;
+            campo("numeroLote").value = "";
+            campo("fabricacao").value = "";
+            campo("validade").value = "";
+            campo("quantidade").value = "";
+            campo("custo").value = "";
+
+            if (!idProduto) {
+                campoLote.add(new Option("Selecione um produto primeiro", ""));
+                return;
+            }
+
+            let unidade = campo("produto").selectedOptions[0].dataset.unidade;
+            campo("quantidade").step = unidade === "UN" ? "1" : "0.01";
+            campo("quantidade").min = unidade === "UN" ? "1" : "0.01";
+
+            campoLote.add(new Option("Carregando lotes...", ""));
+
+            try {
+                let resposta = await fetch("/admin/efetuar-compra/lotes/" + idProduto);
+                let resultado = await resposta.json();
+
+                // Ignora a resposta anterior se o produto mudou durante a consulta.
+                if (consultaAtual !== consultaLotes) return;
+
+                campoLote.options.length = 0;
+
+                if (!resposta.ok || !resultado.ok) {
+                    campoLote.add(new Option("Erro ao carregar os lotes", ""));
+                    mostrarMensagem(resultado.msg || "Confira os lotes do produto.");
+                    return;
+                }
+
+                campoLote.add(new Option("Selecione um lote", ""));
+
+                for (let lote of resultado.lotes) {
+                    let texto = lote.NUM_LOTE + " — Estoque: " + lote.EST_LOTE;
+                    let opcao = new Option(texto, lote.COD_LOTE);
+                    opcao.dataset.numero = lote.NUM_LOTE;
+                    campoLote.add(opcao);
+                }
+
+                campoLote.add(new Option("Cadastrar novo lote", "novo"));
+                campoLote.disabled = false;
+            } catch {
+                if (consultaAtual !== consultaLotes) return;
+
+                campoLote.options.length = 0;
+                campoLote.add(new Option("Erro ao carregar os lotes", ""));
+                mostrarMensagem("Não foi possível carregar os lotes. Confira se você está logado.");
+            }
+        });
+
+        campo("lote").addEventListener("change", function () {
+            campo("dadosNovoLote").hidden = campo("lote").value !== "novo";
+        });
+
+        // Adiciona o item à lista da tela.
+        campo("btnAdicionarItem").addEventListener("click", function () {
+            let produto = campo("produto").selectedOptions[0];
+            let lote = campo("lote").selectedOptions[0];
+
+            if (!produto.value || campo("lote").disabled || !lote || !lote.value) {
+                mostrarMensagem("Selecione um produto e um lote.");
+                return;
+            }
+
+            if (!campo("quantidade").reportValidity() || !campo("custo").reportValidity()) {
+                return;
+            }
+
+            let qtd = campo("quantidade").valueAsNumber;
+            let valorUnitario = campo("custo").valueAsNumber;
+            let qtdCentesimos = Math.round(qtd * 100);
+            let custoCentavos = Math.round(valorUnitario * 100);
+            let subtotal = Math.round(qtdCentesimos * custoCentavos / 100);
+
+            if (subtotal < 1 || totalCompra() + subtotal > 9999999999) {
+                mostrarMensagem("Confira a quantidade e o custo. O subtotal mínimo é R$ 0,01.");
+                return;
+            }
+
+            // "dados" contém os campos que o controller espera receber.
+            let dados = {
+                idProduto: Number(produto.value),
+                qtd: qtd,
+                valorUnitario: valorUnitario
+            };
+
+            let numeroLote;
+
+            if (lote.value === "novo") {
+                numeroLote = campo("numeroLote").value.trim();
+                let fabricacao = campo("fabricacao").value;
+                let validade = campo("validade").value;
+
+                if (!numeroLote || !validade) {
+                    mostrarMensagem("Informe o número e a validade do novo lote.");
+                    return;
+                }
+
+                if (fabricacao && fabricacao >= validade) {
+                    mostrarMensagem("A fabricação deve ser anterior à validade.");
+                    return;
+                }
+
+                for (let opcao of campo("lote").options) {
+                    if (opcao.dataset.numero &&
+                        opcao.dataset.numero.trim().toUpperCase() === numeroLote.toUpperCase()) {
+                        mostrarMensagem("Esse lote já existe. Selecione o lote cadastrado.");
+                        return;
+                    }
+                }
+
+                dados.novoLote = {
+                    numeroLote: numeroLote,
+                    dataFabricacao: fabricacao || null,
+                    dataVencimento: validade
+                };
+            } else {
+                numeroLote = lote.dataset.numero;
+                dados.idLote = Number(lote.value);
+            }
+
+            let chave = dados.idProduto + "-" + numeroLote.trim().toUpperCase();
+
+            if (itensCompra.some(item => item.chave === chave)) {
+                mostrarMensagem("Esse lote já foi adicionado à compra.");
+                return;
+            }
+
+            itensCompra.push({
+                dados: dados,
+                chave: chave,
+                produto: produto.text.trim(),
+                lote: dados.novoLote ? numeroLote + " (novo)" : numeroLote,
+                subtotalCentavos: subtotal
+            });
+
+            mostrarItens();
+            mostrarMensagem("");
+            campo("quantidade").value = "";
+            campo("custo").value = "";
+            campo("lote").value = "";
+            campo("dadosNovoLote").hidden = true;
+            campo("numeroLote").value = "";
+            campo("fabricacao").value = "";
+            campo("validade").value = "";
+        });
+
+        function botaoRemover(aoClicar) {
+            let botao = document.createElement("button");
+            botao.type = "button";
+            botao.className = "btn btn-sm btn-outline-danger";
+            botao.textContent = "Remover";
+            botao.addEventListener("click", aoClicar);
+            return botao;
+        }
+
+        function mostrarItens() {
+            let tabela = campo("tabelaItens");
+            tabela.textContent = "";
+
+            for (let i = 0; i < itensCompra.length; i++) {
+                let item = itensCompra[i];
+                let linha = tabela.insertRow();
+
+                linha.insertCell().textContent = item.produto;
+                linha.insertCell().textContent = item.lote;
+                linha.insertCell().textContent = item.dados.qtd.toLocaleString("pt-BR");
+                linha.insertCell().textContent = moeda(Math.round(item.dados.valorUnitario * 100));
+                linha.insertCell().textContent = moeda(item.subtotalCentavos);
+
+                linha.insertCell().appendChild(botaoRemover(function () {
+                    itensCompra.splice(i, 1);
+                    mostrarItens();
+                }));
+            }
+
+            atualizarTotais();
+        }
+
+        // Pagamento: compra quitada ou com saldo a pagar.
+        campo("condicao").addEventListener("change", function () {
+            let aPrazo = campo("condicao").value === "prazo";
+            campo("campoEntrada").hidden = !aPrazo;
+            campo("areaParcelas").hidden = !aPrazo;
+            atualizarTotais();
+        });
+
+        campo("entrada").addEventListener("input", atualizarTotais);
+
+        campo("btnAdicionarParcela").addEventListener("click", function () {
+            if (!campo("valorParcela").reportValidity() ||
+                !campo("vencimentoParcela").reportValidity()) {
+                return;
+            }
+
+            parcelas.push({
+                centavos: Math.round(campo("valorParcela").valueAsNumber * 100),
+                vencimento: campo("vencimentoParcela").value
+            });
+
+            campo("valorParcela").value = "";
+            campo("vencimentoParcela").value = "";
+            mostrarParcelas();
+            mostrarMensagem("");
+        });
+
+        function mostrarParcelas() {
+            let tabela = campo("tabelaParcelas");
+            tabela.textContent = "";
+
+            for (let i = 0; i < parcelas.length; i++) {
+                let parcela = parcelas[i];
+                let linha = tabela.insertRow();
+
+                linha.insertCell().textContent = i + 1;
+                linha.insertCell().textContent = parcela.vencimento.split("-").reverse().join("/");
+                linha.insertCell().textContent = moeda(parcela.centavos);
+
+                linha.insertCell().appendChild(botaoRemover(function () {
+                    parcelas.splice(i, 1);
+                    mostrarParcelas();
+                }));
+            }
+
+            atualizarTotais();
+        }
+
+        // Envia uma única compra com todos os itens e parcelas.
+        campo("btnConfirmar").addEventListener("click", async function () {
+            if (!campo("fornecedor").reportValidity() || !campo("dataCompra").reportValidity()) {
+                return;
+            }
+
+            if (campo("quantidade").value || campo("custo").value) {
+                mostrarMensagem("Há um item em edição. Adicione-o à tabela ou limpe a quantidade e o custo.");
+                return;
+            }
+
+            if (itensCompra.length === 0) {
+                mostrarMensagem("Adicione pelo menos um item à compra.");
+                return;
+            }
+
+            let total = totalCompra();
+            let pagoCentavos = total;
+            let parcelasParaEnviar = [];
+
+            if (campo("condicao").value === "prazo") {
+                if (!campo("entrada").reportValidity()) return;
+
+                if (campo("valorParcela").value || campo("vencimentoParcela").value) {
+                    mostrarMensagem("Há uma parcela em edição. Adicione-a à tabela ou limpe seus campos.");
+                    return;
+                }
+
+                pagoCentavos = Math.round(campo("entrada").valueAsNumber * 100);
+
+                if (parcelas.length === 0) {
+                    mostrarMensagem("Adicione pelo menos uma parcela ou selecione Compra já quitada.");
+                    return;
+                }
+
+                if (pagoCentavos + totalParcelas() !== total) {
+                    mostrarMensagem("A entrada mais as parcelas deve fechar com o total da compra.");
+                    return;
+                }
+
+                for (let parcela of parcelas) {
+                    parcelasParaEnviar.push({
+                        valor: parcela.centavos / 100,
+                        dataVencimento: parcela.vencimento
+                    });
+                }
+            }
+
+            let itens = [];
+            for (let item of itensCompra) {
+                itens.push(item.dados);
+            }
+
+            let compra = {
+                idFornecedor: Number(campo("fornecedor").value),
+                dataCompra: campo("dataCompra").value,
+                itens: itens,
+                valorPago: pagoCentavos / 100,
+                parcelas: parcelasParaEnviar
+            };
+
+            campo("camposCompra").disabled = true;
+            campo("mensagem").className = "mt-3 text-secondary";
+            campo("mensagem").textContent = "Registrando compra...";
+
+            try {
+                let resposta = await fetch("/admin/efetuar-compra", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(compra)
+                });
+
+                if (resposta.redirected) {
+                    mostrarMensagem("Sua sessão terminou. Entre novamente no painel.");
+                    return;
+                }
+
+                let resultado = await resposta.json();
+
+                if (resposta.ok && resultado.ok) {
+                    mostrarMensagem(resultado.msg || "Compra registrada com sucesso!", true);
+                    campo("novaCompra").hidden = false;
+                    return;
+                }
+
+                let mensagem = resultado.msg || "Não foi possível registrar a compra.";
+
+                if (resultado.codCompra) {
+                    mensagem += " Código da compra: " + resultado.codCompra + ".";
+                }
+
+                mostrarMensagem(mensagem);
+
+                // No seu controller, o 400 ocorre na validação, antes das gravações.
+                if (resposta.status === 400) {
+                    campo("camposCompra").disabled = false;
+                }
+            } catch {
+                mostrarMensagem(
+                    "Não foi possível confirmar o resultado. Confira a compra no banco antes de reenviar."
+                );
+            }
+        });
+    </script>
+</body>
+</html>

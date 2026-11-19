@@ -26,6 +26,36 @@ const InformacoesNutricionaisModel = require("../models/informacoesNutricionaisM
 const EnderecoModel = require("../models/enderecoModel");
 const DescarteModel = require("../models/descarteModel");
 
+function dataValidaCompra(valor) {
+    if (typeof valor !== "string" || !/^[1-9]\d{3}-\d{2}-\d{2}$/.test(valor)) {
+        return false;
+    }
+
+    let data = new Date(valor + "T00:00:00Z");
+
+    if (isNaN(data.getTime())) {
+        return false;
+    }
+
+    return data.toISOString().slice(0, 10) === valor;
+}
+
+function paraCentesimos(valor) {
+    if (typeof valor !== "number" && typeof valor !== "string") {
+        return NaN;
+    }
+
+    let texto = String(valor).trim().replace(",", ".");
+
+    if (!/^\d{1,8}([.]\d{1,2})?$/.test(texto)) {
+        return NaN;
+    }
+
+    let [inteiro, decimal = ""] = texto.split(".");
+
+    return Number(inteiro) * 100 + Number(decimal.padEnd(2, "0"));
+}
+
 class adminController {
 
     async rotaDashboardView(req, res) {
@@ -906,6 +936,22 @@ class adminController {
         });
     }
 
+    async rotaListarLotesCompra(req, res) {
+        let idProduto = Number(req.params.idProduto);
+
+        if (!Number.isInteger(idProduto) || idProduto <= 0) {
+            return res.status(400).send({
+                ok: false,
+                msg: "Produto inválido."
+            });
+        }
+
+        let loteModel = new LoteModel();
+        let lotes = await loteModel.listarLoteProduto(idProduto);
+
+        return res.send({ ok: true, lotes: lotes });
+    }
+
     async rotaEfetuarCompra(req, res) {
         let codCompra = null;
         let etapa = "validar a compra";
@@ -1151,20 +1197,20 @@ class adminController {
             }
 
             for (let i = 0; i < contas.length; i++) {
-                let numeroParcela = i + 1;
-                etapa = "gravar a parcela " + numeroParcela;
+                etapa = `gravar a parcela ${i + 1}`;
 
                 let conta = new ContasPagarModel(
-                    null,
                     codCompra,
-                    numeroParcela,
+                    contas[i].vencimento,
+                    null,
                     contas[i].valor,
-                    contas[i].vencimento
+                    "PENDENTE",
+                    i + 1
                 );
 
-                let parcelaSalva = await conta.cadastrarParcela();
+                let salva = await conta.cadastrarParcela();
 
-                if (!parcelaSalva) {
+                if (!salva) {
                     throw new Error("Não foi possível cadastrar a parcela.");
                 }
             }

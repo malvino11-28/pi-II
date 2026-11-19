@@ -97,18 +97,21 @@ class LoteModel {
     }
 
     async cadastrarLote() {
-        let sql = "INSERT INTO LOTE (COD_PROD, COD_PROMO, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE) VALUES (?, ?, ?, ?, ?, ?)";
+        let sql = `
+            INSERT INTO LOTE
+                (COD_PROD, NUM_LOTE, DATA_FAB_LOTE, DATA_VENC_LOTE, EST_LOTE)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
         let values = [
             this.#COD_PROD,
-            this.#COD_PROMO,
             this.#NUM_LOTE,
             this.#DATA_FAB_LOTE,
             this.#DATA_VENC_LOTE,
             this.#EST_LOTE
         ];
 
-        const banco = new Database();
-        
+        let banco = new Database();
         this.#COD_LOTE = await banco.ExecutaComandoLastInserted(sql, values);
 
         return this.#COD_LOTE > 0;

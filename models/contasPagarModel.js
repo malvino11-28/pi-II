@@ -1,31 +1,42 @@
 const Database = require("../database/database");
 
 class ContasPagarModel {
-    #COD_CONTA_PAGAR;
     #COD_COMPRA;
-    #NUM_PARCELA;
-    #VALOR_PARCELA;
-    #DATA_VENCIMENTO;
-    #DATA_PAGAMENTO;
+    #DATA_VENC_CP;
+    #DATA_PGTO_CP;
+    #VALOR_CP;
+    #STATUS_CP;
+    #NUM_PARC_CP;
 
-    constructor(id, codCompra, numParcela, valorParcela, dataVencimento, dataPagamento = null) {
-        this.#COD_CONTA_PAGAR = id;
+    constructor(codCompra, dataVencimento, dataPagamento, valor, status, numParcela) {
         this.#COD_COMPRA = codCompra;
-        this.#NUM_PARCELA = numParcela;
-        this.#VALOR_PARCELA = valorParcela;
-        this.#DATA_VENCIMENTO = dataVencimento;
-        this.#DATA_PAGAMENTO = dataPagamento;
+        this.#DATA_VENC_CP = dataVencimento;
+        this.#DATA_PGTO_CP = dataPagamento;
+        this.#VALOR_CP = valor;
+        this.#STATUS_CP = status;
+        this.#NUM_PARC_CP = numParcela;
     }
 
     async cadastrarParcela() {
-        const sql = `INSERT INTO CONTAS_PAGAR (COD_COMPRA, NUM_PARCELA, VALOR_PARCELA, DATA_VENCIMENTO) VALUES (?, ?, ?, ?)`;
+        let sql = `
+            INSERT INTO CONTAS_PAGAR
+                (COD_COMPRA, DATA_VENC_CP, DATA_PGTO_CP, VALOR_CP, STATUS_CP, NUM_PARC_CP)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
 
-        const valores = [this.#COD_COMPRA, this.#NUM_PARCELA, this.#VALOR_PARCELA, this.#DATA_VENCIMENTO];
+        let valores = [
+            this.#COD_COMPRA,
+            this.#DATA_VENC_CP,
+            this.#DATA_PGTO_CP,
+            this.#VALOR_CP,
+            this.#STATUS_CP,
+            this.#NUM_PARC_CP
+        ];
 
-        const banco = new Database();
-        this.#COD_CONTA_PAGAR = await banco.ExecutaComandoLastInserted(sql, valores);
+        let banco = new Database();
+        let salva = await banco.ExecutaComandoNonQuery(sql, valores);
 
-        return this.#COD_CONTA_PAGAR;
+        return salva;
     }
 }
 

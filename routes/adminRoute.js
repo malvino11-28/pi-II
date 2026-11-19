@@ -57,5 +57,6 @@ router.post("/admin/produto/descarte-lote/:id", auth.autenticarFuncionario, cont
 
 router.get("/admin/efetuar-compra", auth.autenticarFuncionario, controller.rotaEfetuarCompraView);
 router.post("/admin/efetuar-compra", auth.autenticarFuncionario, controller.rotaEfetuarCompra);
+router.get("/admin/efetuar-compra/lotes/:idProduto", auth.autenticarFuncionario, controller.rotaListarLotesCompra);
 
 module.exports = router;

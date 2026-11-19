@@ -1,18 +1,18 @@
 const Database = require("../database/database");
 
-class CompraModel {
+class compraModel {
     #COD_COMPRA;
     #COD_PESSOA;
     #DATA_COMPRA;
-    #TOTAL_COMPRA;
+    #VALOR_TOTAL_COMPRA;
     #STATUS_COMPRA;
 
-    constructor(id, cod_pessoa, data, total, status = "Pendente") {
-        this.#COD_COMPRA = id;
-        this.#COD_PESSOA = cod_pessoa;
-        this.#DATA_COMPRA = data;
-        this.#TOTAL_COMPRA = total;
-        this.#STATUS_COMPRA = status;
+    constructor(codCompra, codPessoa, dataCompra, valorTotalCompra, statusCompra = "Pendente") {
+        this.#COD_COMPRA = codCompra;
+        this.#COD_PESSOA = codPessoa;
+        this.#DATA_COMPRA = dataCompra;
+        this.#VALOR_TOTAL_COMPRA = valorTotalCompra;
+        this.#STATUS_COMPRA = statusCompra;
     }
 
     get COD_COMPRA() {
@@ -39,12 +39,12 @@ class CompraModel {
         this.#DATA_COMPRA = value;
     }
 
-    get TOTAL_COMPRA() {
-        return this.#TOTAL_COMPRA;
+    get VALOR_TOTAL_COMPRA() {
+        return this.#VALOR_TOTAL_COMPRA;
     }
 
-    set TOTAL_COMPRA(value) {
-        this.#TOTAL_COMPRA = value;
+    set VALOR_TOTAL_COMPRA(value) {
+        this.#VALOR_TOTAL_COMPRA = value;
     }
 
     get STATUS_COMPRA() {
@@ -52,21 +52,34 @@ class CompraModel {
     }
 
     async cadastrarCompra() {
-        let sql = "INSERT INTO COMPRA (COD_PESSOA, DATA_COMPRA, TOTAL_COMPRA) VALUES (?, ?, ?)";
-        let values = [this.#COD_PESSOA, this.#DATA_COMPRA, this.#TOTAL_COMPRA];
-        let banco = new Database();
-        let cod_compra = await banco.ExecutaComandoLastInserted(sql, values);
+        let sql = `
+            INSERT INTO COMPRA (COD_PESSOA, DATA_COMPRA, VALOR_TOTAL_COMPRA)
+            VALUES (?, ?, ?)
+        `;
 
-        return cod_compra;
+        let values = [
+            this.#COD_PESSOA,
+            this.#DATA_COMPRA,
+            this.#VALOR_TOTAL_COMPRA
+        ];
+
+        let banco = new Database();
+        let codCompra = await banco.ExecutaComandoLastInserted(sql, values);
+
+        return codCompra;
     }
 
     async concluirCompra(codCompra) {
-        let sql = "UPDATE COMPRA SET STATUS_COMPRA = 'Concluída' WHERE COD_COMPRA = ? AND STATUS_COMPRA = 'Pendente'";
+        let sql = `
+            UPDATE COMPRA
+            SET STATUS_COMPRA = 'Concluída'
+            WHERE COD_COMPRA = ? AND STATUS_COMPRA = 'Pendente'
+        `;
 
         let banco = new Database();
-        let result = await banco.ExecutaComandoNonQuery(sql, [codCompra]);
+        let resultado = await banco.ExecutaComandoNonQuery(sql, [codCompra]);
 
-        return result;
+        return resultado;
     }
 
     async listarCompras() {
@@ -75,9 +88,14 @@ class CompraModel {
         let linhas = await banco.ExecutaComando(sql);
         let lista = [];
 
-        for (let i = 0; i < linhas.length; i++) {
-            let linha = linhas[i];
-            let compra = new CompraModel(linha["COD_COMPRA"], linha["COD_PESSOA"], linha["DATA_COMPRA"], linha["TOTAL_COMPRA"], linha["STATUS_COMPRA"]);
+        for (let linha of linhas) {
+            let compra = new compraModel(
+                linha.COD_COMPRA,
+                linha.COD_PESSOA,
+                linha.DATA_COMPRA,
+                linha.VALOR_TOTAL_COMPRA,
+                linha.STATUS_COMPRA
+            );
 
             lista.push(compra);
         }
@@ -86,38 +104,52 @@ class CompraModel {
     }
 
     async atualizarCompra() {
-        let sql = "UPDATE COMPRA SET COD_PESSOA = ?, DATA_COMPRA = ?, TOTAL_COMPRA = ? WHERE COD_COMPRA = ?";
-        let values = [this.#COD_PESSOA, this.#DATA_COMPRA, this.#TOTAL_COMPRA, this.#COD_COMPRA];
-        let banco = new Database();
-        let result = await banco.ExecutaComandoNonQuery(sql, values);
+        let sql = `
+            UPDATE COMPRA
+            SET COD_PESSOA = ?, DATA_COMPRA = ?, VALOR_TOTAL_COMPRA = ?
+            WHERE COD_COMPRA = ?
+        `;
 
-        return result;
+        let values = [
+            this.#COD_PESSOA,
+            this.#DATA_COMPRA,
+            this.#VALOR_TOTAL_COMPRA,
+            this.#COD_COMPRA
+        ];
+
+        let banco = new Database();
+        let resultado = await banco.ExecutaComandoNonQuery(sql, values);
+
+        return resultado;
     }
 
-    async excluirCompra(id) {
+    async excluirCompra(codCompra) {
         let sql = "DELETE FROM COMPRA WHERE COD_COMPRA = ?";
-        let values = [id];
         let banco = new Database();
-        let result = await banco.ExecutaComandoNonQuery(sql, values);
+        let resultado = await banco.ExecutaComandoNonQuery(sql, [codCompra]);
 
-        return result;
+        return resultado;
     }
 
-    async obterCompraId(id) {
+    async obterCompraId(codCompra) {
         let sql = "SELECT * FROM COMPRA WHERE COD_COMPRA = ?";
-        let values = [id];
         let banco = new Database();
-        let linhas = await banco.ExecutaComando(sql, values);
+        let linhas = await banco.ExecutaComando(sql, [codCompra]);
 
-        if (linhas.length > 0) {
-            let linha = linhas[0];
-            let compra = new CompraModel(linha["COD_COMPRA"], linha["COD_PESSOA"], linha["DATA_COMPRA"], linha["TOTAL_COMPRA"], linha["STATUS_COMPRA"]);
-
-            return compra;
+        if (linhas.length === 0) {
+            return null;
         }
 
-        return null;
+        let linha = linhas[0];
+
+        return new compraModel(
+            linha.COD_COMPRA,
+            linha.COD_PESSOA,
+            linha.DATA_COMPRA,
+            linha.VALOR_TOTAL_COMPRA,
+            linha.STATUS_COMPRA
+        );
     }
 }
 
-module.exports = CompraModel;
+module.exports = compraModel;

@@ -1,5 +1,7 @@
 const Database = require("../database/database");
 
+let db = new Database();
+
 class PromocaoModel {
     #COD_PROMO;
     #COD_PESSOA; // pessoa fisica, saber o funcionario responsável pelo cadastro da promossão
@@ -49,9 +51,13 @@ class PromocaoModel {
         let sql = "INSERT INTO PROMOCAO (COD_PESSOA, NOME_PROMO, TIPO_PROMO, DESCONT_MON_PROMO, DESCONT_PER_PROMO, DATA_INIC_PROMO, DATA_FIM_PROMO) VALUES (?, ?, ?, ?, ?, ?, ?)";
         let values = [this.#COD_PESSOA, this.#NOME_PROMO, this.#TIPO_PROMO, this.#DESCONT_MON_PROMO, this.#DESCONT_PER_PROMO, this.#DATA_INIC_PROMO, this.#DATA_FIM_PROMO];
         let db = new Database();
-        let result = await db.ExecutaComandoNonQuery(sql, values);
+        let id = await db.ExecutaComandoLastInserted(sql, values);
 
-        return result;
+        if (id > 0) {
+            this.#COD_PROMO = id;
+            return true;
+        }
+        return false;
     }
 
     async listarPromocoes() {

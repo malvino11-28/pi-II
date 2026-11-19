@@ -31,7 +31,7 @@ class productController {
     const marca = new MarcaModel;
     const infoNutri = new InformacoesNutricionaisModel();
     let p = await produto.obterProdutoId(id);
-    let l = await lote.listarLoteProduto(id);
+    let l = await lote.listarLotesDisponiveis(id);
     let c = await categoria.obterCategoriaId(p.COD_CAT);
     let m = await marca.obterMarcaId(p.COD_MAR);
     let iN = await infoNutri.listarInfoNutri(id);

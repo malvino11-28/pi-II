@@ -4,6 +4,117 @@ const ProdutoModel = require("../models/produtoModel");
 const LoteModel = require("../models/loteModel");
 const FormaRecebimentoModel = require("../models/formaRecebimentoModel");
 const PessoaFisicaModel = require("../models/pessoaFisicaModel");
+const ItemPromoModel = require("../models/itemPromoModel");
+
+async function calcularItensPedido(itens) {
+        if (itens.length <= 0) {
+            return { 
+                ok: false,
+                msg: "Adicione mais produtos ao carrinho."
+            }
+        }
+
+        let produtoModel = new ProdutoModel();
+        let loteModel = new LoteModel();
+        let itemPromoModel = new ItemPromoModel();
+
+        let selec = [];
+        let produtos = [];
+        let total = 0;
+
+        for (let i = 0; i<itens.length; i++) {
+            if (!itens[i]) {
+                return {
+                    ok: false,
+                    msg: "Um dos itens do carrinho é inválido."
+                }
+            }
+
+            let id = itens[i].id;
+            let qtd = itens[i].quantidade;
+
+            if (!id || id <= 0 || qtd <= 0) {
+                return {
+                    ok: false,
+                    msg:"Produto ou quantidade inválida."
+                }
+            }
+
+            for (let j = 0; j<produtos.length; j++) {
+                if (produtos[j] == id) {
+                    return {
+                        ok: false,
+                        msg: "O mesmo produto foi enviado mais de uma vez."
+                    }
+                }
+            }
+
+            produtos.push(id);
+
+            let p = await produtoModel.obterProdutoId(id);
+
+            if (!p) {
+                return {
+                    ok: false,
+                    msg: "Um dos produtos não foi encontrado."
+                }
+            }
+
+            if (p.UNI_MEDIDA_PROD == "UN" && !Number.isInteger(qtd)) {
+                return {
+                    ok: false,
+                    msg: "Um dos produtos está com o preço inválido."
+                }
+            }
+
+            let precoNormal = p.VALOR_UNI_PROD;
+            
+            let lotes = await loteModel.listarLotesDisponiveis(id);
+            let restante = qtd;
+
+            for (let j = 0; j<lotes.length && restante > 0; j++) {
+                let lote = lotes[j];
+                let qtdUsada = Math.min(restante, lote.EST_LOTE);
+                let valor = precoNormal;
+
+                let valorPromo = await itemPromoModel.obterValorVigente(id, lote.COD_LOTE);
+
+                if (valorPromo != null) {
+                    valor = Math.min(precoNormal, valorPromo);
+                }
+
+                let centavos = Math.round(valor * 100);
+                let centesimos = Math.round(qtdUsada * 100);
+                let subtotal = Math.round(centavos * centesimos / 100) / 100;
+
+                total += subtotal;
+
+                selec.push({
+                    produtoId: id,
+                    nome: p.NOME_PROD,
+                    loteId: lote.COD_LOTE,
+                    quantidade: qtdUsada,
+                    valorUnitario: valor,
+                    subtotal: subtotal
+                });
+
+                restante = restante - qtdUsada
+            }
+
+            if (restante > 0) {
+                return {
+                    ok: false,
+                    msg: `Estoque infusficiente para ${p.NOME_PROD}.`
+                }
+            }
+        }
+
+        return {
+            ok: true,
+            itens: selec,
+            total: total
+        };
+    }
 
 class PedidoController {
 
@@ -47,53 +158,14 @@ class PedidoController {
                 });
             }
 
-            let listaProdutos = [];
-            let valorTotal = 0;
+            let calculo = await calcularItensPedido(itens);
 
-            for (let i = 0; i < itens.length; i++) {
-                let produtoId = Number(itens[i].id);
-                let qtd = Number(itens[i].quantidade);
-                
-                let produtoModel = new ProdutoModel();
-
-                let produto = await produtoModel.obterProdutoId(produtoId);
-                if (!produto) {
-                    return res.send({
-                        ok: false,
-                        msg: "Um dos produtos do carrinho não foi encontrado."
-                    });
-                }
-
-                let loteModel = new LoteModel();
-                let lotes = await loteModel.listarLotesDisponiveis(produtoId);
-
-                let estoqueTotal = 0;
-
-                for (let j = 0; j < lotes.length; j++) {
-                    estoqueTotal += Number(lotes[j].EST_LOTE);
-                }
-
-                if (qtd <= 0 || qtd > estoqueTotal) {
-                    return res.send({
-                        ok: false,
-                        msg: `Estoque insuficiente para o produto ${produto.NOME_PROD}.`
-                    });
-                }
-
-                let valorUnitario = Number(produto.VALOR_UNI_PROD);
-                let subtotal = Number((qtd * valorUnitario).toFixed(2));
-                valorTotal += subtotal;
-
-                listaProdutos.push({
-                    produtoId: produtoId,
-                    nome: produto.NOME_PROD,
-                    qtd: qtd,
-                    valorUnitario: valorUnitario,
-                    lotes: lotes
-                });
+            if (!calculo.ok) {
+                return res.send(calculo);
             }
 
-            valorTotal = Number(valorTotal.toFixed(2));
+            let listaItens = calculo.itens;
+            let valorTotal = calculo.total;
 
             let codCliente = req.params.id; // alterar dependendo do nome do cookie
 
@@ -122,59 +194,41 @@ class PedidoController {
 
             let codPedido = pedido.COD_PED; // pegando id gerado pelo mysql
 
-            for (let i = 0; i < listaProdutos.length; i++) {
-                let produto = listaProdutos[i];
-                let qtdRestante = produto.qtd;
-                let loteModel = new LoteModel();
+            let loteModel = new LoteModel();
 
-                for (let j = 0; j<produto.lotes.length && qtdRestante > 0; j++) {
-                    let lote = produto.lotes[j];
-                    let estqLote = Number(lote.EST_LOTE);
-                    let qtdUtilizada = Math.min(qtdRestante, estqLote);
+            for (let i = 0; i < listaItens.length; i++) {
+                let linha = listaItens[i];
 
-                    if (qtdUtilizada < 0) {
-                        return;
-                    }
+                let itemPedido = new ItemPedidoModel(
+                    codPedido,
+                    linha.produtoId,
+                    linha.loteId,
+                    linha.quantidade,
+                    linha.valorUnitario
+                );
 
-                    let itemPedido = new ItemPedidoModel(
-                        codPedido,
-                        produto.produtoId,
-                        lote.COD_LOTE,
-                        qtdUtilizada,
-                        produto.valorUnitario
-                    );
+                let itemGravado = await itemPedido.salvarItemPedido();
 
-                    let itemGravado = await itemPedido.salvarItemPedido();
-
-                    if (!itemGravado) {
-                        return res.send({
-                            ok: false,
-                            msg: "Erro ao registrar um dos itens do pedido."
-                        })
-                    }
-
-                    let estoqueAtualizado = await loteModel.baixarEstoque(
-                        lote.COD_LOTE,
-                        qtdUtilizada
-                    );
-
-                    if (!estoqueAtualizado) {
-                        return res.send({
-                            ok: false,
-                            msg: "Erro ao atualizar o estoque de um dos lotes."
-                        });
-                    }
-
-                    qtdRestante = Number((qtdRestante - qtdUtilizada).toFixed(2));
-                }
-
-                if (qtdRestante > 0) {
+                if (!itemGravado) {
                     return res.send({
                         ok: false,
-                        msg: "Não foi possível separar a quantidade solicitada."
+                        msg: "Erro ao registrar um dos itens do pedido."
+                    });
+                }
+
+                let baixou = await loteModel.baixarEstoque(
+                    linha.loteId,
+                    linha.quantidade
+                );
+
+                if (!baixou) {
+                    return res.send({
+                        ok: false,
+                        msg: "Erro ao atualizar o estoque de um dos lotes."
                     });
                 }
             }
+                
             return res.send({
                 ok: true,
                 msg: "Pedido realizado com sucesso!",
@@ -182,8 +236,14 @@ class PedidoController {
                 total: valorTotal
             });
         }
+        
     }
 
+    async rotaCalcularPedido(req, res) {
+        let calculo = await calcularItensPedido(req.body.itens);
+
+        return res.send(calculo);
+    }
 }
 
 module.exports = PedidoController;

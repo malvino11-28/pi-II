@@ -67,6 +67,25 @@ class ItemPromoModel {
         let result = await db.ExecutaComandoNonQuery(sql, value);
         return result;
     }
+
+    async obterValorVigente(idProd, idLote) { // retorna valor promocional quando tem
+        let sql = `SELECT MIN(I.VALOR_PROMO) AS VALOR_PROMO
+            FROM ITEM_PROMO I
+            INNER JOIN PROMOCAO P ON P.COD_PROMO = I.COD_PROMO
+            INNER JOIN LOTE L ON L.COD_LOTE = I.COD_LOTE
+                AND L.COD_PROD = I.COD_PROD
+            WHERE I.COD_PROD = ?
+                AND I.COD_LOTE = ?
+                AND CURDATE() BETWEEN P.DATA_INIC_PROMO AND P.DATA_FIM_PROMO
+                AND L.DATA_VENC_LOTE >= CURDATE()
+                AND L.EST_LOTE > 0
+        `;
+        let values = [idProd, idLote];
+
+        let rows = await db.ExecutaComando(sql, values);
+        
+        return rows[0].VALOR_PROMO;
+    }
 }
 
 module.exports = ItemPromoModel;

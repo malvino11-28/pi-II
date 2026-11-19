@@ -1,0 +1,111 @@
+<%- include('inicio', {titulo: 'Relatório de pedidos'}) %>
+
+<form method="GET" action="/admin/relatorios/pedidos" class="filtros">
+    <label>
+        Data inicial
+        <input type="date" name="inicio" value="<%= filtros.inicio %>">
+    </label>
+
+    <label>
+        Data final
+        <input type="date" name="fim" value="<%= filtros.fim %>">
+    </label>
+
+    <label>
+        Status
+        <select name="status">
+            <option value="">Todos</option>
+
+            <% let status = [
+                'Pendente',
+                'Preparado',
+                'Saiu para entrega',
+                'Retirado',
+                'Cancelado'
+            ]; %>
+
+            <% for (let i = 0; i < status.length; i++) { %>
+                <option value="<%= status[i] %>"
+                    <%= filtros.status == status[i] ? 'selected' : '' %>>
+                    <%= status[i] %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Cliente
+        <select name="cliente">
+            <option value="">Todos</option>
+
+            <% for (let i = 0; i < clientes.length; i++) { %>
+                <option value="<%= clientes[i].COD_PESSOA %>"
+                    <%= filtros.cliente == clientes[i].COD_PESSOA ? 'selected' : '' %>>
+                    <%= clientes[i].NOME_PF %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <label>
+        Forma de recebimento (pagamento)
+        <select name="recebimento">
+            <option value="">Todas</option>
+
+            <% for (let i = 0; i < recebimentos.length; i++) { %>
+                <option value="<%= recebimentos[i].COD_RECEB %>"
+                    <%= filtros.recebimento == recebimentos[i].COD_RECEB ? 'selected' : '' %>>
+                    <%= recebimentos[i].NOME_RECEB %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <div class="acoes nao-imprimir">
+        <button class="btn btn-primary">Consultar</button>
+
+        <a class="btn btn-secondary"
+           href="/admin/relatorios/pedidos">Limpar</a>
+
+        <button type="button" class="btn btn-dark"
+                onclick="window.print()">Imprimir</button>
+    </div>
+</form>
+
+<p>Pedidos encontrados: <%= lista.length %></p>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Pedido</th>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Forma de recebimento</th>
+                <th>Total do pedido</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (let i = 0; i < lista.length; i++) { %>
+                <tr>
+                    <td><%= lista[i].COD_PED %></td>
+                    <td><%= lista[i].DATA %></td>
+                    <td><%= lista[i].CLIENTE %></td>
+                    <td><%= lista[i].STATUS_PED %></td>
+                    <td><%= lista[i].RECEBIMENTO %></td>
+                    <td>R$ <%= formatarValor(lista[i].TOTAL_PED) %></td>
+                </tr>
+            <% } %>
+
+            <% if (lista.length == 0) { %>
+                <tr>
+                    <td colspan="6">Nenhum pedido encontrado.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('fim') %>

@@ -1,0 +1,77 @@
+<%- include('inicio', {titulo: 'Relatório de cancelamentos de pedidos'}) %>
+
+<p>O período considera a data do pedido. Status: Cancelado.</p>
+
+<form method="GET" action="/admin/relatorios/cancelamentos" class="filtros">
+    <label>
+        Data inicial do pedido
+        <input type="date" name="inicio" value="<%= filtros.inicio %>">
+    </label>
+
+    <label>
+        Data final do pedido
+        <input type="date" name="fim" value="<%= filtros.fim %>">
+    </label>
+
+    <label>
+        Cliente
+        <select name="cliente">
+            <option value="">Todos</option>
+
+            <% for (let i = 0; i < clientes.length; i++) { %>
+                <option value="<%= clientes[i].COD_PESSOA %>"
+                    <%= filtros.cliente == clientes[i].COD_PESSOA ? 'selected' : '' %>>
+                    <%= clientes[i].NOME_PF %>
+                </option>
+            <% } %>
+        </select>
+    </label>
+
+    <div class="acoes nao-imprimir">
+        <button class="btn btn-primary">Consultar</button>
+
+        <a class="btn btn-secondary"
+           href="/admin/relatorios/cancelamentos">Limpar</a>
+
+        <button type="button" class="btn btn-dark"
+                onclick="window.print()">Imprimir</button>
+    </div>
+</form>
+
+<p>Pedidos cancelados encontrados: <%= lista.length %></p>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Pedido</th>
+                <th>Data do pedido</th>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Valor do pedido</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (let i = 0; i < lista.length; i++) { %>
+                <tr>
+                    <td><%= lista[i].COD_PED %></td>
+                    <td><%= lista[i].DATA %></td>
+                    <td><%= lista[i].CLIENTE %></td>
+                    <td><%= lista[i].STATUS_PED %></td>
+                    <td>R$ <%= formatarValor(lista[i].TOTAL_PED) %></td>
+                </tr>
+            <% } %>
+
+            <% if (lista.length == 0) { %>
+                <tr>
+                    <td colspan="5">
+                        Nenhum pedido cancelado encontrado.
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('fim') %>

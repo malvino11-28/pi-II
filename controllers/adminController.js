@@ -71,10 +71,14 @@ class adminController {
         let fornecedor = new PessoaJuridicaModel();
         let listarFornecedores = await fornecedor.listarPJ();
 
+        let pedido = new PedidoModel();
+        let listarPedido = pedido.listarPedido()
+
         res.render("admin/dashboard", {
             clientes: listaClientes,
             fornecedores: listarFornecedores,
-            produtos: listarProdutos
+            produtos: listarProdutos,
+            pedido: listarPedido
         });
     }
 

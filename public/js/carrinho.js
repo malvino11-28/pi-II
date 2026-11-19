@@ -395,6 +395,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href = "/";
                 } else {
                     alert(resBody.msg || "Erro ao realizar pedido.");
+                    if (!resBody.socio) {
+                        window.location.href = "/cliente/assinatura";
+                    }
                 }
             });
         }

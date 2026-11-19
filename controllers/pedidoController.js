@@ -3,164 +3,185 @@ const ItemPedidoModel = require("../models/itemPedidoModel");
 const ProdutoModel = require("../models/produtoModel");
 const LoteModel = require("../models/loteModel");
 const FormaRecebimentoModel = require("../models/formaRecebimentoModel");
+const PessoaFisicaModel = require("../models/pessoaFisicaModel");
 
 class PedidoController {
 
     async rotaSalvarPedido(req, res) {
-        const itens = req.body.itens;
-        const codPag = req.body.codPag;
+        let pessoaFisica = new PessoaFisicaModel();
+        let cod = req.cookies.UserLogado;
 
-        if (!itens || itens.length === 0) {
+        let socio = await pessoaFisica.consultarAssinatura(cod);
+        let fun = await pessoaFisica.consultarFuncionario(cod);
+
+        if (fun.length <= 0 || !cod) {
             return res.send({
                 ok: false,
-                msg: "Adicione produtos ao carrinho."
+                msg: "Faça um login válido antes de fazer um pedido!"
             });
-        }
-
-        let FormaRecebimento = new FormaRecebimentoModel();
-        let pagamento = await FormaRecebimento.obterPorId(codPag);
-
-        if (!pagamento) {
-            return res.send({
+        } else if (socio.length <= 0) {
+            res.send({
+                socio: false,
                 ok: false,
-                msg: "Forma de pagamento inválida."
+                msg: "Faça parte do clube antes de fazer um pedido!"
             });
-        }
+        } else {
+                
+            const itens = req.body.itens;
+            const codPag = req.body.codPag;
 
-        let listaProdutos = [];
-        let valorTotal = 0;
-
-        for (let i = 0; i < itens.length; i++) {
-            let produtoId = Number(itens[i].id);
-            let qtd = Number(itens[i].quantidade);
-            
-            let produtoModel = new ProdutoModel();
-
-            let produto = await produtoModel.obterProdutoId(produtoId);
-            if (!produto) {
+            if (!itens || itens.length === 0) {
                 return res.send({
                     ok: false,
-                    msg: "Um dos produtos do carrinho não foi encontrado."
+                    msg: "Adicione produtos ao carrinho."
                 });
             }
 
-            let loteModel = new LoteModel();
-            let lotes = await loteModel.listarLotesDisponiveis(produtoId);
+            let FormaRecebimento = new FormaRecebimentoModel();
+            let pagamento = await FormaRecebimento.obterPorId(codPag);
 
-            let estoqueTotal = 0;
-
-            for (let j = 0; j < lotes.length; j++) {
-                estoqueTotal += Number(lotes[j].EST_LOTE);
-            }
-
-            if (qtd <= 0 || qtd > estoqueTotal) {
+            if (!pagamento) {
                 return res.send({
                     ok: false,
-                    msg: `Estoque insuficiente para o produto ${produto.NOME_PROD}.`
+                    msg: "Forma de pagamento inválida."
                 });
             }
 
-            let valorUnitario = Number(produto.VALOR_UNI_PROD);
-            let subtotal = Number((qtd * valorUnitario).toFixed(2));
-            valorTotal += subtotal;
+            let listaProdutos = [];
+            let valorTotal = 0;
 
-            listaProdutos.push({
-                produtoId: produtoId,
-                nome: produto.NOME_PROD,
-                qtd: qtd,
-                valorUnitario: valorUnitario,
-                lotes: lotes
-            });
-        }
+            for (let i = 0; i < itens.length; i++) {
+                let produtoId = Number(itens[i].id);
+                let qtd = Number(itens[i].quantidade);
+                
+                let produtoModel = new ProdutoModel();
 
-        valorTotal = Number(valorTotal.toFixed(2));
-
-        let codCliente = req.params.id; // alterar dependendo do nome do cookie
-
-        if (!codCliente) { 
-            return res.send({
-                ok: false,
-                msg: "É necessário estar autenticado para realizar um pedido."
-            });
-        }
-
-        let pedido = new PedidoModel();
-
-        pedido.COD_CLI = codCliente;
-        pedido.COD_PROMO = null;
-        pedido.COD_RECEB = codPag;
-        pedido.TOTAL_PED = valorTotal;
-
-        let resultadoPedido = await pedido.salvarPedido();
-
-        if (!resultadoPedido) {
-            return res.send({
-                ok: false,
-                msg: "Não foi possível registrar o pedido."
-            });
-        }
-
-        let codPedido = pedido.COD_PED; // pegando id gerado pelo mysql
-
-        for (let i = 0; i < listaProdutos.length; i++) {
-            let produto = listaProdutos[i];
-            let qtdRestante = produto.qtd;
-            let loteModel = new LoteModel();
-
-            for (let j = 0; j<produto.lotes.length && qtdRestante > 0; j++) {
-                let lote = produto.lotes[j];
-                let estqLote = Number(lote.EST_LOTE);
-                let qtdUtilizada = Math.min(qtdRestante, estqLote);
-
-                if (qtdUtilizada < 0) {
-                    return;
-                }
-
-                let itemPedido = new ItemPedidoModel(
-                    codPedido,
-                    produto.produtoId,
-                    lote.COD_LOTE,
-                    qtdUtilizada,
-                    produto.valorUnitario
-                );
-
-                let itemGravado = await itemPedido.salvarItemPedido();
-
-                if (!itemGravado) {
+                let produto = await produtoModel.obterProdutoId(produtoId);
+                if (!produto) {
                     return res.send({
                         ok: false,
-                        msg: "Erro ao registrar um dos itens do pedido."
-                    })
-                }
-
-                let estoqueAtualizado = await loteModel.baixarEstoque(
-                    lote.COD_LOTE,
-                    qtdUtilizada
-                );
-
-                if (!estoqueAtualizado) {
-                    return res.send({
-                        ok: false,
-                        msg: "Erro ao atualizar o estoque de um dos lotes."
+                        msg: "Um dos produtos do carrinho não foi encontrado."
                     });
                 }
 
-                qtdRestante = Number((qtdRestante - qtdUtilizada).toFixed(2));
-            }
+                let loteModel = new LoteModel();
+                let lotes = await loteModel.listarLotesDisponiveis(produtoId);
 
-            if (qtdRestante > 0) {
-                return res.send({
-                    ok: false,
-                    msg: "Não foi possível separar a quantidade solicitada."
+                let estoqueTotal = 0;
+
+                for (let j = 0; j < lotes.length; j++) {
+                    estoqueTotal += Number(lotes[j].EST_LOTE);
+                }
+
+                if (qtd <= 0 || qtd > estoqueTotal) {
+                    return res.send({
+                        ok: false,
+                        msg: `Estoque insuficiente para o produto ${produto.NOME_PROD}.`
+                    });
+                }
+
+                let valorUnitario = Number(produto.VALOR_UNI_PROD);
+                let subtotal = Number((qtd * valorUnitario).toFixed(2));
+                valorTotal += subtotal;
+
+                listaProdutos.push({
+                    produtoId: produtoId,
+                    nome: produto.NOME_PROD,
+                    qtd: qtd,
+                    valorUnitario: valorUnitario,
+                    lotes: lotes
                 });
             }
+
+            valorTotal = Number(valorTotal.toFixed(2));
+
+            let codCliente = req.params.id; // alterar dependendo do nome do cookie
+
+            if (!codCliente) { 
+                return res.send({
+                    ok: false,
+                    msg: "É necessário estar autenticado para realizar um pedido."
+                });
+            }
+
+            let pedido = new PedidoModel();
+
+            pedido.COD_CLI = codCliente;
+            pedido.COD_PROMO = null;
+            pedido.COD_RECEB = codPag;
+            pedido.TOTAL_PED = valorTotal;
+
+            let resultadoPedido = await pedido.salvarPedido();
+
+            if (!resultadoPedido) {
+                return res.send({
+                    ok: false,
+                    msg: "Não foi possível registrar o pedido."
+                });
+            }
+
+            let codPedido = pedido.COD_PED; // pegando id gerado pelo mysql
+
+            for (let i = 0; i < listaProdutos.length; i++) {
+                let produto = listaProdutos[i];
+                let qtdRestante = produto.qtd;
+                let loteModel = new LoteModel();
+
+                for (let j = 0; j<produto.lotes.length && qtdRestante > 0; j++) {
+                    let lote = produto.lotes[j];
+                    let estqLote = Number(lote.EST_LOTE);
+                    let qtdUtilizada = Math.min(qtdRestante, estqLote);
+
+                    if (qtdUtilizada < 0) {
+                        return;
+                    }
+
+                    let itemPedido = new ItemPedidoModel(
+                        codPedido,
+                        produto.produtoId,
+                        lote.COD_LOTE,
+                        qtdUtilizada,
+                        produto.valorUnitario
+                    );
+
+                    let itemGravado = await itemPedido.salvarItemPedido();
+
+                    if (!itemGravado) {
+                        return res.send({
+                            ok: false,
+                            msg: "Erro ao registrar um dos itens do pedido."
+                        })
+                    }
+
+                    let estoqueAtualizado = await loteModel.baixarEstoque(
+                        lote.COD_LOTE,
+                        qtdUtilizada
+                    );
+
+                    if (!estoqueAtualizado) {
+                        return res.send({
+                            ok: false,
+                            msg: "Erro ao atualizar o estoque de um dos lotes."
+                        });
+                    }
+
+                    qtdRestante = Number((qtdRestante - qtdUtilizada).toFixed(2));
+                }
+
+                if (qtdRestante > 0) {
+                    return res.send({
+                        ok: false,
+                        msg: "Não foi possível separar a quantidade solicitada."
+                    });
+                }
+            }
+            return res.send({
+                ok: true,
+                msg: "Pedido realizado com sucesso!",
+                codPedido: codPedido,
+                total: valorTotal
+            });
         }
-        return res.send({
-            ok: true,
-            msg: "Pedido realizado com sucesso!",
-            codPedido: codPedido,
-            total: valorTotal
-        });
     }
 
 }

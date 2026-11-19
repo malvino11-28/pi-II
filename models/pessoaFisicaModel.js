@@ -248,6 +248,31 @@ class PessoaFisicaModel extends PessoaModel {
 
         return null;
     }
+
+    async consultarAssinatura(id) {
+        let sql = `SELECT P.COD_PESSOA FROM PESSOA_FISICA P
+            INNER JOIN ASSINATURA A ON P.COD_PESSOA = A.COD_PESSOA
+            WHERE STATUS_ASS = 'Ativa' AND P.COD_PESSOA = ?
+        `;
+        let value = [id];
+
+        let banco = new Database();
+
+        let result = await banco.ExecutaComando(sql, value);
+
+        return result;
+    }
+
+    async consultarFuncionario(id) {
+        let sql = "SELECT COD_PESSOA FROM PESSOA_FISICA WHERE STATUS_FUN = 'Ativo'";
+        let value = [id];
+
+        let banco = new Database();
+
+        let result = await banco.ExecutaComando(sql, value);
+
+        return result;
+    }
 }
 
 module.exports = PessoaFisicaModel;
